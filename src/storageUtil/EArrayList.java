@@ -4,6 +4,7 @@ import eutil.EUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -64,6 +66,17 @@ public class EArrayList<E> extends ArrayList<E> {
 			add(in.get(i));
 		}
 	}
+	
+	//---------------------
+	// ArrayList Overrides
+	//---------------------
+	
+	@Override public void trimToSize() { list.trimToSize(); }
+	@Override public void ensureCapacity(int minCapacity) { list.ensureCapacity(minCapacity); }
+	@Override public int hashCode() { return list.hashCode(); }
+	@Override public List<E> subList(int fromIndex, int toIndex) { return list.subList(fromIndex, toIndex); }
+	@Override public void replaceAll(UnaryOperator<E> operator) { list.replaceAll(operator); }
+	@Override public void sort(Comparator<? super E> c) { list.sort(c); }
 	
 	//------------------------
 	// AbstractList Overrides
