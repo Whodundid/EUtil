@@ -9,70 +9,71 @@ import java.awt.Color;
 public enum EColors {
 	
 	//Envision colors
-	lred(0xffff5555, 10, "Light Red"),
-	red(0xffff0000, 11, "Red"),
-	maroon(0xff9e0012, 12, "Maroon"),
-	brown(0xff7F3000, 13, "Brown"),
-	dorange(0xffB24400, 14, "Dark Orange"),
-	borange(0xffff6600, 15, "Bright Orange"),
-	orange(0xffff9900, 16, "Orange"),
-	lorange(0xffffaa00, 17, "Light Orange"),
-	yellow(0xffffff00, 18, "Yellow"),
-	lime(0xffaaff00, 19, "Lime"),
-	green(0xff55ff55, 20, "Light Green"),
-	seafoam(0xff00ff8c, 21, "Seafoam"),
-	lgreen(0xff00ff00, 22, "Green"),
-	dgreen(0xff00af00, 23, "Dark Green"),
-	turquoise(0xff00c1ae, 24, "Turquoise"),
-	aquamarine(0xff00ffdc, 25, "Aquamarine"),
-	cyan(0xff00ffff, 26, "Cyan"),
-	skyblue(0xff00baff, 27, "Sky Blue"),
-	blue(0xff0065ff, 28, "Blue"),
-	regal(0xff004EC4, 29, "Regal Blue"),
-	navy(0xff0000ff, 30, "Navy"),
-	grape(0xff4200ff, 31, "Grape"),
-	violet(0xff430093, 32, "Violet"),
-	eggplant(0xff772789, 33, "Eggplant"),
-	purple(0xffdd49ff, 34, "Purple"),
-	pink(0xfff872e9, 35, "Pink"),
-	hotpink(0xffff00dc, 36, "Hot Pink"),
-	magenta(0xffff0061, 37, "Magenta"),
-	white(0xffffffff, 38, "White"),
-	lgray(0xffb2b2b2, 39, "Light Gray"),
-	gray(0xff8d8d8d, 40, "Gray"),
-	mgray(0xff636363, 41, "Medium Gray"),
-	dgray(0xff474747, 42, "Dark Gray"),
-	pdgray(0xff303030, 43, "Pretty Dark Gray"),
-	steel(0xff1f1f1f, 44, "Steel"),
-	dsteel(0xff191919, 45, "Dark Steel"),
-	vdgray(0xff111111, 46, "Very Dark Gray"),
-	black(0xff000000, 47, "Black"),
+	lred(0xffff5555, "Light Red"),
+	red(0xffff0000, "Red"),
+	maroon(0xff9e0012,"Maroon"),
+	brown(0xff7F3000, "Brown"),
+	dorange(0xffB24400, "Dark Orange"),
+	borange(0xffff6600, "Bright Orange"),
+	orange(0xffff9900, "Orange"),
+	lorange(0xffffaa00, "Light Orange"),
+	yellow(0xffffff00, "Yellow"),
+	lime(0xffaaff00, "Lime"),
+	green(0xff00ff00, "Light Green"),
+	seafoam(0xff00ff8c, "Seafoam"),
+	lgreen(0xff55ff55, "Green"),
+	dgreen(0xff00af00, "Dark Green"),
+	turquoise(0xff00c1ae, "Turquoise"),
+	aquamarine(0xff00ffdc, "Aquamarine"),
+	cyan(0xff00ffff, "Cyan"),
+	skyblue(0xff00baff, "Sky Blue"),
+	blue(0xff0065ff, "Blue"),
+	regal(0xff004EC4, "Regal Blue"),
+	navy(0xff0000ff, "Navy"),
+	grape(0xff4200ff, "Grape"),
+	violet(0xff430093, "Violet"),
+	eggplant(0xff772789, "Eggplant"),
+	purple(0xffdd49ff, "Purple"),
+	pink(0xfff872e9, "Pink"),
+	hotpink(0xffff00dc, "Hot Pink"),
+	magenta(0xffff0061, "Magenta"),
+	white(0xffffffff, "White"),
+	chalk(0xffdcdcdc, "Chalk"),
+	lgray(0xffb2b2b2, "Light Gray"),
+	gray(0xff8d8d8d, "Gray"),
+	mgray(0xff636363, "Medium Gray"),
+	dgray(0xff474747, "Dark Gray"),
+	pdgray(0xff303030, "Pretty Dark Gray"),
+	steel(0xff1f1f1f, "Steel"),
+	dsteel(0xff191919, "Dark Steel"),
+	vdgray(0xff111111, "Very Dark Gray"),
+	black(0xff000000, "Black"),
 	
 	//MC colors
-	mc_darkred(0xffaa0000, 48, "MC Dark Red"),
-	mc_red(0xffff5555, 49, "MC Red"),
-	mc_gold(0xffffaa00, 50, "MC Gold"),
-	mc_yellow(0xffffff55, 51, "MC Yellow"),
-	mc_darkgreen(0xff00aa00, 52, "MC Dark Green"),
-	mc_green(0xff55ff55, 53, "MC Green"),
-	mc_aqua(0xff55ffff, 54, "MC Aqua"),
-	mc_darkaqua(0xff00aaaa, 55, "MC Dark Aqua"),
-	mc_darkblue(0xff0000aa, 56, "MC Dark Blue"),
-	mc_blue(0xff5555ff, 57, "MC Blue"),
-	mc_lightpurple(0xffff55ff, 58, "MC Light Purple"),
-	mc_darkpurple(0xffaa00aa, 59, "MC Dark Purple"),
-	mc_white(0xffffffff, 60, "MC White"),
-	mc_gray(0xffaaaaaa, 61, "MC Gray"),
-	mc_darkgray(0xff555555, 62, "MC Dark Gray"),
-	mc_black(0xff000000, 63, "MC Black");
+	mc_darkred(0xffaa0000, "MC Dark Red"),
+	mc_red(0xffff5555, "MC Red"),
+	mc_gold(0xffffaa00, "MC Gold"),
+	mc_yellow(0xffffff55, "MC Yellow"),
+	mc_darkgreen(0xff00aa00, "MC Dark Green"),
+	mc_green(0xff55ff55, "MC Green"),
+	mc_aqua(0xff55ffff, "MC Aqua"),
+	mc_darkaqua(0xff00aaaa, "MC Dark Aqua"),
+	mc_darkblue(0xff0000aa, "MC Dark Blue"),
+	mc_blue(0xff5555ff, "MC Blue"),
+	mc_lightpurple(0xffff55ff, "MC Light Purple"),
+	mc_darkpurple(0xffaa00aa, "MC Dark Purple"),
+	mc_white(0xffffffff, "MC White"),
+	mc_gray(0xffaaaaaa, "MC Gray"),
+	mc_darkgray(0xff555555, "MC Dark Gray"),
+	mc_black(0xff000000, "MC Black");
 	
 	public int intVal;
 	public int code;
 	public String name;
 	
-	EColors(int colorIn, int codeIn, String nameIn) {
+	EColors(int colorIn, String nameIn) {
 		intVal = colorIn;
-		code = codeIn;
+		code = ColorID.next();
 		name = nameIn;
 	}
 	
@@ -124,5 +125,12 @@ public enum EColors {
 	
 	public static EColors bool(boolean val) { return (val) ? EColors.green : EColors.lred; }
 	public static EColors bool(boolean val, EColors ifTrue, EColors ifFalse) { return (val) ? ifTrue : ifFalse; }
+	
+	/** Static class to hold static color id. */
+	private static final class ColorID {
+		private static int ID = 0;
+		private ColorID() {}
+		public static int next() { return ID++; }
+	}
 	
 }
