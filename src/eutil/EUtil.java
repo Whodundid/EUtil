@@ -18,17 +18,18 @@ import java.util.stream.Stream;
  * A static helper library containing a number of useful functions including, but not limited to:
  * 
  * <ul>
- * 		<li> Object relations
- * 		<li> List checks
- * 		<li> String operations
- * 		<li> File checks
+ * 		<li> Versitile storage datatypes
+ * 		<li> Math operations and helpers
+ * 		<li> Date/Time helpers
+ * 		<li> Reflection helpers
+ * 		<li> Lambda structures and operations
  * 		<li> Array and List conversions
- * 		<li> Lambda operations
- * 		<li> Try-catch operataions
+ * 		<li> String operations
+ * 		<li> System Info
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.1
+ *  @version 1.2.1
  */
 public class EUtil {
 	
@@ -58,7 +59,7 @@ public class EUtil {
 	 * @param objs A list of grouped values to be compared
 	 * @return {@code boolean}
 	 * 
-	 * @since 1.1
+	 * @since 1.2.1
 	 */
 	public static boolean compareInOrder(Object... objs) {
 		if (objs.length % 2 != 0) return false;

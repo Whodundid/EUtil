@@ -38,7 +38,7 @@ import java.util.stream.Stream;
  * 
  * @author Hunter Bragg
  * @see Iterable
- * @since 1.1
+ * @since 1.2.1
  */
 public class LF<E> implements Iterable<LF.P<E>> {
 
