@@ -1,4 +1,4 @@
-package miscUtil;
+package eutil.misc;
 
 public enum Rotation {
 	

@@ -1,4 +1,4 @@
-package storageUtil;
+package eutil.storage;
 
 import java.lang.reflect.Array;
 

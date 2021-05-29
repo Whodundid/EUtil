@@ -1,4 +1,4 @@
-package miscUtil;
+package eutil.date;
 
 import java.sql.Date;
 import eutil.EUtil;

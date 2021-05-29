@@ -1,6 +1,6 @@
-package randomUtil;
+package eutil.random;
 
-import storageUtil.EArrayList;
+import eutil.storage.EArrayList;
 
 /** A collection of unique randomly generated words. */
 public class RandomWords {

@@ -1,11 +1,11 @@
-package miscUtil;
+package eutil.reflection;
 
 import eutil.EUtil;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class ReflectionHelper {
+public class ReflectionUtil {
 	
 	//---------
 	// Methods

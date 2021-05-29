@@ -1,4 +1,4 @@
-package renderUtil;
+package eutil.rendering;
 
 public enum RenderMode {
 	ALWAYS,

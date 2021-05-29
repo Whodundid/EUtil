@@ -1,4 +1,4 @@
-package miscUtil;
+package eutil.misc;
 
 import java.io.PrintStream;
 

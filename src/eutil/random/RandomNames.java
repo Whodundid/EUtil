@@ -1,6 +1,6 @@
-package randomUtil;
+package eutil.random;
 
-import storageUtil.EArrayList;
+import eutil.storage.EArrayList;
 
 /** A collection of 250 unique, randomly generated names. */
 public class RandomNames {

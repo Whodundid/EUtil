@@ -1,6 +1,7 @@
-package storageUtil;
+package eutil.storage;
 
 import eutil.EUtil;
+import eutil.random.RandomUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,7 +23,6 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import randomUtil.RandomUtil;
 
 /**
  * A customized wrapper implementation of a normal ArrayList.
@@ -43,7 +43,15 @@ public class EArrayList<E> extends ArrayList<E> {
 	
 	public EArrayList() { list = new ArrayList(); }
 	public EArrayList(int initialCapacity) { list = new ArrayList(initialCapacity); }
-	public EArrayList(Collection<? extends E> c) { list = new ArrayList(c); }
+	
+	// Removing in favor of Iterable argument constructor -- much more flexible
+	//public EArrayList(Collection<? extends E> c) { list = new ArrayList(c); }
+	
+	/** Creates an EArrayList from a given Iterable object. */
+	public EArrayList(Iterable<E> it) {
+		this();
+		it.forEach(i -> add(i));
+	}
 	
 	public EArrayList(E... objs) {
 		list = new ArrayList(objs.length);
@@ -51,7 +59,7 @@ public class EArrayList<E> extends ArrayList<E> {
 	}
 	
 	public EArrayList(Stream<E> streamIn) {
-		list = new ArrayList();
+		this();
 		if (streamIn == null) { return; }
 		Iterator<E> it = streamIn.iterator();
 		while (it.hasNext()) { list.add(it.next()); }

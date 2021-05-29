@@ -1,9 +1,9 @@
-package storageUtil;
+package eutil.storage;
 
+import eutil.math.NumType;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
-import mathUtil.NumType;
 
 //Author: Hunter Bragg
 
@@ -20,14 +20,14 @@ import mathUtil.NumType;
  */
 public class Matrix {
 	
-	StorageBoxHolder<Integer, List<Number>> table = new StorageBoxHolder();
+	BoxList<Integer, List<Number>> table = new BoxList();
 	private int rSize = 0, cSize = 0;
 	private boolean printCommas = false;
 	private NumType origType = NumType.n;
 	
 	public Matrix() { this(0, 0, NumType.d); }
-	public Matrix(StorageBox<Integer, Integer> dimIn) { this(dimIn, NumType.d); }
-	public Matrix(StorageBox<Integer, Integer> dimIn, NumType typeIn) { this(dimIn.getA(), dimIn.getB(), typeIn); }
+	public Matrix(Box<Integer, Integer> dimIn) { this(dimIn, NumType.d); }
+	public Matrix(Box<Integer, Integer> dimIn, NumType typeIn) { this(dimIn.getA(), dimIn.getB(), typeIn); }
 	public Matrix(int rowSizeIn, int columnSizeIn) { this(rowSizeIn, columnSizeIn, NumType.d); }
 	public Matrix(int rowSizeIn, int columnSizeIn, NumType typeIn) {
 		create(rowSizeIn, columnSizeIn, typeIn);
@@ -70,7 +70,7 @@ public class Matrix {
 	public Matrix setPrintCommas(boolean valIn) { printCommas = valIn; return this; }
 	public int getRowLength() { return rSize; }
 	public int getColumnLength() { return cSize; }
-	public StorageBox<Integer, Integer> getDimensions() { return new StorageBox<Integer, Integer>(rSize, cSize); }
+	public Box<Integer, Integer> getDimensions() { return new Box<Integer, Integer>(rSize, cSize); }
 	public NumType getNumberType() { return origType; }
 	public Matrix draw() { return draw(""); }
 	public Matrix draw(String title) { System.out.println(title + "\n" + this); return this; }
@@ -141,7 +141,7 @@ public class Matrix {
 		if (rangeCheck(0, colNumIn)) {
 			EArrayList<Number> l = new EArrayList(cSize);
 			for (int i = 0; i < rSize; i++) {
-				StorageBox<Integer, List<Number>> box = table.getBoxWithA(i);
+				Box<Integer, List<Number>> box = table.getBoxWithA(i);
 				if (box != null && box.getB() != null && box.getB().get(colNumIn) != null) {
 					l.add(i, box.getB().get(colNumIn));
 				}
@@ -162,7 +162,7 @@ public class Matrix {
 	public Matrix setColumn(int columnNumIn, List<Number> columnIn) {
 		if (rangeCheck(0, columnNumIn)) {
 			for (int i = 0; i < rSize; i++) {
-				StorageBox<Integer, List<Number>> box = table.getBoxWithA(i);
+				Box<Integer, List<Number>> box = table.getBoxWithA(i);
 				if (box != null) {
 					box.getB().set(i, columnIn.get(i));
 				}

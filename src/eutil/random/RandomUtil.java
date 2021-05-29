@@ -1,10 +1,10 @@
-package randomUtil;
+package eutil.random;
 
+import eutil.math.NumberUtil;
+import eutil.misc.Direction;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
-import mathUtil.NumberUtil;
-import miscUtil.Direction;
 
 /** A collection of helper methods which aid with generating random numbers, chars, strings, and names. */ 
 public final class RandomUtil {

@@ -1,6 +1,6 @@
-package miscUtil;
+package eutil.misc;
 
-import storageUtil.EArrayList;
+import eutil.storage.EArrayList;
 
 //Author: Hunter Bragg
 

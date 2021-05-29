@@ -1,4 +1,4 @@
-package mathUtil;
+package eutil.math;
 
 //Author: Hunter Bragg
 

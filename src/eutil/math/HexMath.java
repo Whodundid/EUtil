@@ -1,4 +1,4 @@
-package mathUtil;
+package eutil.math;
 
 import java.awt.Color;
 import java.util.HashMap;

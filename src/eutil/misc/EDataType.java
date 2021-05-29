@@ -1,8 +1,8 @@
-package miscUtil;
+package eutil.misc;
 
+import eutil.math.NumberUtil;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
-import mathUtil.NumberUtil;
 
 /** An enum to keep track of java datatypes. Mainly used for generics at runtime. */
 public enum EDataType {

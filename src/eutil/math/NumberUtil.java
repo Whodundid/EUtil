@@ -1,9 +1,9 @@
-package mathUtil;
+package eutil.math;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import storageUtil.StorageBox;
 import eutil.EUtil;
+import eutil.storage.Box;
 
 //Author: Hunter Bragg
 
@@ -127,7 +127,7 @@ public class NumberUtil {
 	}
 	
 	/** Returns the cartesian distance between two points within storage boxes. (the distance formula) */
-	public static double getDistance(StorageBox<Double, Double> point1, StorageBox<Double, Double> point2) {
+	public static double getDistance(Box<Double, Double> point1, Box<Double, Double> point2) {
 		if (point1 != null && point2 != null) {
 			if (point1.getA() != null && point1.getB() != null && point2.getA() != null && point2.getB() != null) {
 				double x1 = point1.getA();

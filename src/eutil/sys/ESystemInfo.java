@@ -1,11 +1,11 @@
-package miscUtil;
+package eutil.sys;
 
 import com.sun.management.OperatingSystemMXBean;
 import java.io.File;
 import java.lang.management.ManagementFactory;
-import storageUtil.StorageBox;
-import storageUtil.StorageBoxHolder;
 import eutil.EUtil;
+import eutil.storage.Box;
+import eutil.storage.BoxList;
 
 /** Utility class which returns information on the current running system. */
 public final class ESystemInfo {
@@ -143,10 +143,10 @@ public final class ESystemInfo {
 	}
 	
 	/** Returns a StorageBoxHolder containing each drive along with their current storage capacities (total, free). */
-	public static StorageBoxHolder<File, StorageBox<Long, Long>> getDriveSizes() {
-		StorageBoxHolder<File, StorageBox<Long, Long>> holder = new StorageBoxHolder();
+	public static BoxList<File, Box<Long, Long>> getDriveSizes() {
+		BoxList<File, Box<Long, Long>> holder = new BoxList();
 		
-		EUtil.forEach(getDrives(), o -> holder.add(o, new StorageBox(o.getTotalSpace(), o.getFreeSpace())));
+		EUtil.forEach(getDrives(), o -> holder.add(o, new Box(o.getTotalSpace(), o.getFreeSpace())));
 		
 		return holder;
 	}

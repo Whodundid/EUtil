@@ -1,5 +1,6 @@
 package eutil;
 
+import eutil.storage.EArrayList;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
@@ -12,21 +13,22 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
-import storageUtil.EArrayList;
 
-/** A static helper library containing a number of useful functions including but not limited to:
+/** 
+ * A static helper library containing a number of useful functions including, but not limited to:
  * 
- *  <blockquote><pre>
- *  Object relations
- *  List checks
- *  String operations
- *  File checks
- *  Array and List conversions
- *  Lambda operations
- *  Try-catch operataions
- *  </pre></blockquote><p>
+ * <ul>
+ * 		<li> Object relations
+ * 		<li> List checks
+ * 		<li> String operations
+ * 		<li> File checks
+ * 		<li> Array and List conversions
+ * 		<li> Lambda operations
+ * 		<li> Try-catch operataions
+ * </ul>
  *  
  *  @author Hunter Bragg
+ *  @version 1.1
  */
 public class EUtil {
 	
@@ -49,21 +51,55 @@ public class EUtil {
 		return (a != null) ? a.equals(b) : b == null;
 	}
 	
+	/**
+	 * Compares the given list of grouped elements in a [A, A, B, B, C, C, ...] arrangement.
+	 * Returns true iff every element group has equal values.
+	 * 
+	 * @param objs A list of grouped values to be compared
+	 * @return {@code boolean}
+	 * 
+	 * @since 1.1
+	 */
+	public static boolean compareInOrder(Object... objs) {
+		if (objs.length % 2 != 0) return false;
+		boolean val = true;
+		
+		// iterates across the given list comparing the given element vs. the very next element.
+		for (int i = 0; i < objs.length; i += 2) {
+			if (!isEqual(objs[i], objs[i + 1])) {
+				val = false;
+				break;
+			}
+		}
+		
+		return val;
+	}
+	
 	//-------------
 	// List Checks
 	//-------------
 	
-	/** Returns true if any values within either list match. */
-	public static <e> boolean findMatch(List<e> objsIn, List<e> list) {
-		if (list != null && objsIn.size() > 0) {
-			for (e element : list) {
+	/**
+	 * Returns true if any value within either list is equal. 
+	 * 
+	 * @param <E> The type of object being compared
+	 * @param A The first list
+	 * @param B The second list
+	 * 
+	 * @return {@code boolean}
+	 * 
+	 * @since 1.1
+	 */
+	public static <E> boolean anyMatch(List<E> A, List<E> B) {
+		if (B != null && A.size() > 0) {
+			for (E element : B) {
 				if (element == null) {
-					for (e check : objsIn) {
+					for (E check : A) {
 						if (check == null) { return true; }
 					}
 				}
 				else {
-					for (e check : objsIn) {
+					for (E check : A) {
 						if (check.equals(element)) { return true; }
 					}
 				}
@@ -73,7 +109,7 @@ public class EUtil {
 	}
 	
 	/** A statement that returns the specified ifTrue value if any member within the given list matches the given predicate.
-	 *  If no member of the list matches the predicate then the ifFalse value is returned instead. */
+	 *  If none of the members in the given list match the predicate then the ifFalse value is returned instead. */
 	public static <A, R> R forEachTest(List<A> list, Predicate<? super A> predicate, R ifTrue, R ifFalse) {
 		Objects.requireNonNull(list);
 		Objects.requireNonNull(predicate);
@@ -85,7 +121,7 @@ public class EUtil {
 		return ifFalse;
 	}
 	
-	/** Returns the first member in a list that matches the given predicate. If no object matches, null is returned. */
+	/** Returns the first member in a list that matches the given predicate. If no object matches, null is returned instead. */
 	public static <E> E getFirst(List<E> list, Predicate<? super E> predicate) {
 		Objects.requireNonNull(predicate);
 		
