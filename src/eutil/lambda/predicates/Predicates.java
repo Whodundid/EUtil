@@ -1,4 +1,4 @@
-package eutil.predicates;
+package eutil.lambda.predicates;
 
 public class Predicates {
 	

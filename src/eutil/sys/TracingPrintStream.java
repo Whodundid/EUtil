@@ -1,4 +1,4 @@
-package eutil.misc;
+package eutil.sys;
 
 import java.io.PrintStream;
 
@@ -7,6 +7,8 @@ import java.io.PrintStream;
  * Hunter Bragg.
  *
  * @author Arkan
+ * @author Hunter Bragg
+ * @since 1.0.0
  */
 public class TracingPrintStream extends PrintStream {
 

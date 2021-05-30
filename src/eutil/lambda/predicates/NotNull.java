@@ -1,4 +1,4 @@
-package eutil.predicates;
+package eutil.lambda.predicates;
 
 import java.util.function.Predicate;
 

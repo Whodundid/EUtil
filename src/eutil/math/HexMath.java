@@ -3,10 +3,17 @@ package eutil.math;
 import java.awt.Color;
 import java.util.HashMap;
 
-//Author: Hunter Bragg
 
+/**
+ * A static library containing various helper functions related to
+ * conversions and operations on binary and hexadecimal values.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public class HexMath {
 	
+	/** Contains a direct mapping of hex to binary conversions for each 0-f hex character. */
 	static HashMap<String, String> hexVals = new HashMap();
 	
 	static {
@@ -28,6 +35,7 @@ public class HexMath {
 		hexVals.put("f", "1111");
 	}
 	
+	/** If the input value is between [0,15] (inclusively) the resulting output is the corresponding hexadecimal character value. */
 	public static String getHexChar(int in) {
 		if (in >= 0) {
 			if (in <= 9) { return String.valueOf(in); }
@@ -45,6 +53,7 @@ public class HexMath {
 		return null;
 	}
 	
+	/** Takes a hexadecimal value (in string form) and converts it to the equivalent binary representation (also in string form). */
 	public static String hexToBinary(String in) {
 		String binary = "";
 		
@@ -56,6 +65,7 @@ public class HexMath {
 		return binary;
 	}
 	
+	/** Takes a binary value (in string form) and converts it to the equivalent hexadecimal representation (also in string form). */
 	public static String binaryToHex(String in) {
 		String hex = "0x";
 		
@@ -80,6 +90,7 @@ public class HexMath {
 		return hex;
 	}
 	
+	/** Takes in a valid binary number (in string form) and returns the binary string form of the twos complement operation. */
 	public static String twosComplement(String in) {
 		int n = in.length();
 		int i;
@@ -107,6 +118,7 @@ public class HexMath {
 		return twos;
 	}
 	
+	/** Converts a valid binary value (in string form) to the equivalent integer based value. */
 	public static int getTwosCompValue(String in) {
 		if (in != null && !in.isEmpty()) {
 			boolean neg = in.startsWith("1");
@@ -118,6 +130,7 @@ public class HexMath {
 		return 0;
 	}
 	
+	/** Takes in Java Color object and converts it to the equivalent integer representation. */
 	public static int RGBtoHEX(Color color) {
         String hex = Integer.toHexString(color.getRGB() & 0xffffff);
         if (hex.length() < 6) {
@@ -129,7 +142,7 @@ public class HexMath {
         return Integer.decode(hex);
     }
 	
-	/** converts a floating point value between 0.0 and 1.0 to a corresponding hexadecimal value. */
+	/** Converts a floating point value between 0.0 and 1.0 to a corresponding hexadecimal value. */
 	public static int floatToHex(float valIn) {
 		int val = (int) (valIn * 255);
 		String sVal = Integer.toHexString(val);

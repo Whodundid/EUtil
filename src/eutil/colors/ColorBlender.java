@@ -1,5 +1,11 @@
-package eutil.rendering;
+package eutil.colors;
 
+/**
+ * An incomplete experimental implementation of a standard integer color blending algorithm.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public class ColorBlender {
 	
 	public static int overlayColor(int background, int overlay) {

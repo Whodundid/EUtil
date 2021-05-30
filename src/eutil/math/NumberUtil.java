@@ -3,10 +3,15 @@ package eutil.math;
 import java.text.DecimalFormat;
 import java.util.List;
 import eutil.EUtil;
+import eutil.datatypes.NumType;
 import eutil.storage.Box;
 
-//Author: Hunter Bragg
-
+/**
+ * A static library containing various helper functions related to special math operations or number manipulations.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public class NumberUtil {
 	
 	/** Restricts a value between the given minimum and maximum values. */
@@ -143,13 +148,13 @@ public class NumberUtil {
 	
 	/** Returns the datatype of a given number. */
 	public static NumType getNumType(Class<? extends Number> c) {
-		if (c == Byte.class || c == byte.class) { return NumType.b; }
-		if (c == Short.class || c == short.class) { return NumType.s; }
-		if (c == Integer.class || c == int.class) { return NumType.i; }
-		if (c == Long.class || c == long.class) { return NumType.l; }
-		if (c == Float.class || c == float.class) { return NumType.f; }
-		if (c == Double.class || c == double.class) { return NumType.d; }
-		return NumType.n;
+		if (c == Byte.class || c == byte.class) { return NumType.BYTE; }
+		if (c == Short.class || c == short.class) { return NumType.SHORT; }
+		if (c == Integer.class || c == int.class) { return NumType.INTEGER; }
+		if (c == Long.class || c == long.class) { return NumType.LONG; }
+		if (c == Float.class || c == float.class) { return NumType.FLOAT; }
+		if (c == Double.class || c == double.class) { return NumType.DOUBLE; }
+		return NumType.NULL;
 	}
 	
 	/** Returns the sum of all numbers within the given list. (does not check for null values!) */

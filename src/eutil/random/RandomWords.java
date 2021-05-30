@@ -2,12 +2,26 @@ package eutil.random;
 
 import eutil.storage.EArrayList;
 
-/** A collection of unique randomly generated words. */
-public class RandomWords {
+/**
+ * A collection of unique randomly generated words.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
+public final class RandomWords {
 
+	//----------------------------
+	
+	// prevent instantiation
+	private RandomWords() {}
+	
+	//----------------------------
+	
 	private static EArrayList<String> words = new EArrayList();
 	
 	public static String get() { return words.get(RandomUtil.getRoll(0, words.size() - 1)); }
+	
+	//----------------------------
 	
 	static {
 		words.add("Adult");

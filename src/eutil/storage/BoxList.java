@@ -4,9 +4,15 @@ import java.util.Iterator;
 import java.util.List;
 import eutil.EUtil;
 
-//Author: Hunter Bragg
-
-/** Essentially an ArrayList implementation that holds standard two item Boxes. */
+/**
+ * An ArrayList warpper which holds and manages standard two item Boxes.
+ * 
+ * @param <A> The first type
+ * @param <B> The second type
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public class BoxList<A, B> implements Iterable<Box<A, B>> {
 	
 	private final EArrayList<Box<A, B>> createdList = new EArrayList();

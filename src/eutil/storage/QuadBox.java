@@ -2,6 +2,17 @@ package eutil.storage;
 
 import static eutil.EUtil.*;
 
+/**
+ * A type of box which contains four distinct types.
+ * 
+ * @param <A>
+ * @param <B>
+ * @param <C>
+ * @param <D>
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.1
+ */
 public class QuadBox<A, B, C, D> {
 
 	public A a;

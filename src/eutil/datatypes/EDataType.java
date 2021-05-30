@@ -1,13 +1,18 @@
-package eutil.misc;
+package eutil.datatypes;
 
 import eutil.math.NumberUtil;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
-/** An enum to keep track of java datatypes. Mainly used for generics at runtime. */
+/**
+ * An enum to keep track of java datatypes. Useful for tracking generic datatypes at runtime.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public enum EDataType {
-	VOID,
-	OBJECT,
+	
+	// Standard Java datatypes
 	BOOLEAN,
 	CHAR,
 	BYTE,
@@ -17,23 +22,59 @@ public enum EDataType {
 	FLOAT,
 	DOUBLE,
 	STRING,
+	
+	// Abstract datatypes
+	OBJECT,
 	NUMBER,
-	VAR,
+	ARRAY,
+	
+	// Special types
 	CONSTRUCTOR,
 	METHOD,
-	ARRAY,
 	CLASS,
 	ENUM,
+	VOID,
 	NULL,
-	THIS;
+	
+	;
+	
+	//---------
+	// Methods
+	//---------
 	
 	/** Returns true if the given dataType is a number. */
 	public boolean isNumber() {
 		switch (this) {
-		case CHAR: case BYTE: case SHORT: case INT: case LONG: case FLOAT: case DOUBLE: return true;
+		case NUMBER: case CHAR: case BYTE: case SHORT: case INT: case LONG: case FLOAT: case DOUBLE: return true;
 		default: return false;
 		}
 	}
+	
+	/**
+	 * Returns {@code true} if this datatype is able to be created normally thorugh Java code.
+	 * More specifically, a boolean can be defined, where a void value cannot.
+	 * 
+	 * <blockquote>
+	 * Note: While 'null' can be assigned to objects as a placeholder, by definition 'null' is the absence of a type and can not be created, only assigned.
+	 * Therefore, 'null', at least by this library's defintion, is not considered a standard datatype.
+	 * </blockquote>
+	 * 
+	 * @return {@code boolean}
+	 * @since 1.1
+	 */
+	public boolean isStandard() {
+		// If it's a number, it's standard by default
+		if (isNumber()) { return true; }
+		
+		switch (this) {
+		case STRING: case OBJECT: case ARRAY: case CONSTRUCTOR: case METHOD: case CLASS: case ENUM: return true;
+		default: return false;
+		}
+	}
+	
+	//----------------
+	// Static Methods
+	//----------------
 	
 	/** Returns true if the given dataType is a number. */
 	public static boolean isNumber(EDataType typeIn) { return (typeIn != null) ? typeIn.isNumber() : false; }

@@ -30,6 +30,7 @@ import java.util.stream.Stream;
  * many useful methods for finding, getting, and removing specific types of objects.
  * 
  * @author Hunter Bragg
+ * @since 1.0.0
  */
 public class EArrayList<E> extends ArrayList<E> {
 	

@@ -1,7 +1,11 @@
 package eutil.storage;
 
-//Author: Hunter Bragg
-
+/**
+ * A datatype containing 2D object dimensions using double floating point precision. 
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public class EDimension {
 	
 	public double startX = 0, endX = 0;
@@ -35,6 +39,8 @@ public class EDimension {
 		midX = getMidX();
 		midY = getMidY();
 	}
+	
+	@Override public String toString() { return "[startX/Y: " + startX + ", " + startY + "; endX/Y: " + endX + ", " + endY + "; width/Height: " + width + ", " + height + "]"; }
 	
 	public EDimension move(double changeX, double changeY) {
 		startX += changeX;
@@ -88,8 +94,6 @@ public class EDimension {
 	public boolean isGreaterThan(EDimension dimIn) { return startX > dimIn.startX && startY > dimIn.startY && width > dimIn.width && height > dimIn.height; }
 	public boolean isLessThan(EDimension dimIn) { return startX < dimIn.startX && startY < dimIn.startY && width < dimIn.width && height < dimIn.height; }
 	public boolean isEqualTo(EDimension dimIn) { return startX == dimIn.startX && startY == dimIn.startY && width == dimIn.width && height == dimIn.height; }
-	
-	@Override public String toString() { return "[startX/Y: " + startX + ", " + startY + "; endX/Y: " + endX + ", " + endY + "; width/Height: " + width + ", " + height + "]"; }
 	
 	public static EDimension of(Number startXIn, Number startYIn, Number endXIn, Number endYIn) {
 		return new EDimension(startXIn, startYIn, endXIn, endYIn);

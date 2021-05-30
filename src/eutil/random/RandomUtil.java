@@ -6,9 +6,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
-/** A collection of helper methods which aid with generating random numbers, chars, strings, and names. */ 
+/**
+ * A collection of helper methods which aid with generating random numbers, chars, strings, and names.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public final class RandomUtil {
 	
+	// prevent instantiation
 	private RandomUtil() {}
 	
 	/** Returns true if the check value matches the produced random number within range. */
@@ -42,7 +48,7 @@ public final class RandomUtil {
 	
 	public static Direction randomDir() { return randomDir(false); }
 	public static Direction randomDir(boolean cardinal) {
-		return (cardinal) ? Direction.getCardinals().getRandom() : Direction.getDirections().getRandom();
+		return (cardinal) ? getRandVal(Direction.cardinals()) : getRandVal(Direction.directions());
 	}
 	
 	/** Returns a random char that can be made from any type-able ascii character. */

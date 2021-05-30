@@ -1,39 +1,40 @@
 package eutil.storage;
 
-import eutil.math.NumType;
+import eutil.datatypes.NumType;
 import java.io.File;
 import java.io.PrintWriter;
 import java.util.List;
 
-//Author: Hunter Bragg
-
 /**
  * The {@code Matrix} class is a data type representing a matrix structure with default {@code Double} values.
  * The {@code Matrix} class provides numerous functions for performing matrix operations both locally and statically.
+ * 
  * <blockquote><pre>
- *     Matrix m = new Matrix(2, 2, 1.0, 2, 3.0, 4);
+ *     Matrix m = new Matrix(2, 2, 1.0, 2.0, 3.0, 4.0);
  *     
  *     			|1.0 2.0|
  *     			|3.0 4.0|
  * </pre></blockquote><p>
+ * 
  * @author Hunter Bragg
+ * @since 1.0.0
  */
 public class Matrix {
 	
 	BoxList<Integer, List<Number>> table = new BoxList();
 	private int rSize = 0, cSize = 0;
 	private boolean printCommas = false;
-	private NumType origType = NumType.n;
+	private NumType origType = NumType.NULL;
 	
-	public Matrix() { this(0, 0, NumType.d); }
-	public Matrix(Box<Integer, Integer> dimIn) { this(dimIn, NumType.d); }
+	public Matrix() { this(0, 0, NumType.DOUBLE); }
+	public Matrix(Box<Integer, Integer> dimIn) { this(dimIn, NumType.DOUBLE); }
 	public Matrix(Box<Integer, Integer> dimIn, NumType typeIn) { this(dimIn.getA(), dimIn.getB(), typeIn); }
-	public Matrix(int rowSizeIn, int columnSizeIn) { this(rowSizeIn, columnSizeIn, NumType.d); }
+	public Matrix(int rowSizeIn, int columnSizeIn) { this(rowSizeIn, columnSizeIn, NumType.DOUBLE); }
 	public Matrix(int rowSizeIn, int columnSizeIn, NumType typeIn) {
 		create(rowSizeIn, columnSizeIn, typeIn);
 	}
 	
-	public Matrix(int rowSizeIn, int columnSizeIn, Number... vals) { this(rowSizeIn, columnSizeIn, NumType.d, vals); }
+	public Matrix(int rowSizeIn, int columnSizeIn, Number... vals) { this(rowSizeIn, columnSizeIn, NumType.DOUBLE, vals); }
 	public Matrix(int rowSizeIn, int columnSizeIn, NumType typeIn, Number... vals) {
 		create(rowSizeIn, columnSizeIn, typeIn);
 		if (vals.length == rowSizeIn * columnSizeIn) {
@@ -47,7 +48,7 @@ public class Matrix {
 		}
 	}
 	
-	public Matrix(int rowSizeIn, int columnSizeIn, List<Number> vals)  { this(rowSizeIn, columnSizeIn, NumType.d, vals); }
+	public Matrix(int rowSizeIn, int columnSizeIn, List<Number> vals)  { this(rowSizeIn, columnSizeIn, NumType.DOUBLE, vals); }
 	public Matrix(int rowSizeIn, int columnSizeIn, NumType typeIn, List<Number> vals) {
 		create(rowSizeIn, columnSizeIn, typeIn);
 		if (vals.size() == rowSizeIn * columnSizeIn) {
@@ -61,7 +62,7 @@ public class Matrix {
 		}
 	}
 	
-	public Matrix(Matrix matrixIn) { if (matrixIn != null) { setValues(matrixIn); } else { create(0, 0, NumType.d); } }
+	public Matrix(Matrix matrixIn) { if (matrixIn != null) { setValues(matrixIn); } else { create(0, 0, NumType.DOUBLE); } }
 	
 	
 	//base methods	
@@ -96,7 +97,7 @@ public class Matrix {
 	
 	//matrix util functions
 	
-	private void create(int rowSizeIn, int columnSizeIn) { create(rowSizeIn, columnSizeIn, NumType.d); }
+	private void create(int rowSizeIn, int columnSizeIn) { create(rowSizeIn, columnSizeIn, NumType.DOUBLE); }
 	private void create(int rowSizeIn, int columnSizeIn, NumType typeIn) {
 		rSize = rowSizeIn;
 		cSize = columnSizeIn;
@@ -121,12 +122,12 @@ public class Matrix {
 	public Matrix setValAsType(int rowPos, int colPos, Number valIn, NumType typeIn) {
 		if (rangeCheck(rowPos, colPos)) {
 			switch (typeIn) {
-			case b: table.getBoxWithA(rowPos).getB().set(colPos, valIn.byteValue()); break;
-			case s: table.getBoxWithA(rowPos).getB().set(colPos, valIn.shortValue()); break;
-			case i: table.getBoxWithA(rowPos).getB().set(colPos, valIn.intValue()); break;
-			case l: table.getBoxWithA(rowPos).getB().set(colPos, valIn.longValue()); break;
-			case f: table.getBoxWithA(rowPos).getB().set(colPos, valIn.floatValue()); break;
-			case d: table.getBoxWithA(rowPos).getB().set(colPos, valIn.doubleValue()); break;
+			case BYTE: table.getBoxWithA(rowPos).getB().set(colPos, valIn.byteValue()); break;
+			case SHORT: table.getBoxWithA(rowPos).getB().set(colPos, valIn.shortValue()); break;
+			case INTEGER: table.getBoxWithA(rowPos).getB().set(colPos, valIn.intValue()); break;
+			case LONG: table.getBoxWithA(rowPos).getB().set(colPos, valIn.longValue()); break;
+			case FLOAT: table.getBoxWithA(rowPos).getB().set(colPos, valIn.floatValue()); break;
+			case DOUBLE: table.getBoxWithA(rowPos).getB().set(colPos, valIn.doubleValue()); break;
 			default: throw new NumberFormatException();
 			}
 		}
@@ -197,12 +198,12 @@ public class Matrix {
 		return (rowPos >= 0 && rowPos < rSize) && (colPos >= 0 && colPos < cSize);
 	}
 	
-	public Matrix asByte() { return convertTo(NumType.b); }
-	public Matrix asShort() { return convertTo(NumType.s); }
-	public Matrix asInt() { return convertTo(NumType.i); }
-	public Matrix asLong() { return convertTo(NumType.l); }
-	public Matrix asFloat() { return convertTo(NumType.f); }
-	public Matrix asDouble() { return convertTo(NumType.d); }
+	public Matrix asByte() { return convertTo(NumType.BYTE); }
+	public Matrix asShort() { return convertTo(NumType.SHORT); }
+	public Matrix asInt() { return convertTo(NumType.INTEGER); }
+	public Matrix asLong() { return convertTo(NumType.LONG); }
+	public Matrix asFloat() { return convertTo(NumType.FLOAT); }
+	public Matrix asDouble() { return convertTo(NumType.DOUBLE); }
 	
 	public Matrix convertTo(NumType typeIn) {
 		for (int i = 0; i < rSize; i++) {

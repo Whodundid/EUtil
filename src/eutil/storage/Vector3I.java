@@ -2,14 +2,15 @@ package eutil.storage;
 
 import static eutil.EUtil.*;
 
-//Author: Hunter Bragg
-
 /**
  * The {@code Vector3I} class is a data type containing three individual {@code Long} values: x, y, and z.
+ * 
  * <blockquote><pre>
  *     Vector3I vec = new Vector3I(x, y, z);
  * </pre></blockquote><p>
+ * 
  * @author Hunter Bragg
+ * @since 1.0.0
  */
 public class Vector3I {
 	

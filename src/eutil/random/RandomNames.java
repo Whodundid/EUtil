@@ -2,12 +2,26 @@ package eutil.random;
 
 import eutil.storage.EArrayList;
 
-/** A collection of 250 unique, randomly generated names. */
-public class RandomNames {
+/**
+ * A collection of 250 unique, randomly generated names.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
+public final class RandomNames {
 
+	//----------------------------
+	
+	// prevent instaniation
+	private RandomNames() {}
+	
+	//----------------------------
+	
 	private static EArrayList<String> names = new EArrayList();
 	
 	public static String get() { return names.get(RandomUtil.getRoll(0, names.size() - 1)); }
+	
+	//----------------------------
 	
 	static {
 		names.add("Neva");

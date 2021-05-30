@@ -5,7 +5,20 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class ReflectionUtil {
+/**
+ * A collection of useful functions which help streamline various Java reflection operations.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.1
+ */
+public final class ReflectionUtil {
+	
+	//----------------------------
+	
+	// prevent instantiaion
+	private ReflectionUtil() {}
+	
+	//----------------------------
 	
 	//---------
 	// Methods

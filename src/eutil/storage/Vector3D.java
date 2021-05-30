@@ -2,15 +2,16 @@ package eutil.storage;
 
 import static eutil.EUtil.*;
 
-//Author: Hunter Bragg
-
 /**
  * The {@code Vector3D} class is a data type containing three individual {@code Double} values: x, y, and z.
  * The {@code Vector3D} class provides numerous functions for performing vector math both locally and statically.
+ * 
  * <blockquote><pre>
  *     Vector3D vec = new Vector3D(x, y, z);
  * </pre></blockquote><p>
+ * 
  * @author Hunter Bragg
+ * @since 1.0.0
  */
 public class Vector3D {
 

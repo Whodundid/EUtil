@@ -2,6 +2,16 @@ package eutil.storage;
 
 import static eutil.EUtil.*;
 
+/**
+ * A type of box which contains three distinct types.
+ * 
+ * @param <A>
+ * @param <B>
+ * @param <C>
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.1
+ */
 public class TrippleBox<A, B, C> {
 
 	public A a;

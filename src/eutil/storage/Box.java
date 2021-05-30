@@ -7,6 +7,7 @@ package eutil.storage;
  * @param <B>
  * 
  * @author Hunter Bragg
+ * @since 1.0.0
  */
 public class Box<A, B> {
 	

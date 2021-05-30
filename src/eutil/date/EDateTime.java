@@ -2,6 +2,12 @@ package eutil.date;
 
 import java.util.Calendar;
 
+/**
+ * A simplified calendar date and time library.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.1
+ */
 public class EDateTime {
 	
 	public static long getTimeLong() { return Calendar.getInstance().getTimeInMillis(); }
@@ -25,8 +31,11 @@ public class EDateTime {
 	// Date Methods
 	//--------------
 	
+	/** Returns the current calendar day (1-(28,30,31)) (depends on month). */
 	public static int getDay() { return Calendar.getInstance().get(Calendar.DAY_OF_MONTH); }
+	/** Returns the current calendar month (1-12). */
 	public static int getMonth() { return Calendar.getInstance().get(Calendar.MONTH) + 1; }
+	/** Returns the current calendar year. (#### - four number year format). */
 	public static int getYear() { return Calendar.getInstance().get(Calendar.YEAR); }
 	
 	public static EDate parseDate(String dateString) { return EDate.of(dateString); }

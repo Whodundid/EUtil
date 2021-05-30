@@ -3,7 +3,12 @@ package eutil.date;
 import java.sql.Date;
 import eutil.EUtil;
 
-/** A simple, standard date representation. */
+/**
+ * A simplified calendar date library.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.1
+ */
 public class EDate implements Comparable<EDate> {
 
 	private EDateFormat format;

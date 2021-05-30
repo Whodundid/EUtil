@@ -2,6 +2,12 @@ package eutil.storage;
 
 import java.lang.reflect.Array;
 
+/**
+ * A datatype representing a 2D grid layout for some arbitrary object type. 
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.1
+ */
 public class Grid2D<E> {
 	
 	int width, height;

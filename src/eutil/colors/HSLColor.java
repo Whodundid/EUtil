@@ -1,12 +1,15 @@
-package eutil.rendering;
+package eutil.colors;
 
 import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-//Author: Hunter Bragg
-
-/** A utility class that converts an RGB color to an HSL color of the same values. */
+/**
+ * A static utility class that converts an RGB color to an HSL color of the same values.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public class HSLColor {
 	
 	double hue = 0;

@@ -1,28 +1,32 @@
-package eutil.rendering;
+package eutil.misc;
 
-//Author: Hunter Bragg
-
-/** A enum representing a location or direction on the physical screen. */
+/**
+ * A enum representing a location or direction on the physical screen.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public enum ScreenLocation {
-	top,
-	topRight,
-	right,
-	botRight,
-	bot,
-	botLeft,
-	left,
-	topLeft,
-	center,
-	custom,
-	out;
+	
+	TOP,
+	TOP_RIGHT,
+	RIGHT,
+	BOT_RIGHT,
+	BOT,
+	BOT_LEFT,
+	LEFT,
+	TOP_LEFT,
+	CENTER,
+	CUSTOM,
+	OUT;
 	
 	/** Returns true if the specified ScreenLocation is located at the corner of the screen. */
 	public static boolean isCorner(ScreenLocation locIn) {
 		switch (locIn) {
-		case topRight:
-		case botRight:
-		case topLeft:
-		case botLeft: return true;
+		case TOP_RIGHT:
+		case BOT_RIGHT:
+		case TOP_LEFT:
+		case BOT_LEFT: return true;
 		default: return false;
 		}
 	}
@@ -30,10 +34,10 @@ public enum ScreenLocation {
 	/** Returns true if the specified ScreenLocation is located at the side of the screen. */
 	public static boolean isSide(ScreenLocation locIn) {
 		switch (locIn) {
-		case top:
-		case left:
-		case bot:
-		case right: return true;
+		case TOP:
+		case LEFT:
+		case BOT:
+		case RIGHT: return true;
 		default: return false;
 		}
 	}

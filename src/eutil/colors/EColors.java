@@ -1,11 +1,15 @@
-package eutil.rendering;
+package eutil.colors;
 
 import java.awt.Color;
 
 //Author: Hunter Bragg
 
-/** The color palette used by the Envision Game Engine.
- *  A much more 'vibrant' color palette as compared to vanilla Minecraft. */
+/**
+ * A palette of useful common colors.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public enum EColors {
 	
 	//Envision colors
@@ -67,6 +71,8 @@ public enum EColors {
 	mc_darkgray(0xff555555, "MC Dark Gray"),
 	mc_black(0xff000000, "MC Black");
 	
+	//------------------------------------------------------------------
+	
 	public int intVal;
 	public int code;
 	public String name;
@@ -77,13 +83,19 @@ public enum EColors {
 		name = nameIn;
 	}
 	
+	//------------------------------------------------------------------
+	
 	@Override public String toString() { return "\u222e" + code; }
 
+	//------------------------------------------------------------------
+	
 	/** Returns the color integer. */
 	public int c() { return intVal; }
 	
 	/** Returns the color name. */
 	public String n() { return name; }
+	
+	//------------------------------------------------------------------
 	
 	/** Returns an EColors with the corresponding integer color (if any). */
 	public static EColors getEColor(int colorIn) {
@@ -125,6 +137,8 @@ public enum EColors {
 	
 	public static EColors bool(boolean val) { return (val) ? EColors.green : EColors.lred; }
 	public static EColors bool(boolean val, EColors ifTrue, EColors ifFalse) { return (val) ? ifTrue : ifFalse; }
+	
+	//------------------------------------------------------------------
 	
 	/** Static class to hold static color id. */
 	private static final class ColorID {

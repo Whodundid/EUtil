@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.2.1
+ *  @version 1.1.0
  */
 public class EUtil {
 	

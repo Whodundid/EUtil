@@ -1,7 +1,11 @@
 package eutil.storage;
 
-//Author: Hunter Bragg
-
+/**
+ * A datatype containing 2D object dimensions using integer precision. 
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public class EDimensionI {
 	
 	public long startX = 0, endX = 0;

@@ -7,7 +7,16 @@ import eutil.EUtil;
 import eutil.storage.Box;
 import eutil.storage.BoxList;
 
-/** Utility class which returns information on the current running system. */
+/**
+ * Utility class which returns information on the current running system.
+ * 
+ * <blockquote>
+ * Note: Certain computer specifications may not be accessible on certain platforms.
+ * </blockquote>
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public final class ESystemInfo {
 
 	private static OperatingSystemMXBean bean;

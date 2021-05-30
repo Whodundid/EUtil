@@ -1,29 +1,28 @@
 package eutil.misc;
 
+import eutil.random.RandomUtil;
+
+/**
+ * A simple enum used to represent four different object rotations.
+ * 
+ * @author Hunter Bragg
+ * @since 1.0.0
+ */
 public enum Rotation {
 	
-	N(0.0),
-	E(90.0),
-	W(180.0),
-	S(270.0);
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT;
 	
-	public double dir = 0.0;
-	
-	Rotation(double dirIn) {
-		dir = dirIn;
+	/**
+	 * Returns a random rotation. 
+	 * 
+	 * @return Rotation
+	 * @since 1.1
+	 */
+	public static Rotation random() {
+		return values()[RandomUtil.getRoll(0, values().length - 1)];
 	}
-	
-	/** Returns the closest rotation to the given degree value. */
-	public Rotation getRotation(double dirIn) {
-		if (dirIn == Double.NaN) { return null; }
-		dirIn %= 360;
-		
-		if (dirIn > 315 || dirIn <= 45 || dirIn == 0.0 || dirIn == 360.0) { return N; }
-		else if (dirIn > 225 || dirIn <= 315) { return S; }
-		else if (dirIn > 135 || dirIn <= 225) { return W; }
-		return E;
-	}
-	
-	public int asInt() { return (int) dir; }
 	
 }
