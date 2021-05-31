@@ -1,5 +1,8 @@
 package eutil.lambda;
 
+import static eutil.lambda.Predicates.*;
+
+import eutil.EUtil;
 import eutil.storage.EArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -107,6 +110,8 @@ public class LF<E> implements Iterable<LF.P<E>> {
 	
 	/** Generates an Iterable containing lambda productions for the given iterable object. */
 	public static <E> LF<E> of(Iterable<E> dataIn) { return new LF(0, 1, dataIn); }
+	/** Generates an Iterable containing lambda productions for the given typed array. */
+	public static <E> LF<E> of(E... dataIn) { return new LF(0, 1, new EArrayList(dataIn)); }
 	/** Generates an Iterable containing lambda productions for the given iterable object. Furthermore, this specifies the starting index. */
 	public static <E> LF<E> of(int start, Iterable<E> dataIn) { return new LF(start, 1, dataIn); }
 	/** Generates an Iterable containing lambda productions for the given iterable object. Furthermore, this specifies the starting index as well as the increment amount. */
@@ -117,9 +122,9 @@ public class LF<E> implements Iterable<LF.P<E>> {
 	/** Performs a filtering function across each element in the given iterable object. */
 	public LF<E> filter(Predicate<? super E> filter) { return new LF(start, by, stream().filter(filter)); }
 	/** Performs a filtering function which removes null objects within the given iterable object. */
-	public LF<E> filterNull() { return new LF(start, by, stream().filter(o -> o != null)); }
+	public LF<E> filterNull() { return new LF(start, by, stream().filter(notNull)); }
 	/** Performs a filtering function which removes null objects as well as the specified condition within the given iterable object. */
-	public LF<E> filterNull(Predicate<? super E> filter) { return new LF(start, by, stream().filter(o -> o != null).filter(filter)); }
+	public LF<E> filterNull(Predicate<? super E> filter) { return new LF(start, by, stream().filter(notNull).filter(filter)); }
 	
 	//---------------------------------------------------------------------------------------
 	
@@ -141,6 +146,18 @@ public class LF<E> implements Iterable<LF.P<E>> {
 		public String toString() {
 			return index + " : " + element;
 		}
+		
+		@Override
+		/** Overriding equals so that the comparison is against the element instead of this production. */
+		public boolean equals(Object obj) {
+			return EUtil.isEqual(element, obj);
+		}
+		
+		/** Returns this production's element. */
+		public E get() { return element; }
+		
+		/** Returns true if this production's element is null. */
+		public boolean isNull() { return element == null; }
 		
 	}
 	

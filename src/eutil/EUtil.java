@@ -1,5 +1,8 @@
 package eutil;
 
+import static eutil.lambda.Predicates.*;
+import static eutil.lambda.Comparisons.*;
+
 import eutil.storage.EArrayList;
 import java.io.File;
 import java.util.Collection;
@@ -38,19 +41,16 @@ public class EUtil {
 	//---------
 	
 	/** Returns true if any of the given objects are null. */
-	public static boolean isNull(Object obj, Object... objsIn) {
-		boolean val = false;
-		for (Object o : add(obj, objsIn)) { if (o == null) { val = true; } }
-		return val;
+	public static boolean anyNull(Object... objsIn) {
+		for (Object o : objsIn) { if (o == null) { return true; } }
+		return false;
 	}
 	
 	/** Returns false if any of the given objects are null. */
-	public static boolean notNull(Object obj, Object... objsIn) { return !isNull(obj, objsIn); }
+	public static boolean notNull(Object... objsIn) { return !anyNull(objsIn); }
 	
 	/** Returns true if the given objects are equal to each other, this method also accounts for null objects. */
-	public static boolean isEqual(Object a, Object b) {
-		return (a != null) ? a.equals(b) : b == null;
-	}
+	public static boolean isEqual(Object a, Object b) { return (a != null) ? a.equals(b) : b == null; }
 	
 	/**
 	 * Compares the given list of grouped elements in a [A, A, B, B, C, C, ...] arrangement.
@@ -126,10 +126,8 @@ public class EUtil {
 	public static <E> E getFirst(List<E> list, Predicate<? super E> predicate) {
 		Objects.requireNonNull(predicate);
 		
-		if (list != null) {
-			for (E e : list) {
-				if (predicate.test(e)) { return e; }
-			}
+		for (E e : list) {
+			if (predicate.test(e)) { return e; }
 		}
 		
 		return null;
@@ -145,11 +143,9 @@ public class EUtil {
 	public static <E> E getLast(List<E> list, Predicate<? super E> predicate) {
 		Objects.requireNonNull(predicate);
 		
-		if (list != null) {
-			for (int i = list.size(); i >= 0; i--) {
-				E e = list.get(i);
-				if (predicate.test(e)) { return e; }
-			}
+		for (int i = list.size(); i >= 0; i--) {
+			E e = list.get(i);
+			if (predicate.test(e)) { return e; }
 		}
 		
 		return null;
@@ -165,25 +161,31 @@ public class EUtil {
 	// String Helpers
 	//----------------
 	
+	/** Returns the string version of the object. This function also accounts for null values. */
 	public static String toString(Object o) { return toString(o, "null"); }
+	/** Returns the string version of the object. This function also accounts for null values. If the value is null, "null" is returned. */
 	public static String toString(Object o, String defaultVal) { return (o != null) ? o.toString() : defaultVal; }
 	
-	/** Returns the longest String out of all given. */
+	/**
+	 * Returns the longest String out of all in the given collection.
+	 * 
+	 * @param strings a collection of strings
+	 * @return String The longest String
+	 * @since 1.1.1
+	 */
+	public static String getLongest(Collection<String> strings) {
+		return tryGet(filterNull(strings).max(strlen));
+	}
+	
+	/**
+	 * Returns the longest String out of all given.
+	 * 
+	 * @param strings An array of passed Strings
+	 * @return String The longest String
+	 * @since 1.0.0
+	 */
 	public static String getLongest(String... strings) {
-		int longest = 0;
-		String theString = null;
-		
-		for (String s : strings) {
-			if (s != null) {
-				String temp = s.replace("\t", "        ");
-				if (temp.length() > longest) {
-					longest = temp.length();
-					theString = temp;
-				}
-			}
-		}
-		
-		return theString;
+		return tryGet(filterNull(strings).max(strlen));
 	}
 	
 	/** Captializes the first letter in the given string. */
@@ -407,7 +409,7 @@ public class EUtil {
 	//-------------
 	
 	/** Returns true if the given file is not null and actually exists on the system. */
-	public static boolean fileExists(File f) { return (f != null && f.exists()); }
+	public static boolean fileExists(File f) { return fileExists.test(f); }
 	
 	//---------------
 	// Array Helpers
@@ -454,24 +456,11 @@ public class EUtil {
 	public static void printArray(float[] arr) { printArray(toObjArr(arr)); }
 	public static void printArray(double[] arr) { printArray(toObjArr(arr)); }
 	
-	public static void printArray(Object[] arr) {
-		if (arr != null) {
-			for (Object o : arr) {
-				System.out.println(o);
-			}
-		}
-	}
-	
-	public static void printList(List arr) {
-		if (arr != null) {
-			for (Object o : arr) {
-				System.out.println(o);
-			}
-		}
-	}
+	public static void printArray(Object[] arr) { forEach(arr, System.out::println); }
+	public static void printList(Iterable arr) { forEach(arr, System.out::println); }
 	
 	public static <E, T> void printArray(E[] arr, Function<? super E, ? super T> type) {
-		nullDo(arr, a -> asList(a).map(type).forEach(s -> System.out.println(s)));
+		nullDo(arr, a -> asList(a).map(type).forEach(System.out::println));
 	}
 	
 	public static <E> E[] add(E obj, E[] array) {
@@ -536,7 +525,7 @@ public class EUtil {
 	/** Converts a typed-array to a Stream. */
 	public static <E> Stream<E> stream(E... vals) { return ((EArrayList<E>) new EArrayList<E>().add(vals)).stream(); }
 	/** Converts a typed-array to a Stream that filters out null objects. */
-	public static <E> Stream<E> filterNull(E... vals) { return stream(vals).filter(o -> o != null); }
+	public static <E> Stream<E> filterNull(E... vals) { return stream(vals).filter(notNull); }
 	
 	/** Converts a typed-array to a Stream then performs the given filter. */
 	public static <E> Stream<E> filterA(Predicate<? super E> filter, E... vals) { return stream(vals).filter(filter); }
@@ -560,15 +549,15 @@ public class EUtil {
 	/** Converts a typed-Collection to a Stream then performs the given filter. */
 	public static <E> Stream<E> filter(Collection<E> list, Predicate<? super E> filter) { return list.stream().filter(filter); }
 	/** Converts a typed-Collection to a Stream that filters out null objects. */
-	public static <E> Stream<E> filterNull(Collection<E> list) { return list.stream().filter(o -> o != null); }
+	public static <E> Stream<E> filterNull(Collection<E> list) { return list.stream().filter(notNull); }
 	/** Converts a typed-Collection to a Stream that filters out null objects then performs the given filter. */
 	public static <E> Stream<E> filterNull(Collection<E> list, Predicate<? super E> filter) { return filterNull(list).filter(filter); }
 	/** Converts a typed-Collection to a Stream that maps each object to the specified type. */
 	public static <E, T> Stream<T> map(Collection<E> list, Function<? super E, ? extends T> mapper) { return list.stream().map(mapper); }
 	/** Performs a forEach loop on each element. Directly mapped from 'Java.util.List' */
-	public static <E> void forEach(Collection<E> list, Consumer<? super E> action) { list.forEach(action); }
+	public static <E> void forEach(Iterable<E> list, Consumer<? super E> action) { list.forEach(action); }
 	/** Performs a forEach loop on each element. Then returns the specified 'returnVal' argument. */
-	public static <E, R> R forEachR(Collection<E> list, Consumer<? super E> action, R returnVal) { forEach(list, action); return returnVal; }
+	public static <E, R> R forEachR(Iterable<E> list, Consumer<? super E> action, R returnVal) { forEach(list, action); return returnVal; }
 	/** Converts a typed-Collection to a Stream then performs the given filter then finally performs a forEach loop on each remaining element. */
 	public static <E> void filterForEach(Collection<E> list, Predicate<? super E> filter, Consumer<? super E> action) { filter(list, filter).forEach(action); }
 	/** Converts a typed-Collection to a Stream that filters out null objects then finally performs a forEach loop on each remaining element. */
@@ -585,7 +574,7 @@ public class EUtil {
 	/** Converts a typed-Array to a Stream then performs the given filter. */
 	public static <E> Stream<E> filter(E[] arr, Predicate<? super E> filter) { return stream(arr).filter(filter); }
 	/** Converts a typed-Array to a Stream that filters out null objects then performs the given filter. */
-	public static <E> Stream<E> filterNull(E[] arr, Predicate<? super E> filter) { return stream(arr).filter(filter.and(o -> o != null)); }
+	public static <E> Stream<E> filterNull(E[] arr, Predicate<? super E> filter) { return stream(arr).filter(filter.and(notNull)); }
 	/** Converts a typed-Array to a Stream that maps each object to the specified type. */
 	public static <E, T> Stream<T> map(E[] arr, Function<? super E, ? extends T> mapper) { return stream(arr).map(mapper); }
 	/** Performs a forEach loop on each element. */
