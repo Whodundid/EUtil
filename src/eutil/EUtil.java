@@ -4,8 +4,10 @@ import static eutil.lambda.Predicates.*;
 import static eutil.lambda.Comparisons.*;
 
 import eutil.storage.EArrayList;
+import eutil.util.Experimental;
 import java.io.File;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,9 +34,12 @@ import java.util.stream.Stream;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.1.0
+ *  @version 1.1.1
  */
 public class EUtil {
+	
+	/** The EUtil library version. */
+	public static final String version = "1.1.1";
 	
 	//---------
 	// Objects
@@ -271,6 +276,30 @@ public class EUtil {
 				int index = startFromEnd ? findStartingIndex(from, toFind, true) : findStartingIndex(from, toFind);
 				return (index >= 0) ? (startFromEnd ? from.substring(index + 1, in.length()) : from.substring(0, index)) : from;
 			}
+		}
+		return in;
+	}
+	
+	/** Creates a substring from the given string from a given starting position until a specified substring within the original.
+	 *  If starting from the end, substrings will attempted to be formed from the right hand side of the string going left. */
+	public static String subStringToStringNull(String in, int startPos, String toFind, boolean startFromEnd) {
+		if (in != null) {
+			if (startPos >= 0 && startPos <= in.length()) {
+				String from = startFromEnd ? in.substring(startPos, in.length()) : in.substring(startPos);
+				int index = startFromEnd ? findStartingIndex(from, toFind, true) : findStartingIndex(from, toFind);
+				return (index >= 0) ? (startFromEnd ? from.substring(index + 1, in.length()) : from.substring(0, index)) : null;
+			}
+		}
+		return null;
+	}
+	
+	@Experimental(since = "1.1.1")
+	/** Takes in an array of Strings for which to find substring matches within the given 'in' string. */
+	public static String subStringToString(String in, String... toFind) {
+		if (toFind.length == 0) { return in; }
+		for (String s : toFind) {
+			String found = subStringToStringNull(in, 0, s, false);
+			if (found != null) { return found; }
 		}
 		return in;
 	}
@@ -687,6 +716,24 @@ public class EUtil {
 	public static <E> boolean contains(Collection<E> arr, E value) { for (E e : arr) { if (isEqual(e, value)) { return true; } } return false; }
 	public static <E> E containsR(E[] arr, E value) { for (E e : arr) if (isEqual(e, value)) { return e; } return null; }
 	public static <E> E containsR(Collection<E> arr, E value) { for (E e : arr) if (isEqual(e, value)) { return e; } return null; }
+	
+	public static <E> boolean contains(Iterable<E> data, E val) {
+		Iterator<E> dataI = data.iterator();
+		while (dataI.hasNext()) {
+			if (isEqual(val, dataI.next())) { return true; }
+		}
+		
+		return false;
+	}
+	
+	public static <E> boolean contains(boolean[] arr, boolean x) { for (boolean i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(char[] arr, char x) { for (char i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(byte[] arr, byte x) { for (byte i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(short[] arr, short x) { for (short i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(int[] arr, int x) { for (int i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(long[] arr, long x) { for (long i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(float[] arr, float x) { for (float i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(double[] arr, double x) { for (double i : arr) if (i == x) return true; return false; }
 	
 	//----------------
 	// Try Statements

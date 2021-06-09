@@ -2,6 +2,7 @@ package eutil.storage;
 
 import eutil.EUtil;
 import eutil.random.RandomUtil;
+import eutil.util.Experimental;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -124,7 +125,22 @@ public class EArrayList<E> extends ArrayList<E> {
 	//--------------------
 	// WrapperList Methods
 	//--------------------
-
+	
+	@Experimental(since = "1.1.1")
+	/** If the given value is currently present within the list, the value is replaced, otherwise it is added. */
+	public E put(E val) {
+		int i = indexOf(val);
+		if (i >= 0) { set(i, val); }
+		else { add(val); }
+		return val;
+	}
+	
+	@Experimental(since = "1.1.1")
+	/** Returns true if any object within this list matches the given predicate. */
+	public boolean anyMatch(Predicate<? super E> condition) {
+		return stream().anyMatch(condition);
+	}
+	
 	/** Returns true if the given index is at the start of this list. */
 	public boolean atStart(int i) { return i == 0; }
 	/** Returns true if the given index is at the end of this list. */
