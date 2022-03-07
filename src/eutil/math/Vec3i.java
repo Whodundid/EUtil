@@ -1,4 +1,4 @@
-package eutil.storage;
+package eutil.math;
 
 import static eutil.EUtil.*;
 
@@ -12,7 +12,7 @@ import static eutil.EUtil.*;
  * @author Hunter Bragg
  * @since 1.0.0
  */
-public class Vector3I {
+public class Vec3i {
 	
 	public long x = 0, y = 0, z = 0;
 	
@@ -20,10 +20,11 @@ public class Vector3I {
 	// Constructors
 	//--------------
 	
-	public Vector3I() { set(0, 0 , 0); }
-	public Vector3I(Vector3I vecIn) { set(vecIn.x, vecIn.y, vecIn.z); }
-	public Vector3I(Vector3D vecIn) { set(vecIn.x, vecIn.y, vecIn.z); }
-	public Vector3I(Number x, Number y, Number z) { set(x, y, z); }
+	public Vec3i() { set(0, 0 , 0); }
+	public Vec3i(Vec3i vecIn) { set(vecIn.x, vecIn.y, vecIn.z); }
+	public Vec3i(Vec3d vecIn) { set(vecIn.x, vecIn.y, vecIn.z); }
+	public Vec3i(Number n) { set(n, n, n); }
+	public Vec3i(Number x, Number y, Number z) { set(x, y, z); }
 	
 	//-----------
 	// Overrides
@@ -35,20 +36,20 @@ public class Vector3I {
 	// Methods
 	//---------
 	
-	public Vector3I clear() { x = 0; y = 0; z = 0; return this; }
-	public Vector3D asVector3D() { return new Vector3D(x, y, z); }
+	public Vec3i clear() { x = 0; y = 0; z = 0; return this; }
+	public Vec3d toVec3d() { return new Vec3d(x, y, z); }
 	
-	public boolean compare(Vector3I in) { return (in != null) ? (x == in.x && y == in.y && z == in.z) : false; }
+	public boolean compare(Vec3i in) { return (in != null) ? (x == in.x && y == in.y && z == in.z) : false; }
 	public boolean compare(long xIn, long yIn, long zIn) { return (x == xIn && y == yIn && z == zIn); }
 	
 	//-------------
 	// Vector Math
 	//-------------
 	
-	public Vector3I add(Vector3I in) { return nullDoR(in, v -> set(x + in.x, y + in.y, z + in.z), this); }
-	public Vector3I subtract(Vector3I in) { return nullDoR(in, v -> set(x - in.x, y - in.y, z - in.z), this); }
-	public Vector3I multiply(Vector3I in) { return nullDoR(in, v -> set(x * in.x, y * in.y, z * in.z), this); }
-	public Vector3I divide(Vector3I in) { return nullDoR(in, v -> set(x / in.x, y / in.y, z / in.z), this); }
+	public Vec3i add(Vec3i in) { return nullDoR(in, v -> set(x + in.x, y + in.y, z + in.z), this); }
+	public Vec3i subtract(Vec3i in) { return nullDoR(in, v -> set(x - in.x, y - in.y, z - in.z), this); }
+	public Vec3i multiply(Vec3i in) { return nullDoR(in, v -> set(x * in.x, y * in.y, z * in.z), this); }
+	public Vec3i divide(Vec3i in) { return nullDoR(in, v -> set(x / in.x, y / in.y, z / in.z), this); }
 	
 	//---------
 	// Getters
@@ -62,21 +63,21 @@ public class Vector3I {
 	// Setters
 	//---------
 	
-	public Vector3I setX(long xIn) { x = xIn; return this; }
-	public Vector3I setY(long yIn) { y = yIn; return this; }
-	public Vector3I setZ(long zIn) { z = zIn; return this; }
+	public Vec3i setX(long xIn) { x = xIn; return this; }
+	public Vec3i setY(long yIn) { y = yIn; return this; }
+	public Vec3i setZ(long zIn) { z = zIn; return this; }
 	
-	public Vector3I set(Vector3I vecIn) { return nullDoR(vecIn, v -> set(v.x, v.y, v.z), this); }
-	public Vector3I set(Vector3D vecIn) { return nullDoR(vecIn, v -> set(v.x, v.y, v.z), this); }
-	public Vector3I set(Number xIn, Number yIn, Number zIn) { x = xIn.longValue(); y = yIn.longValue(); z = zIn.longValue(); return this; }
+	public Vec3i set(Vec3i vecIn) { return nullDoR(vecIn, v -> set(v.x, v.y, v.z), this); }
+	public Vec3i set(Vec3d vecIn) { return nullDoR(vecIn, v -> set(v.x, v.y, v.z), this); }
+	public Vec3i set(Number xIn, Number yIn, Number zIn) { x = xIn.longValue(); y = yIn.longValue(); z = zIn.longValue(); return this; }
 	
 	//--------------------
 	// Static Vector Math
 	//--------------------
 	
-	public static Vector3I add(Vector3I in1, Vector3I in2) { return nullApplyR(in1, in2, (a, b) -> new Vector3I(a.x + b.x, a.y + b.y, a.z + b.z), null); }
-	public static Vector3I subtract(Vector3I in1, Vector3I in2) { return nullApplyR(in1, in2, (a, b) -> new Vector3I(a.x - b.x, a.y - b.y, a.z - b.z), null); }
-	public static Vector3I multiply(Vector3I in1, Vector3I in2) { return nullApplyR(in1, in2, (a, b) -> new Vector3I(a.x * b.x, a.y * b.y, a.z * b.z), null); }
-	public static Vector3I divide(Vector3I in1, Vector3I in2) { return nullApplyR(in1, in2, (a, b) -> new Vector3I(a.x / b.x, a.y / b.y, a.z / b.z), null); }
+	public static Vec3i add(Vec3i in1, Vec3i in2) { return nullApplyR(in1, in2, (a, b) -> new Vec3i(a.x + b.x, a.y + b.y, a.z + b.z), null); }
+	public static Vec3i subtract(Vec3i in1, Vec3i in2) { return nullApplyR(in1, in2, (a, b) -> new Vec3i(a.x - b.x, a.y - b.y, a.z - b.z), null); }
+	public static Vec3i multiply(Vec3i in1, Vec3i in2) { return nullApplyR(in1, in2, (a, b) -> new Vec3i(a.x * b.x, a.y * b.y, a.z * b.z), null); }
+	public static Vec3i divide(Vec3i in1, Vec3i in2) { return nullApplyR(in1, in2, (a, b) -> new Vec3i(a.x / b.x, a.y / b.y, a.z / b.z), null); }
 	
 }

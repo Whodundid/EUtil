@@ -1,6 +1,6 @@
 package eutil.random;
 
-import eutil.storage.EArrayList;
+import eutil.datatypes.EArrayList;
 
 /**
  * A collection of unique randomly generated words.

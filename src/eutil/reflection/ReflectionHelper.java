@@ -11,12 +11,12 @@ import java.lang.reflect.Method;
  * @author Hunter Bragg
  * @since 1.0.1
  */
-public final class ReflectionUtil {
+public final class ReflectionHelper {
 	
 	//----------------------------
 	
 	// prevent instantiaion
-	private ReflectionUtil() {}
+	private ReflectionHelper() {}
 	
 	//----------------------------
 	
@@ -93,7 +93,7 @@ public final class ReflectionUtil {
 		f.setAccessible(true);
 		Object o = f.get(obj);
 		f.setAccessible(false);
-		return (E) o;
+		return (E) asClass.cast(o);
 	}
 	
 	/** Attempts to return a corresponding constructor from the given name and class parameters from the given object's immediate constructors. */
@@ -104,7 +104,7 @@ public final class ReflectionUtil {
 	}
 	
 	/** Returns true if the given object actually has a field of the given name in its class hierarchy. */
-	public static boolean doesFieldExist(Object obj, String fieldName) {
+	public static boolean hasField(Object obj, String fieldName) {
 		if (obj == null) return false;
 		try {
 			Field f = findField(obj.getClass(), fieldName);
@@ -118,7 +118,7 @@ public final class ReflectionUtil {
 	}
 	
 	/** Returns true if the given object actually has a constructor of the given name with the given parameters in its class hierarchy. */
-	public static boolean doesConstructorExist(Object obj, Class... parameters) {
+	public static boolean hasConstructor(Object obj, Class... parameters) {
 		if (obj == null) return false;
 		try {
 			Constructor c = findConstructor(obj.getClass(), parameters);
@@ -130,6 +130,28 @@ public final class ReflectionUtil {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public static boolean assignableFrom(Field f, Class<?> c) { return assignableFrom(f, null, c); }
+	public static boolean assignableFrom(Field f, Object obj, Class<?> c) {
+		Object o = forceGet(f, obj);
+		return (c != null && o != null) ? c.isAssignableFrom(o.getClass()) : false;
+	}
+	
+	public static boolean isNull(Field f) { return isNull(f, null); }
+	public static boolean isNull(Field f, Object obj) { return forceGet(f, obj) == null; }
+	
+	public static boolean notNull(Field f) { return notNull(f, null); }
+	public static boolean notNull(Field f, Object obj) { return forceGet(f, obj) != null; }
+	
+	public static Object forceGet(Field f) { return forceGet(f, null); }
+	public static Object forceGet(Field f, Object obj) {
+		try {
+			return f.get(obj);
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Cannot return field value for '" + f + "'!");
+		}
 	}
 	
 	//-------------------

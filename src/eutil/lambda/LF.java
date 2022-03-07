@@ -3,7 +3,8 @@ package eutil.lambda;
 import static eutil.lambda.Predicates.*;
 
 import eutil.EUtil;
-import eutil.storage.EArrayList;
+import eutil.datatypes.EArrayList;
+
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;

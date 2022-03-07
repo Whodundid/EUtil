@@ -1,12 +1,14 @@
-package eutil.storage;
+package eutil.datatypes;
 
 import eutil.EUtil;
 import eutil.random.RandomUtil;
-import eutil.util.Experimental;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Deque;
+import java.util.EmptyStackException;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
@@ -33,9 +35,9 @@ import java.util.stream.Stream;
  * @author Hunter Bragg
  * @since 1.0.0
  */
-public class EArrayList<E> extends ArrayList<E> {
+public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	
-	private ArrayList<E> list;
+	private List<E> list;
 	private boolean allowDuplicates = true;
 	static final Set<Collector.Characteristics> CH_ID = Collections.unmodifiableSet(EnumSet.of(Collector.Characteristics.IDENTITY_FINISH));
 	
@@ -48,6 +50,12 @@ public class EArrayList<E> extends ArrayList<E> {
 	
 	// Removing in favor of Iterable argument constructor -- much more flexible
 	//public EArrayList(Collection<? extends E> c) { list = new ArrayList(c); }
+	
+	/** Internal constructor used to wrap an existing list. */
+	private EArrayList(List<E> listIn) {
+		Objects.requireNonNull(listIn);
+		list = listIn;
+	}
 	
 	/** Creates an EArrayList from a given Iterable object. */
 	public EArrayList(Iterable<E> it) {
@@ -81,8 +89,8 @@ public class EArrayList<E> extends ArrayList<E> {
 	// ArrayList Overrides
 	//---------------------
 	
-	@Override public void trimToSize() { list.trimToSize(); }
-	@Override public void ensureCapacity(int minCapacity) { list.ensureCapacity(minCapacity); }
+	@Override public void trimToSize() { ((ArrayList) list).trimToSize(); }
+	@Override public void ensureCapacity(int minCapacity) { ((ArrayList) list).ensureCapacity(minCapacity); }
 	@Override public int hashCode() { return list.hashCode(); }
 	@Override public List<E> subList(int fromIndex, int toIndex) { return list.subList(fromIndex, toIndex); }
 	@Override public void replaceAll(UnaryOperator<E> operator) { list.replaceAll(operator); }
@@ -109,7 +117,7 @@ public class EArrayList<E> extends ArrayList<E> {
 	@Override public boolean remove(Object o) { return list.remove(o); }
 	@Override public boolean removeAll(Collection<?> c) { return list.removeAll(c); }
 	@Override public boolean retainAll(Collection<?> c) { return list.retainAll(c); }
-	@Override public Object clone() { return list.clone(); }
+	@Override public Object clone() { return ((ArrayList) list).clone(); }
 	@Override public void forEach(Consumer<? super E> action) { list.forEach(action); }
 	
 	//------------------------------
@@ -126,7 +134,12 @@ public class EArrayList<E> extends ArrayList<E> {
 	// WrapperList Methods
 	//--------------------
 	
-	@Experimental(since = "1.1.1")
+	/** Performs a size reduction on this list by cutting off all values after the given size. */
+	public EArrayList<E> trimToSize(int sizeIn) {
+		list = subList(0, sizeIn);
+		return this;
+	}
+	
 	/** If the given value is currently present within the list, the value is replaced, otherwise it is added. */
 	public E put(E val) {
 		int i = indexOf(val);
@@ -135,7 +148,6 @@ public class EArrayList<E> extends ArrayList<E> {
 		return val;
 	}
 	
-	@Experimental(since = "1.1.1")
 	/** Returns true if any object within this list matches the given predicate. */
 	public boolean anyMatch(Predicate<? super E> condition) {
 		return stream().anyMatch(condition);
@@ -143,19 +155,84 @@ public class EArrayList<E> extends ArrayList<E> {
 	
 	/** Returns true if the given index is at the start of this list. */
 	public boolean atStart(int i) { return i == 0; }
+	
 	/** Returns true if the given index is at the end of this list. */
 	public boolean atEnd(int i) { return i == size() - 1; }
 	
 	/** Pushes the given value onto the front of this list and subsequently shifts each of the
 	 *  additional values to the right by one. */
-	public EArrayList<E> push(E value) {
+	@Override
+	public void push(E value) {
 		add(0, value);
+	}
+	
+	public EArrayList<E> pushRT(E value) {
+		push(value);
 		return this;
 	}
 	
 	/** Removes the first value from this list then shifts each of the remaining values to the
 	 *  left by one.@return */
-	public E pop() { return removeFirst(); }
+	@Override
+	public E pop() {
+		E val = removeFirst();
+		if (val == null) throw new EmptyStackException();
+		return val;
+	}
+	
+	/** Retrieves, but does not remove the top element of the array as if this were a stack. */
+	@Override
+	public E peek() {
+		if (size() == 0) throw new EmptyStackException();
+		return get(0);
+	}
+	
+	@Override public void addFirst(E e) { add(0, e); }
+	@Override public void addLast(E e) { add(size() - 1, e); }
+	
+	@Override public boolean offerFirst(E e) { addFirst(e); return true; }
+	@Override public boolean offerLast(E e) { addLast(e); return false; }
+	@Override public boolean offer(E e) { return offerLast(e); }
+	
+	@Override public E pollFirst() { return removeFirst(); }
+	@Override public E pollLast() { return removeLast(); }
+	@Override public E poll() { return pollFirst(); }
+	
+	@Override public E peekFirst() { return null; }
+	@Override public E peekLast() { return null; }
+	@Override public E element() { return peek(); }
+	
+	@Override public E remove() { return removeFirst(); }
+	
+	@Override
+	public boolean removeFirstOccurrence(Object o) {
+		if (isNotEmpty()) {
+			int s = size();
+			for (int i = 0; i < s; i++) {
+				if (EUtil.isEqual(get(i), o)) {
+					remove(i);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean removeLastOccurrence(Object o) {
+		if (isNotEmpty()) {
+			int s = size();
+			for (int i = s - 1; i >= 0; i--) {
+				if (EUtil.isEqual(get(i), o)) {
+					remove(i);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	@Override public Iterator<E> descendingIterator() { return iterator(); }
 	
 	/** Replaces a range of values in this list with the given value. */
 	public EArrayList<E> replaceFrom(int from, E value) { return replaceFrom(from, size(), value); }
@@ -212,6 +289,11 @@ public class EArrayList<E> extends ArrayList<E> {
 	
 	public E getRandom() { return (isEmpty()) ? null : get(RandomUtil.getRoll(0, size() - 1)); }
 	public E removeRandom() { return (isEmpty()) ? null : remove(RandomUtil.getRoll(0, size() - 1)); }
+	public E removeIfContains(E object) {
+		int index = indexOf(object);
+		if (index >= 0) return remove(index);
+		else return null;
+	}
 	
 	/** Swaps the values at the given indexes. */
 	public EArrayList<E> swap(int indexA, int indexB) {
@@ -452,11 +534,21 @@ public class EArrayList<E> extends ArrayList<E> {
 	//-------------
 	// Add Methods
 	//-------------
+	
+	public EArrayList<E> clearThenAdd(E... e) {
+		clear();
+		return add(e);
+	}
 
 	/** Adds each of the elements to this list. */
 	public EArrayList<E> add(E... e) {
 		for (int i = 0; i < e.length; i++) { add(e[i]); }
 		return this;
+	}
+	
+	public EArrayList<E> clearThenAddA(E[] e) {
+		clear();
+		return addA(e);
 	}
 	
 	/** Adds each of the elements in the given array to this list. */
@@ -538,6 +630,11 @@ public class EArrayList<E> extends ArrayList<E> {
 	// Static Methods
 	//----------------
 	
+	/** Does not create a new internal list but instead wraps EArrayList functionality around the given one. */
+	public static <T> EArrayList<T> wrap(List<T> listIn) {
+		return (listIn != null) ? new EArrayList(listIn) : null;
+	}
+	
 	/** Collector implementation used to be able to convert a typed stream of data into an EArrayList of the same type. */
 	public static <T> Collector<T, ?, EArrayList<T>> toEArrayList() {
 		return new ECollector<>((Supplier<List<T>>) EArrayList::new, List::add, (left, right) -> { left.addAll(right); return left; }, CH_ID);
@@ -550,6 +647,10 @@ public class EArrayList<E> extends ArrayList<E> {
 	
 	/** Returns a new EArrayList<T> created from values of the given list. */
 	public static <T> EArrayList<T> of(EArrayList<T> in) {
+		return new EArrayList(in);
+	}
+	
+	public static <T> EArrayList<T> of(Collection<T> in) {
 		return new EArrayList(in);
 	}
 	

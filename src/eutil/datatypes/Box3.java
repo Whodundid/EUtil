@@ -1,4 +1,4 @@
-package eutil.storage;
+package eutil.datatypes;
 
 import static eutil.EUtil.*;
 
@@ -12,7 +12,7 @@ import static eutil.EUtil.*;
  * @author Hunter Bragg
  * @since 1.0.1
  */
-public class TrippleBox<A, B, C> {
+public class Box3<A, B, C> {
 
 	public A a;
 	public B b;
@@ -22,9 +22,9 @@ public class TrippleBox<A, B, C> {
 	// Constructors
 	//--------------
 	
-	public TrippleBox() { this(null, null, null); }
-	public TrippleBox(A aIn, B bIn, C cIn) { set(aIn, bIn, cIn); }
-	public TrippleBox(TrippleBox<A, B, C> box) { nullDo(box, b -> set(b.a, b.b, b.c)); }
+	public Box3() { this(null, null, null); }
+	public Box3(A aIn, B bIn, C cIn) { set(aIn, bIn, cIn); }
+	public Box3(Box3<A, B, C> box) { nullDo(box, b -> set(b.a, b.b, b.c)); }
 	
 	//-----------
 	// Overrides
@@ -36,9 +36,9 @@ public class TrippleBox<A, B, C> {
 	// Methods
 	//---------
 	
-	public TrippleBox<A, B, C> clear() { return set(null, null, null); }
+	public Box3<A, B, C> clear() { return set(null, null, null); }
 	
-	public boolean compare(TrippleBox<?, ?, ?> box) { return nullDoR(box, o -> compareInOrder(a, o.a, b, o.b, c, o.c), false); }
+	public boolean compare(Box3<?, ?, ?> box) { return nullDoR(box, o -> compareInOrder(a, o.a, b, o.b, c, o.c), false); }
 	public boolean compare(A aIn, B bIn, C cIn) { return compareInOrder(a, aIn, b, bIn, c, cIn); }
 	
 	public boolean compareA(A aIn) { return isEqual(a, aIn); }
@@ -53,24 +53,24 @@ public class TrippleBox<A, B, C> {
 	public B getB() { return b; }
 	public C getC() { return c; }
 	
-	public Box<A, B> getAB() { return new Box<A, B>(a, b); }
-	public Box<A, C> getAC() { return new Box<A, C>(a, c); }
-	public Box<B, C> getBC() { return new Box<B, C>(b, c); }
+	public Box2<A, B> getAB() { return new Box2<A, B>(a, b); }
+	public Box2<A, C> getAC() { return new Box2<A, C>(a, c); }
+	public Box2<B, C> getBC() { return new Box2<B, C>(b, c); }
 	
 	//---------
 	// Setters
 	//---------
 	
-	public TrippleBox<A, B, C> set(TrippleBox<A, B, C> boxIn) { return nullDoR(boxIn, b -> set(b.a, b.b, b.c), this); }
-	public TrippleBox<A, B, C> set(A aIn, B bIn, C cIn) {
+	public Box3<A, B, C> set(Box3<A, B, C> boxIn) { return nullDoR(boxIn, b -> set(b.a, b.b, b.c), this); }
+	public Box3<A, B, C> set(A aIn, B bIn, C cIn) {
 		a = aIn;
 		b = bIn;
 		c = cIn;
 		return this;
 	}
 	
-	public TrippleBox<A, B, C> setA(A aIn) { a = aIn; return this; }
-	public TrippleBox<A, B, C> setB(B bIn) { b = bIn; return this; }
-	public TrippleBox<A, B, C> setC(C cIn) { c = cIn; return this; }
+	public Box3<A, B, C> setA(A aIn) { a = aIn; return this; }
+	public Box3<A, B, C> setB(B bIn) { b = bIn; return this; }
+	public Box3<A, B, C> setC(C cIn) { c = cIn; return this; }
 	
 }
