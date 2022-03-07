@@ -1,4 +1,4 @@
-package eutil.storage;
+package eutil.math;
 
 /**
  * A datatype containing 2D object dimensions using integer precision. 

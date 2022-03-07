@@ -145,7 +145,7 @@ public class HexMath {
 	/** Converts a floating point value between 0.0 and 1.0 to a corresponding hexadecimal value. */
 	public static int floatToHex(float valIn) {
 		int val = (int) (valIn * 255);
-		String sVal = Integer.toHexString(val);
+		//String sVal = Integer.toHexString(val);
 		return val;
 	}
 	

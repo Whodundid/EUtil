@@ -24,12 +24,22 @@ public final class RandomUtil {
 	
 	/** Returns the number from a roll within a specified range. (ints) */
 	public static int getRoll(int min, int max) {
-		return ThreadLocalRandom.current().nextInt(min, max + 1);
+		return ThreadLocalRandom.current().nextInt(min, NumberUtil.clamp(max + 1, max, Integer.MAX_VALUE));
 	}
+	
+	/** Returns the number from a roll within a specified range. (longs) */
+	public static long getRoll(long min, long max) {
+		return ThreadLocalRandom.current().nextLong(min, NumberUtil.clamp(max + 1, max, Long.MAX_VALUE));
+	}
+	
+	/** Returns the number from a roll within a specified range. (floats) */
+	//public static float getRoll(float min, float max) {
+	//	return ThreadLocalRandom.current().nextFloat(min, max + 1);
+	//}
 	
 	/** Returns the number from a roll within a specified range. (doubles) */
 	public static double getRoll(double min, double max) {
-		return ThreadLocalRandom.current().nextDouble(min, max + 1);
+		return ThreadLocalRandom.current().nextDouble(min, NumberUtil.clamp(max, max, Double.MAX_VALUE));
 	}
 	
 	/** Returns a random element from the given array. */

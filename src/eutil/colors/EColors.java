@@ -1,5 +1,11 @@
 package eutil.colors;
 
+import eutil.math.Vec3f;
+import eutil.math.Vec3i;
+import eutil.math.Vec4f;
+import eutil.math.Vec4i;
+import eutil.random.RandomUtil;
+
 import java.awt.Color;
 
 //Author: Hunter Bragg
@@ -73,32 +79,123 @@ public enum EColors {
 	
 	//------------------------------------------------------------------
 	
-	public int intVal;
-	public int code;
-	public String name;
+	/** The integer color value. */
+	public final int intVal;
+	/** The internal color code for this EColor's color. This should not be referenced directly as it is dynamically generated! */
+	private final int color_replacement_code;
+	/** The String that corresponds to this EColor's internal color code value. */
+	public final String color_replacement_code_string;
+	/** The name of this color. */
+	public final String name;
 	
-	EColors(int colorIn, String nameIn) {
+	private EColors(final int colorIn, final String nameIn) {
 		intVal = colorIn;
-		code = ColorID.next();
+		color_replacement_code = ColorID.next();
+		color_replacement_code_string = ColorID.pad(color_replacement_code);
 		name = nameIn;
 	}
 	
 	//------------------------------------------------------------------
 	
-	@Override public String toString() { return "\u222e" + code; }
+	@Override public String toString() { return "\u222e" + color_replacement_code_string; }
 
 	//------------------------------------------------------------------
 	
-	/** Returns the color integer. */
+	/** Returns the color's integer value. */
 	public int c() { return intVal; }
 	
-	/** Returns the color name. */
+	/** Returns the color's name. */
 	public String n() { return name; }
+	
+	/** Returns the EColor's integer color with modified opacity. */
+	public int opacity(int val) {
+		return (intVal & 0x00ffffff) | val << 24;
+	}
+	
+	/** Returns the integer color value of this EColor broken up into it's [A, R, G, B] parts. */
+	public int[] argb() {
+		int a = (intVal >> 24) & 0xff;
+		int r = (int) ((intVal >> 16) & 0xff);
+		int g = (int) ((intVal >> 8) & 0xff);
+		int b = (int) (intVal & 0xff);
+		return new int[] { a, r, g, b };
+	}
+	
+	/** Returns the integer color value of this EColor broken up into [A, R, G, B] float (each / 255) parts. */
+	public float[] argbf() {
+		float a = ((intVal >> 24) & 0xff) / 0xff;
+		float r = (int) ((intVal >> 16) & 0xff) / 0xff;
+		float g = (int) ((intVal >> 8) & 0xff) / 0xff;
+		float b = (int) (intVal & 0xff) / 0xff;
+		return new float[] { a, r, g, b };
+	}
+	
+	/** Converts this EColor's integer parts to a Vec3i. (does not include alpha values) */
+	public Vec3i toVec3i() { int[] c = argb(); return new Vec3i(c[1], c[2], c[3]); }
+	
+	/** Converts this EColor's integer parts to a Vec3i. */
+	public Vec4i toVec4i() { int[] c = argb(); return new Vec4i(c[0], c[1], c[2], c[3]); }
+	
+	/** Converts this EColor's integer parts to a Vec3f. (does not include alpha values) */
+	public Vec3f toVec3f() { float[] c = argbf(); return new Vec3f(c[1], c[2], c[3]); }
+	
+	/** Converts this EColor's integer parts to a Vec4f. */
+	public Vec4f toVec4f() { float[] c = argbf(); return new Vec4f(c[0], c[1], c[2], c[3]); }
 	
 	//------------------------------------------------------------------
 	
+	/** Replaces the given color's alpha values. New opacity values should be between 0 and 255 inclusively. */
+	public static int changeOpacity(int color, int newValue) {
+		return (color & 0x00ffffff) | newValue << 24;
+	}
+	
+	/** Modifies the given color's brightness values. New brightness values should be between 0 and 255 inclusively. */
+	public static int changeBrightness(int color, int br) {
+		float factor = (float) br / 255f;
+		int a = (color >> 24) & 0xff;
+		int r = (int) (((color >> 16) & 0xFF) * factor);
+		int g = (int) (((color >> 8) & 0xFF) * factor);
+		int b = (int) ((color & 0xFF) * factor);
+		return (a << 24) | (r << 16) | (g << 8) | b;
+	}
+	
+	public static Vec3i convertToVec3i(EColors color) { int[] c = color.argb(); return new Vec3i(c[1], c[2], c[3]); }
+	public static Vec4i convertToVec4i(EColors color) { int[] c = color.argb(); return new Vec4i(c[0], c[1], c[2], c[3]); }
+	public static Vec3f convertToVec3f(EColors color) { float[] c = color.argbf(); return new Vec3f(c[1], c[2], c[3]); }
+	public static Vec4f convertToVec4f(EColors color) { float[] c = color.argbf(); return new Vec4f(c[0], c[1], c[2], c[3]); }
+	
+	public static Vec3i convertToVec3i(int color) {
+		int r = (int) ((color >> 16) & 0xff);
+		int g = (int) ((color >> 8) & 0xff);
+		int b = (int) (color & 0xff);
+		return new Vec3i(r, g, b);
+	}
+	
+	public static Vec4i convertToVec4i(int color) {
+		int a = (int) ((color >> 24) & 0xff);
+		int r = (int) ((color >> 16) & 0xff);
+		int g = (int) ((color >> 8) & 0xff);
+		int b = (int) (color & 0xff);
+		return new Vec4i(a, r, g, b);
+	}
+	
+	public static Vec3f convertToVec3f(int color) {
+		float r = (int) ((color >> 16) & 0xff) / 0xff;
+		float g = (int) ((color >> 8) & 0xff) / 0xff;
+		float b = (int) (color & 0xff) / 0xff;
+		return new Vec3f(r, g, b);
+	}
+	
+	public static Vec4f convertToVec4f(int color) {
+		float a = ((color >> 24) & 0xff) / 0xff;
+		float r = (int) ((color >> 16) & 0xff) / 0xff;
+		float g = (int) ((color >> 8) & 0xff) / 0xff;
+		float b = (int) (color & 0xff) / 0xff;
+		return new Vec4f(a, r, g, b);
+	}
+	
 	/** Returns an EColors with the corresponding integer color (if any). */
-	public static EColors getEColor(int colorIn) {
+	public static EColors byIntVal(int colorIn) {
 		for (EColors c : values()) {
 			if (c.intVal == colorIn) { return c; }
 		}
@@ -113,15 +210,15 @@ public enum EColors {
 	}
 	
 	/** Returns an EColors with the corresponding code (if any). */
-	public static EColors getEColorByCode(int codeIn) {
+	public static EColors byCode(int codeIn) {
 		for (EColors c : values()) {
-			if (c.code == codeIn) { return c; }
+			if (c.color_replacement_code == codeIn) { return c; }
 		}
 		return null;
 	}
 	
 	/** Returns an EColors with the corresponding String name (if any). */
-	public static EColors getEColorByName(String colorNameIn) {
+	public static EColors byName(String colorNameIn) {
 		if (colorNameIn != null) {
 			for (EColors c : values()) {
 				if (c.name.toLowerCase().equals(colorNameIn.toLowerCase())) { return c; }
@@ -130,12 +227,18 @@ public enum EColors {
 		return null;
 	}
 	
+	public static EColors random() {
+		return values()[RandomUtil.getRoll(0, values().length - 1)];
+	}
+	
 	/** Needs to be consistently called in order for any color change to occur. */
 	public static int rainbow() {
 		return Color.HSBtoRGB(System.currentTimeMillis() % 10000L / 10000.0f, 0.8f, 1f);
 	}
 	
+	/** Returns green if true and red if false. */
 	public static EColors bool(boolean val) { return (val) ? EColors.green : EColors.lred; }
+	/** Returns specified true color if true and false color if fales. */
 	public static EColors bool(boolean val, EColors ifTrue, EColors ifFalse) { return (val) ? ifTrue : ifFalse; }
 	
 	//------------------------------------------------------------------
@@ -145,6 +248,10 @@ public enum EColors {
 		private static int ID = 0;
 		private ColorID() {}
 		public static int next() { return ID++; }
+		public static String pad(int id) {
+			String s = String.valueOf(id);
+			return (s.length() == 1) ? "0" + s : s;
+		}
 	}
 	
 }

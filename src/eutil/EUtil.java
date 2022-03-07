@@ -1,14 +1,18 @@
 package eutil;
 
 import static eutil.lambda.Predicates.*;
-import static eutil.lambda.Comparisons.*;
 
-import eutil.storage.EArrayList;
+import eutil.datatypes.EArrayList;
+
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Stack;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -32,9 +36,12 @@ import java.util.stream.Stream;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.1.0
+ *  @version 1.2.0
  */
 public class EUtil {
+	
+	/** The EUtil library version. */
+	public static final String version = "1.2.0";
 	
 	//---------
 	// Objects
@@ -42,7 +49,7 @@ public class EUtil {
 	
 	/** Returns true if any of the given objects are null. */
 	public static boolean anyNull(Object... objsIn) {
-		for (Object o : objsIn) { if (o == null) { return true; } }
+		for (Object o : objsIn) if (o == null) return true;
 		return false;
 	}
 	
@@ -76,6 +83,16 @@ public class EUtil {
 		return val;
 	}
 	
+	public static boolean anyTrue(boolean... args) {
+		for (boolean b : args) if (b) return true;
+		return false;
+	}
+	
+	public static boolean anyFalse(boolean... args) {
+		for (boolean b : args) if (!b) return true;
+		return false;
+	}
+	
 	//-------------
 	// List Checks
 	//-------------
@@ -91,17 +108,17 @@ public class EUtil {
 	 * 
 	 * @since 1.1
 	 */
-	public static <E> boolean anyMatch(List<E> A, List<E> B) {
+	public static <E> boolean compareLists(List<E> A, List<E> B) {
 		if (B != null && A.size() > 0) {
 			for (E element : B) {
 				if (element == null) {
 					for (E check : A) {
-						if (check == null) { return true; }
+						if (check == null) return true;
 					}
 				}
 				else {
 					for (E check : A) {
-						if (check.equals(element)) { return true; }
+						if (check.equals(element)) return true;
 					}
 				}
 			}
@@ -109,32 +126,42 @@ public class EUtil {
 		return false;
 	}
 	
-	/** A statement that returns the specified ifTrue value if any member within the given list matches the given predicate.
-	 *  If none of the members in the given list match the predicate then the ifFalse value is returned instead. */
-	public static <A, R> R forEachTest(List<A> list, Predicate<? super A> predicate, R ifTrue, R ifFalse) {
+	/**
+	 * A statement that returns the specified 'ifTrue' value if any member within the given iterable matches the given predicate.
+	 * If none of the members in the given iterable match the predicate then the 'ifFalse' value is returned instead.
+	 * 
+	 * @param <A> The type of objects being compared
+	 * @param <R> The type of value being returned in either case
+	 * @param list The elements being compared
+	 * @param predicate The comparison statement to be performed on each value
+	 * @param ifTrue Returned if any element matches the given comparison
+	 * @param ifFalse Returned if no element matches the given comparison
+	 * 
+	 */
+	public static <A, R> R anyMatch(Iterable<A> list, Predicate<? super A> predicate, R ifTrue, R ifFalse) {
 		Objects.requireNonNull(list);
 		Objects.requireNonNull(predicate);
 		
 		for (A a : list) {
-			if (predicate.test(a)) { return ifTrue; }
+			if (predicate.test(a)) return ifTrue;
 		}
 		
 		return ifFalse;
 	}
 	
-	/** Returns the first member in a list that matches the given predicate. If no object matches, null is returned instead. */
-	public static <E> E getFirst(List<E> list, Predicate<? super E> predicate) {
+	/** Returns the first member in an iterable that matches the given predicate. If no object matches, null is returned instead. */
+	public static <E> E getFirst(Iterable<E> list, Predicate<? super E> predicate) {
 		Objects.requireNonNull(predicate);
 		
 		for (E e : list) {
-			if (predicate.test(e)) { return e; }
+			if (predicate.test(e)) return e;
 		}
 		
 		return null;
 	}
 	
 	/** Returns the first member in the list that matches the given predicate. If no object matches, the default value is returned instead. */
-	public static <E> E getFirst(List<E> list, Predicate<? super E> predicate, E defaultVal) {
+	public static <E> E getFirst(Iterable<E> list, Predicate<? super E> predicate, E defaultVal) {
 		E val = getFirst(list, predicate);
 		return (val != null) ? val : defaultVal;
 	}
@@ -145,7 +172,7 @@ public class EUtil {
 		
 		for (int i = list.size(); i >= 0; i--) {
 			E e = list.get(i);
-			if (predicate.test(e)) { return e; }
+			if (predicate.test(e)) return e;
 		}
 		
 		return null;
@@ -157,251 +184,35 @@ public class EUtil {
 		return (val != null) ? val : defaultVal;
 	}
 	
-	//----------------
-	// String Helpers
-	//----------------
+	//------------
+	// Stack Util
+	//------------
 	
-	/** Returns the string version of the object. This function also accounts for null values. */
-	public static String toString(Object o) { return toString(o, "null"); }
-	/** Returns the string version of the object. This function also accounts for null values. If the value is null, "null" is returned. */
-	public static String toString(Object o, String defaultVal) { return (o != null) ? o.toString() : defaultVal; }
-	
-	/**
-	 * Returns the longest String out of all in the given collection.
-	 * 
-	 * @param strings a collection of strings
-	 * @return String The longest String
-	 * @since 1.1.1
-	 */
-	public static String getLongest(Collection<String> strings) {
-		return tryGet(filterNull(strings).max(strlen));
+	public static <E> Stack<E> reverseStack(Stack<E> in) {
+		if (in == null) return null;
+		
+		Stack<E> reversed = new Stack();
+		while (!in.isEmpty()) reversed.push(in.pop());
+		
+		return reversed;
 	}
 	
-	/**
-	 * Returns the longest String out of all given.
-	 * 
-	 * @param strings An array of passed Strings
-	 * @return String The longest String
-	 * @since 1.0.0
-	 */
-	public static String getLongest(String... strings) {
-		return tryGet(filterNull(strings).max(strlen));
-	}
-	
-	/** Captializes the first letter in the given string. */
-	public static String capitalFirst(String in) {
+	public static <E> Stack<E> toStack(Collection<E> in) {
+		Stack<E> stack = new Stack();
 		if (in != null) {
-			String val = "";
-			if (in.length() > 0) {
-				val += Character.toUpperCase(in.charAt(0));
-				val += in.substring(1, in.length());
-				return val;
-			}
+			Iterator<E> it = in.iterator();
+			while (it.hasNext()) stack.add(it.next());
 		}
-		return in;
+		return stack;
 	}
 	
-	/** Returns a string made from the given char repeated num times. */
-	public static String repeatString(String in, int num) {
-		return new String(new char[num]).replace("\0", in);
-	}
-	
-	/** Returns the number of spaces within the string. */
-	public static int countSpaces(String in) { return countChar(in, ' '); }
-	/** Returns the number of times the given string contains the given test char. */
-	public static int countChar(String in, char test) {
+	public static <E> EArrayList<E> toList(Stack<E> in) {
+		EArrayList<E> list = new EArrayList();
 		if (in != null) {
-			int num = 0;
-			for (int i = 0; i < in.length(); i++) {
-				if (in.charAt(i) == test) { num++; }
-			}
-			return num;
+			Iterator<E> it = in.iterator();
+			while (it.hasNext()) list.add(it.next());
 		}
-		return -1;
-	}
-	
-	/** Returns a String consisting of the toString version of each object. */
-	public static String combineAll(Object[] in) { return combineAll(in, ""); }
-	/** Returns a String consisting of the toString version of each object with an optional spacer String in between each object. */
-	public static String combineAll(Object[] in, String spacer) {
-		String r = "";
-		if (in != null) {
-			if (in.length > 1) {
-				for (int i = 0; i < in.length; i++) {
-					Object s = in[i];
-					r += s + ((i + 1 < in.length) ? String.valueOf(spacer) : "");
-				}
-			}
-			else if (in.length == 1) { r += in[0]; }
-		}
-		return r;
-	}
-	
-	/** Returns a string made from the combination of each string in a list concatenated together. */
-	public static String combineAll(List in) { return combineAll(in, ""); }
-	/** Returns a string made from the combination of each string in a list concatenated together with an optional spacer String
-	 *  in between each object. */
-	public static String combineAll(List in, String spacer) {
-		String r = "";
-		if (in != null) {
-			if (in.size() > 1) {
-				for (int i = 0; i < in.size(); i++) {
-					Object s = in.get(i);
-					r += s + ((i + 1 < in.size()) ? String.valueOf(spacer) : "");
-				}
-			}
-			else if (in.size() == 1) { r += in.get(0); }
-		}
-		return r.trim();
-	}
-	
-	/** Creates a substring from the given string from a given starting position until a specified substring within the original. */
-	public static String subStringToString(String in, String toFind) { return subStringToString(in, 0, toFind, false); }
-	/** Creates a substring from the given string from a given starting position until a specified substring within the original.
-	 *  If starting from the end, substrings will attempted to be formed from the right hand side of the string going left. */
-	public static String subStringToString(String in, String toFind, boolean startFromEnd) { return subStringToString(in, 0, toFind, startFromEnd); }
-	/** Creates a substring from the given string from a given starting position until a specified substring within the original. */
-	public static String subStringToString(String in, int startPos, String toFind) { return subStringToString(in, startPos, toFind, false); }
-	/** Creates a substring from the given string from a given starting position until a specified substring within the original.
-	 *  If starting from the end, substrings will attempted to be formed from the right hand side of the string going left. */
-	public static String subStringToString(String in, int startPos, String toFind, boolean startFromEnd) {
-		if (in != null) {
-			if (startPos >= 0 && startPos <= in.length()) {
-				String from = startFromEnd ? in.substring(startPos, in.length()) : in.substring(startPos);
-				int index = startFromEnd ? findStartingIndex(from, toFind, true) : findStartingIndex(from, toFind);
-				return (index >= 0) ? (startFromEnd ? from.substring(index + 1, in.length()) : from.substring(0, index)) : from;
-			}
-		}
-		return in;
-	}
-	
-	public static String subStringAfter(String in, String toFind) { return subStringAfterString(in, 0, toFind); }
-	public static String subStringAfterString(String in, int startPos, String toFind) {
-		if (in != null) {
-			if (startPos >= 0 && startPos <= in.length()) {
-				int index = findIndexAfter(in, toFind);
-				return (index >= 0) ? in.substring(index) : in;
-			}
-		}
-		return in;
-	}
-	
-	/** Creates a substring from a given string ending at the first space found from the given starting position. */
-	public static String subStringToSpace(String in, int startPos) { return subStringToSpace(in, startPos, false); }
-	/** Creates a substring from a given string ending at the first space found from the given starting position. */
-	public static String subStringToSpace(String in, int startPos, boolean startFromEnd) {
-		if (in != null && !in.isEmpty()) {
-			int pos = (startFromEnd) ? in.length() - 1 : startPos;
-			
-			if (startFromEnd) {
-				while ((pos > startPos || pos >= 0) && in.charAt(pos) != ' ') {
-					pos--;
-				}
-				return in.substring(pos + 1, in.length());
-			}
-			else {
-				while (pos < in.length() && in.charAt(pos) != ' ') {
-					pos++;
-				}
-				return in.substring(startPos, pos);
-			}
-		}
-		return in;
-	}
-	
-	/** Returns the index for the position in a string where another string is located within it. */
-	public static int findStartingIndex(String toSearch, String toFind) { return findStartingIndex(toSearch, toFind, false); }
-	
-	/** Returns the index for the position in a string where another string is located within it. Can specifiy whether the search starts from the front or back. */
-	public static int findStartingIndex(String toSearch, String toFind, boolean fromBack) {
-		if (toSearch != null && !toSearch.isEmpty() && toFind != null && toFind.length() <= toSearch.length()) {
-			if (!fromBack) {
-				String cur = "";
-				int index = 0;
-				int j = 0;
-				
-				for (int i = 0; i <= toSearch.length() - 1; i++) {
-					if (cur.equals(toFind)) { return index; }
-					if (toSearch.charAt(i) == toFind.charAt(j)) {
-						cur += toSearch.charAt(i);
-						j++;
-					}
-					else if (toSearch.charAt(i) == toFind.charAt(0)) {
-						cur = "" + toSearch.charAt(i);
-						index = i + 1;
-						j = 1;
-					}
-					else {
-						cur = "";
-						index = i + 1;
-						j = 0;
-					}
-				}
-			}
-			else {
-				try {
-					String cur = "";
-					int index = toSearch.length() - 1;
-					int j = toFind.length() - 1;
-					
-					for (int i = toSearch.length() - 1; i >= 0; i--) {
-						if (cur.equals(toFind)) { return index; }
-						if (j < 0) {
-							cur = "";
-							index = i - 1;
-							j = toFind.length() - 1;
-						}
-						else if (toSearch.charAt(i) == toFind.charAt(j)) {
-							cur += toSearch.charAt(i);
-							j--;
-						}
-						else {
-							cur = "";
-							index = i - 1;
-							j = toFind.length() - 1;
-						}
-					}
-				}
-				catch (Exception e) { e.printStackTrace(); }
-			}
-		}
-		return -1;
-	}
-	
-	/** Returns the index in the toSearch string that is exactly 1 index after the toFind String's last index.
-	 *  If the toSearch String does not actually contain the toFind String, -1 is returned instead. */
-	public static int findIndexAfter(String toSearch, String toFind) {
-		if (toSearch != null && toFind != null && !toSearch.isEmpty() && !toFind.isEmpty() && toSearch.contains(toFind)) {
-			int index = findStartingIndex(toSearch, toFind);
-			return index + toFind.length();
-		}
-		return -1;
-	}
-	
-	/** Returns the index in the toSearch string that is exactly 1 index after the toFind String's last index.
-	 *  If the toSearch String does not actually contain the toFind String, -1 is returned instead. */
-	public static int findIndexAfter(String toSearch, String toFind, boolean fromBack) {
-		if (toSearch != null && toFind != null && !toSearch.isEmpty() && !toFind.isEmpty() && toSearch.contains(toFind)) {
-			int index = findStartingIndex(toSearch, toFind, fromBack);
-			return index + toFind.length();
-		}
-		return -1;
-	}
-	
-	/** Returns true if the given char matches any of the test chars. If no test chars were given, false is returned by default. */
-	public static boolean testChar(char charIn, char... tests) {
-		for (char c : tests) {
-			if (charIn == c) { return true; }
-		}
-		return false;
-	}
-	
-	/** Returns the given char which matches the corresponding test char. If no test chars were given, null is returned by default. */
-	public static Character testCharR(char charIn, char... tests) {
-		for (char c : tests) {
-			if (charIn == c) { return c; }
-		}
-		return null;
+		return list;
 	}
 	
 	//-------------
@@ -414,28 +225,6 @@ public class EUtil {
 	//---------------
 	// Array Helpers
 	//---------------
-	
-	public static String toString(boolean[] e) { return toString(e, " "); }
-	public static String toString(byte[] e) { return toString(e, " "); }
-	public static String toString(char[] e) { return toString(e, " "); }
-	public static String toString(int[] e) { return toString(e, " "); }
-	public static String toString(short[] e) { return toString(e, " "); }
-	public static String toString(long[] e) { return toString(e, " "); }
-	public static String toString(float[] e) { return toString(e, " "); }
-	public static String toString(double[] e) { return toString(e, " "); }
-	public static <E> String toString(E[] e) { return toString(e, " "); }
-	public static String toString(List<?> e) { return toString(e, " "); }
-	
-	public static String toString(boolean[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(byte[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(char[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(int[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(short[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(long[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(float[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(double[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static <E> String toString(E[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(List<?> e, String separator) { String s = ""; for (int i = 0; i < e.size(); i++) { s += e.get(i) + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
 	
 	public static Object[] toObjArr(boolean[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
 	public static Object[] toObjArr(byte[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
@@ -482,22 +271,30 @@ public class EUtil {
 		return list.toArray(array);
 	}
 	
-	/** Utility function to check if the values in one array match the values from another. */
-	public static boolean validateArrayContents(List list1, List list2) {
-		if (list1.size() != list2.size()) { return false; } //if the sizes differ, they're not the same.
+	/** Checks if the values in one array match the values from another. */
+	public static boolean compareArrays(List list1, List list2) {
+		if (list1.size() != list2.size()) return false; //if the sizes differ, they're not the same.
 		for (int i = 0; i < list1.size(); i++) {
 			Object a = list1.get(i);
 			Object b = list2.get(i);
-			if (a != null && b != null) {
-				Class c1 = list1.get(i).getClass();
-				Class c2 = list2.get(i).getClass();
-				if (!c1.equals(c2)) { return false; }
-			}
-			else if (a == null && b != null) { return false; }
-			else if (a != null && b == null) { return false; }
-			else { return false; }
+			if (!isEqual(a, b)) return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Reverses the incomming list.
+	 * If the list is null, then null is returned instead.
+	 * 
+	 * @since 1.2.0
+	 * @param <E> Generic Type
+	 * @param in The incomming list to be reversed.
+	 * @return List<E> The reversed list.
+	 */
+	public static <E> List<E> reverse(List<E> in) {
+		if (in == null) return null;
+		Collections.reverse(in);
+		return in;
 	}
 	
 	//----------------
@@ -523,7 +320,7 @@ public class EUtil {
 	public static <E> EArrayList<E> toList(E[] arr) { return new EArrayList<E>(arr); }
 	
 	/** Converts a typed-array to a Stream. */
-	public static <E> Stream<E> stream(E... vals) { return ((EArrayList<E>) new EArrayList<E>().add(vals)).stream(); }
+	public static <E> Stream<E> stream(E... vals) { return Arrays.stream(vals); }
 	/** Converts a typed-array to a Stream that filters out null objects. */
 	public static <E> Stream<E> filterNull(E... vals) { return stream(vals).filter(notNull); }
 	
@@ -606,14 +403,14 @@ public class EUtil {
 	
 	//array forEach
 	
-	public static void forEach(boolean[] arr, Consumer<? super Boolean> action) { for (boolean e : arr) { action.accept(e); } }
-	public static void forEach(byte[] arr, Consumer<? super Byte> action) { for (byte e : arr) { action.accept(e); } }
-	public static void forEach(char[] arr, Consumer<? super Character> action) { for (char e : arr) { action.accept(e); } }
-	public static void forEach(short[] arr, Consumer<? super Short> action) { for (short e : arr) { action.accept(e); } }
-	public static void forEach(int[] arr, Consumer<? super Integer> action) { for (int e : arr) { action.accept(e); } }
-	public static void forEach(long[] arr, Consumer<? super Long> action) { for (long e : arr) { action.accept(e); } }
-	public static void forEach(float[] arr, Consumer<? super Float> action) { for (float e : arr) { action.accept(e); } }
-	public static void forEach(double[] arr, Consumer<? super Double> action) { for (double e : arr) { action.accept(e); } }
+	public static void forEach(boolean[] arr, Consumer<? super Boolean> action) { for (boolean e : arr) action.accept(e); }
+	public static void forEach(byte[] arr, Consumer<? super Byte> action) { for (byte e : arr) action.accept(e); }
+	public static void forEach(char[] arr, Consumer<? super Character> action) { for (char e : arr) action.accept(e); }
+	public static void forEach(short[] arr, Consumer<? super Short> action) { for (short e : arr) action.accept(e); }
+	public static void forEach(int[] arr, Consumer<? super Integer> action) { for (int e : arr) action.accept(e); }
+	public static void forEach(long[] arr, Consumer<? super Long> action) { for (long e : arr) action.accept(e); }
+	public static void forEach(float[] arr, Consumer<? super Float> action) { for (float e : arr) action.accept(e); }
+	public static void forEach(double[] arr, Consumer<? super Double> action) { for (double e : arr) action.accept(e); }
 	
 	//array forEach Returns
 	
@@ -642,17 +439,24 @@ public class EUtil {
 	
 	/** One line if-else statement. Returns provided return value regardless of input. */
 	public static <E, R> R ifElseR(boolean check, Runnable ifTrue, Runnable ifFalse, R returnVal) {
-		if (check && ifTrue != null) { ifTrue.run(); }
-		else if (ifFalse != null) { ifFalse.run(); }
+		if (check && ifTrue != null) ifTrue.run();
+		else if (ifFalse != null) ifFalse.run();
 		return returnVal;
 	}
 	
 	/** One line if-else statement. Returns true if input equates to true. */
 	public static <E, R> boolean ifElse(boolean check, Runnable ifTrue, Runnable ifFalse) {
-		if (check && ifTrue != null) { ifTrue.run(); return true; }
-		else if (ifFalse != null) { ifFalse.run(); }
+		if (check && ifTrue != null) {
+			ifTrue.run();
+			return true;
+		}
+		else if (ifFalse != null) ifFalse.run();
 		return false;
 	}
+	
+	//lambda operations
+	
+	public static <E> E lambdaDo(E obj, Consumer<? super E> action) { action.accept(obj); return obj; }
 	
 	//null checks
 	
@@ -672,14 +476,14 @@ public class EUtil {
 	public static <E, R> R nullApplyR(E obj, Function<? super E, R> function) { return (notNull(obj)) ? function.apply(obj) : null; }
 	/** A statement that returns the result of a given function if the given object is not null. */
 	public static <E, R> R nullApplyR(E obj, Function<? super E, R> function, R defaultVal) { return (notNull(obj)) ? function.apply(obj) : defaultVal; }
-	/** A statement that returns the result of a given bifunction if the given object is not null. */
+	/** A statement that returns the result of a given bifunction if the given object is not null. If either input is null, the default value is returned instead. */
 	public static <E, A, R> R nullApplyR(E obj1, A obj2, BiFunction<? super E, ? super A, R> function, R defaultVal) { return (notNull(obj1, obj2)) ? function.apply(obj1, obj2) : defaultVal; }
 	
 	//repeaters
 	
 	public static <E> void repeat(Runnable func, int times) { for (int i = 0; i < times; i++) { func.run(); } }
-	public static <E, R> R repeatR(Runnable func, int times, R returnVal) { repeat(func, times); return returnVal; }
 	public static <E> void repeat(E object, Consumer<? super E> action, int times) { for (int i = 0; i < times; i++) { action.accept(object); } }
+	public static <E, R> R repeatR(Runnable func, int times, R returnVal) { repeat(func, times); return returnVal; }
 
 	//contains
 	
@@ -687,6 +491,23 @@ public class EUtil {
 	public static <E> boolean contains(Collection<E> arr, E value) { for (E e : arr) { if (isEqual(e, value)) { return true; } } return false; }
 	public static <E> E containsR(E[] arr, E value) { for (E e : arr) if (isEqual(e, value)) { return e; } return null; }
 	public static <E> E containsR(Collection<E> arr, E value) { for (E e : arr) if (isEqual(e, value)) { return e; } return null; }
+	
+	public static <E> boolean contains(Iterable<E> data, E val) {
+		Iterator<E> dataI = data.iterator();
+		while (dataI.hasNext()) {
+			if (isEqual(val, dataI.next())) return true;
+		}
+		return false;
+	}
+	
+	public static <E> boolean contains(boolean[] arr, boolean x) { for (boolean i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(char[] arr, char x) { for (char i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(byte[] arr, byte x) { for (byte i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(short[] arr, short x) { for (short i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(int[] arr, int x) { for (int i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(long[] arr, long x) { for (long i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(float[] arr, float x) { for (float i : arr) if (i == x) return true; return false; }
+	public static <E> boolean contains(double[] arr, double x) { for (double i : arr) if (i == x) return true; return false; }
 	
 	//----------------
 	// Try Statements
@@ -708,7 +529,7 @@ public class EUtil {
 	
 	public static <R> R tryIfCodeR(boolean check, Runnable func, R returnVal) {
 		try {
-			if (check) { func.run(); }
+			if (check) func.run();
 		}
 		catch(Throwable e) { e.printStackTrace(); }
 		return returnVal;

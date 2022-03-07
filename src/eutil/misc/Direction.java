@@ -1,6 +1,7 @@
 package eutil.misc;
 
-import eutil.storage.EArrayList;
+import eutil.datatypes.EArrayList;
+
 import java.util.List;
 
 /**

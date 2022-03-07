@@ -1,4 +1,4 @@
-package eutil.storage;
+package eutil.datatypes;
 
 import java.lang.reflect.Array;
 
@@ -8,13 +8,15 @@ import java.lang.reflect.Array;
  * @author Hunter Bragg
  * @since 1.0.1
  */
-public class Grid2D<E> {
+public class Grid<E> {
 	
 	int width, height;
 	E[][] data;
 	Class<E> type;
 	
-	public Grid2D(Class<E> typeIn, int widthIn, int heightIn) {
+	public Grid() {}
+	public Grid(Class<E> typeIn) { type = typeIn; }
+	public Grid(Class<E> typeIn, int widthIn, int heightIn) {
 		width = widthIn;
 		height = heightIn;
 		type = typeIn;
@@ -25,12 +27,20 @@ public class Grid2D<E> {
 	// Methods
 	//---------
 	
+	public void build() {
+		data = (E[][]) Array.newInstance(type, width, height);
+	}
+	
 	/** Clears existing value data and sets each value to null. */
-	public Grid2D<E> clear() { data = (E[][]) Array.newInstance(type, width, height); return this; }
+	public Grid<E> clear() { data = (E[][]) Array.newInstance(type, width, height); return this; }
 	
 	//---------
 	// Setters
 	//---------
+	
+	public void setWidth(int widthIn) { width = widthIn; }
+	public void setHeight(int heightIn) { height = heightIn; }
+	public void setType(Class<E> typeIn) { type = typeIn; }
 	
 	/** Sets the value at given x and y coords of array. */
 	public void set(E value, int xIn, int yIn) {
@@ -118,11 +128,11 @@ public class Grid2D<E> {
 	//----------------
 	
 	/** Returns true if the given x and y coords are within the bounds for the grid's width and height. */
-	public static boolean inRange(Grid2D g, int xIn, int yIn) {
+	public static boolean inRange(Grid g, int xIn, int yIn) {
 		return (xIn >= 0 && xIn < g.width) && (yIn >= 0 && yIn < g.height);
 	}
 	
-	public static boolean inRange(Grid2D g, int sX, int sY, int eX, int eY) {
+	public static boolean inRange(Grid g, int sX, int sY, int eX, int eY) {
 		return (sX >= 0 && sX <= eX && eX < g.width) && (sY >= 0 && sY <= eY && eY < g.height);
 	}
 	

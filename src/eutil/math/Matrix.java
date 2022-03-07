@@ -1,8 +1,10 @@
-package eutil.storage;
+package eutil.math;
 
-import eutil.datatypes.NumType;
-import java.io.File;
-import java.io.PrintWriter;
+import eutil.datatypes.Box2;
+import eutil.datatypes.EArrayList;
+import eutil.datatypes.util.BoxList;
+import eutil.datatypes.util.NumType;
+
 import java.util.List;
 
 /**
@@ -27,8 +29,8 @@ public class Matrix {
 	private NumType origType = NumType.NULL;
 	
 	public Matrix() { this(0, 0, NumType.DOUBLE); }
-	public Matrix(Box<Integer, Integer> dimIn) { this(dimIn, NumType.DOUBLE); }
-	public Matrix(Box<Integer, Integer> dimIn, NumType typeIn) { this(dimIn.getA(), dimIn.getB(), typeIn); }
+	public Matrix(Box2<Integer, Integer> dimIn) { this(dimIn, NumType.DOUBLE); }
+	public Matrix(Box2<Integer, Integer> dimIn, NumType typeIn) { this(dimIn.getA(), dimIn.getB(), typeIn); }
 	public Matrix(int rowSizeIn, int columnSizeIn) { this(rowSizeIn, columnSizeIn, NumType.DOUBLE); }
 	public Matrix(int rowSizeIn, int columnSizeIn, NumType typeIn) {
 		create(rowSizeIn, columnSizeIn, typeIn);
@@ -64,19 +66,35 @@ public class Matrix {
 	
 	public Matrix(Matrix matrixIn) { if (matrixIn != null) { setValues(matrixIn); } else { create(0, 0, NumType.DOUBLE); } }
 	
-	
-	//base methods	
+	//--------------
+	// Base Methods	
+	//--------------
 	
 	public boolean printsCommas() { return printCommas; }
 	public Matrix setPrintCommas(boolean valIn) { printCommas = valIn; return this; }
-	public int getRowLength() { return rSize; }
-	public int getColumnLength() { return cSize; }
-	public Box<Integer, Integer> getDimensions() { return new Box<Integer, Integer>(rSize, cSize); }
-	public NumType getNumberType() { return origType; }
-	public Matrix draw() { return draw(""); }
-	public Matrix draw(String title) { System.out.println(title + "\n" + this); return this; }
-	public Matrix draw(String title, String end) { System.out.println(title + "\n" + this + "\n" + end); return this; }
+	public int numRows() { return rSize; }
+	public int numCols() { return cSize; }
+	public Box2<Integer, Integer> getDimensions() { return new Box2<Integer, Integer>(rSize, cSize); }
+	public NumType getNumType() { return origType; }
 	
+	public Matrix draw() { return draw(""); }
+	public Matrix draw(String title) { return draw(title, ""); }
+	public Matrix draw(String title, String end) {
+		String t = (title != null && !title.isEmpty()) ? title + "\n" : "";
+		String e = (end != null && !end.isEmpty()) ? "\n" + end : "";
+		System.out.println(t + this + e);
+		return this;
+	}
+	
+	public Matrix clear() {
+		for (int i = 0; i < rSize; i++) {
+			List<Number> r = getRow(i);
+			for (int j = 0; j < r.size(); j++) r.set(j, 0);
+		}
+		return this;
+	}
+	
+	/*
 	public Matrix save(String fileName) { return save(new File(fileName), false); }
 	public Matrix save(String fileName, boolean asPrint) { return save(new File(fileName), asPrint); }
 	public Matrix save(File fileIn) { return save(fileIn, false); }
@@ -93,9 +111,12 @@ public class Matrix {
 		catch (Exception e) { e.printStackTrace(); }
 		return this;
 	}
+	*/
 	
 	
-	//matrix util functions
+	//-----------------------
+	// Matrix Util Functions
+	//-----------------------
 	
 	private void create(int rowSizeIn, int columnSizeIn) { create(rowSizeIn, columnSizeIn, NumType.DOUBLE); }
 	private void create(int rowSizeIn, int columnSizeIn, NumType typeIn) {
@@ -105,7 +126,9 @@ public class Matrix {
 		clearMatrix();
 	}
 	
-	public Number getVal(int rowPos, int colPos) {
+	public double get(int x, int y) { return table.getBoxWithA(y).getB().get(x).doubleValue(); }
+	
+	protected Number getI(int rowPos, int colPos) {
 		try {
 			return rangeCheck(rowPos, colPos) ? table.getBoxWithA(rowPos).getB().get(colPos) : -1;
 		}
@@ -142,7 +165,7 @@ public class Matrix {
 		if (rangeCheck(0, colNumIn)) {
 			EArrayList<Number> l = new EArrayList(cSize);
 			for (int i = 0; i < rSize; i++) {
-				Box<Integer, List<Number>> box = table.getBoxWithA(i);
+				Box2<Integer, List<Number>> box = table.getBoxWithA(i);
 				if (box != null && box.getB() != null && box.getB().get(colNumIn) != null) {
 					l.add(i, box.getB().get(colNumIn));
 				}
@@ -153,6 +176,7 @@ public class Matrix {
 		return null;
 	}
 	
+	public Matrix setRow(int rowNumIn, Number... rowIn) { return setRow(rowNumIn, new EArrayList<Number>().addA(rowIn)); }
 	public Matrix setRow(int rowNumIn, List<Number> rowIn) {
 		if (rangeCheck(rowNumIn, 0)) {
 			table.setBInBox(rowNumIn, rowIn);
@@ -160,10 +184,13 @@ public class Matrix {
 		return this;
 	}
 	
+	public Matrix setCol(int columnNumIn, Number... rowIn) { return setColumn(columnNumIn, new EArrayList<Number>().addA(rowIn)); }
+	public Matrix setCol(int columnNumIn, List<Number> columnIn) { return setColumn(columnNumIn, columnIn); }
+	public Matrix setColumn(int columnNumIn, Number... rowIn) { return setColumn(columnNumIn, new EArrayList<Number>().addA(rowIn)); }
 	public Matrix setColumn(int columnNumIn, List<Number> columnIn) {
 		if (rangeCheck(0, columnNumIn)) {
 			for (int i = 0; i < rSize; i++) {
-				Box<Integer, List<Number>> box = table.getBoxWithA(i);
+				Box2<Integer, List<Number>> box = table.getBoxWithA(i);
 				if (box != null) {
 					box.getB().set(i, columnIn.get(i));
 				}
@@ -174,9 +201,9 @@ public class Matrix {
 	
 	public Matrix setValues(Matrix matrixIn) {
 		if (matrixIn != null) {
-			rSize = matrixIn.getRowLength();
-			cSize = matrixIn.getColumnLength();
-			origType = matrixIn.getNumberType();
+			rSize = matrixIn.numRows();
+			cSize = matrixIn.numCols();
+			origType = matrixIn.getNumType();
 			for (int i = 0; i < rSize; i++) {
 				table.add(i, matrixIn.getRow(i));
 			}
@@ -208,7 +235,7 @@ public class Matrix {
 	public Matrix convertTo(NumType typeIn) {
 		for (int i = 0; i < rSize; i++) {
 			for (int j = 0; j < cSize; j++) {
-				setValAsType(i, j, getVal(i, j), typeIn);
+				setValAsType(i, j, getI(i, j), typeIn);
 			}
 		}
 		origType = typeIn;
@@ -219,7 +246,7 @@ public class Matrix {
 		EArrayList<Number> l = new EArrayList();
 		for (int i = 0; i < rSize; i++) {
 			for (int j = 0; j < cSize; j++) {
-				l.add(getVal(i, j));
+				l.add(getI(i, j));
 			}
 		}
 		return l;
@@ -231,7 +258,7 @@ public class Matrix {
 	public Matrix scale(Number scaleFactor) {
 		for (int i = 0; i < rSize; i++) {
 			for (int j = 0; j < cSize; j++) {
-				setValAsType(i, j, getVal(i, j).doubleValue() * scaleFactor.doubleValue(), origType);
+				setValAsType(i, j, getI(i, j).doubleValue() * scaleFactor.doubleValue(), origType);
 			}
 		}
 		return this;
@@ -241,7 +268,7 @@ public class Matrix {
 		if (compareDimensions(this, matrixIn)) {
 			for (int i = 0; i < rSize; i++) {
 				for (int j = 0; j < cSize; j++) {
-					setValAsType(i, j, getVal(i, j).doubleValue() + matrixIn.getVal(i, j).doubleValue(), origType);
+					setValAsType(i, j, getI(i, j).doubleValue() + matrixIn.getI(i, j).doubleValue(), origType);
 				}
 			}
 		}
@@ -252,7 +279,7 @@ public class Matrix {
 		if (compareDimensions(this, matrixIn)) {
 			for (int i = 0; i < rSize; i++) {
 				for (int j = 0; j < cSize; j++) {
-					setValAsType(i, j, getVal(i, j).doubleValue() - matrixIn.getVal(i, j).doubleValue(), origType);
+					setValAsType(i, j, getI(i, j).doubleValue() - matrixIn.getI(i, j).doubleValue(), origType);
 				}
 			}
 		}
@@ -261,12 +288,12 @@ public class Matrix {
 	
 	public Matrix multiply(Matrix matrixIn) {
 		if (multiplyCheck(this, matrixIn)) {
-			Matrix m = new Matrix(rSize, matrixIn.getColumnLength());
-			for (int t = 0; t < matrixIn.getColumnLength(); t++) {
+			Matrix m = new Matrix(rSize, matrixIn.numCols());
+			for (int t = 0; t < matrixIn.numCols(); t++) {
 				for (int i = 0; i < rSize; i++) {
 					double sum = 0.0;
 					for (int j = 0; j < cSize; j++) {
-						sum += (getVal(i, j).doubleValue() * matrixIn.getVal(j, t).doubleValue());
+						sum += (getI(i, j).doubleValue() * matrixIn.getI(j, t).doubleValue());
 					}
 					m.setValAsType(i, t, sum, origType);
 				}
@@ -296,9 +323,9 @@ public class Matrix {
 	
 	public static List<Number> toList(Matrix matrixIn) {
 		EArrayList<Number> l = new EArrayList();
-		for (int i = 0; i < matrixIn.getRowLength(); i++) {
-			for (int j = 0; j < matrixIn.getColumnLength(); j++) {
-				l.add(matrixIn.getVal(i, j));
+		for (int i = 0; i < matrixIn.numRows(); i++) {
+			for (int j = 0; j < matrixIn.numCols(); j++) {
+				l.add(matrixIn.getI(i, j));
 			}
 		}
 		return l;
@@ -309,7 +336,7 @@ public class Matrix {
 	}
 	
 	public static boolean multiplyCheck(Matrix m1, Matrix m2) {
-		return m1 != null && m2 != null ? (m1.getColumnLength() == m2.getRowLength()) : false;
+		return m1 != null && m2 != null ? (m1.numCols() == m2.numRows()) : false;
 	}
 	
 	
@@ -324,11 +351,11 @@ public class Matrix {
 		for (int i = 0; i < rSize; i++) {
 			returnString += "|";
 			for (int j = 0; j < cSize; j++) {
-				String val = String.valueOf(getVal(i, j));
+				String val = String.valueOf(getI(i, j));
 				int offset = j == 0 ? long1 - val.length() : longest - val.length();
 				for (int p = 0; p < offset; p++) { returnString += " "; }
 				
-				returnString += getVal(i, j) + (printCommas ? ", " : " ");
+				returnString += getI(i, j) + (printCommas ? ", " : " ");
 			}
 			returnString = returnString.substring(0, returnString.length() >= (printCommas ? 2 : 1) ? returnString.length() - (printCommas ? 2 : 1) : returnString.length());
 			returnString += "|\n";

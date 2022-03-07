@@ -15,7 +15,7 @@ public class TracingPrintStream extends PrintStream {
 	private int BASE_DEPTH = 4;
 	private static PrintStream defaultOut = System.out;
 	private static boolean tracing = false;
-	private static boolean tracePrimitives = false;
+	private static boolean tracePrimitives = true;
 	private static boolean traceEmptyLines = false;
 	
 	public TracingPrintStream(PrintStream original) {
@@ -24,8 +24,8 @@ public class TracingPrintStream extends PrintStream {
 
 	@Override
 	public void println() {
-		if (traceEmptyLines) { super.println(getPrefix("")); }
-		else { super.println(); }
+		if (traceEmptyLines) super.println(getPrefix(""));
+		else super.println();
 	}
 	
 	@Override public void println(Object x) { super.println(getPrefix(x)); }
@@ -37,8 +37,8 @@ public class TracingPrintStream extends PrintStream {
 	@Override public void println(double x) { super.println((tracePrimitives) ? getPrefix(x) : x); }
 	//@Override public void println(char[] x) { super.println(getPrefix(x)); }
 	@Override public void println(String x) {
-		if (x == null || x.isEmpty() && !traceEmptyLines) { super.println(); }
-		else { super.println(getPrefix(x)); }
+		if (x == null || x.isEmpty() && !traceEmptyLines) super.println();
+		else super.println(getPrefix(x));
 	}
 	
 	@Override
@@ -55,8 +55,8 @@ public class TracingPrintStream extends PrintStream {
 		StackTraceElement elem = elems[BASE_DEPTH];
 
 		// Kotlins IoPackage masks origins 2 deeper in the stack.
-		if (elem.getClassName().startsWith("kotlin.io.")) { elem = elems[BASE_DEPTH + 2]; }
-		else if (elem.getClassName().startsWith("java.lang.Throwable")) { elem = elems[BASE_DEPTH + 4]; }
+		if (elem.getClassName().startsWith("kotlin.io.")) elem = elems[BASE_DEPTH + 2];
+		else if (elem.getClassName().startsWith("java.lang.Throwable")) elem = elems[BASE_DEPTH + 4];
 		
 		return "[" + elem.getClassName() + ":" + elem.getMethodName() + ":" + elem.getLineNumber() + "]: " + ((print) ? x : "");
 	}
@@ -73,8 +73,8 @@ public class TracingPrintStream extends PrintStream {
 	
 	public static boolean isTracing() { return tracing; }
 	public static void setTracing(boolean in) {
-		if (in) { enableTrace(); }
-		else { disableTrace(); }
+		if (in) enableTrace();
+		else disableTrace();
 	}
 	
 	public static void enableTrace() {

@@ -1,7 +1,7 @@
 package eutil.date;
 
+import eutil.strings.StringUtil;
 import java.sql.Date;
-import eutil.EUtil;
 
 /**
  * A simplified calendar date library.
@@ -39,7 +39,7 @@ public class EDate implements Comparable<EDate> {
 		int y = EDateTime.getYear();
 		
 		try {
-			Character c = EUtil.testCharR(dateString.charAt(2), '/', '\\', '-', '|', '_', '.');
+			Character c = StringUtil.testCharR(dateString.charAt(2), '/', '\\', '-', '|', '_', '.');
 			if (c != null) {
 				String[] parts = dateString.split(c + "");
 				
@@ -88,7 +88,7 @@ public class EDate implements Comparable<EDate> {
 	//---------
 	
 	public String getDayName() {
-		return EUtil.capitalFirst(Date.valueOf(year + "-" + month + "-" + day).toLocalDate().getDayOfWeek().toString().toLowerCase());
+		return StringUtil.capitalFirst(Date.valueOf(year + "-" + month + "-" + day).toLocalDate().getDayOfWeek().toString().toLowerCase());
 	}
 	
 	public String getMonthName() {

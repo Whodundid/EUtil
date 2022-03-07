@@ -1,10 +1,11 @@
 package eutil.math;
 
+import eutil.EUtil;
+import eutil.datatypes.Box2;
+import eutil.datatypes.util.NumType;
+import eutil.strings.StringUtil;
 import java.text.DecimalFormat;
 import java.util.List;
-import eutil.EUtil;
-import eutil.datatypes.NumType;
-import eutil.storage.Box;
 
 /**
  * A static library containing various helper functions related to special math operations or number manipulations.
@@ -36,7 +37,7 @@ public class NumberUtil {
 	public static Number min(Number a, Number b) { return (a.doubleValue() < b.doubleValue()) ? a : b; }
 	
 	public static double round(double value, int places) {
-		if (places < 0) { return Double.NaN; }
+		if (places < 0) return Double.NaN;
 		value *= 100;
 		value = Math.round(value);
 		value = (double) ((int) value);
@@ -45,7 +46,7 @@ public class NumberUtil {
 	
 	/** Double to String with fixed number of decimal places. (Round Decimal to String with number of Places). */
 	public static String roundDSP(double value, int places) {
-		DecimalFormat f = new DecimalFormat("#." + EUtil.repeatString("#", places));
+		DecimalFormat f = new DecimalFormat("#." + StringUtil.repeatString("#", places));
 		return f.format(value);
 	}
 	
@@ -58,24 +59,35 @@ public class NumberUtil {
 	/** Attempts to parse a number from a given string.
 	 *  Returns either a long or a double depending on which type it reads. */
 	public static Number parseNumber(String in) {
-		if (in != null && !in.isBlank() || !in.isEmpty()) {
-			if (in.length() == 1 && in.charAt(0) == '.') { return null; }
+		if (in != null && !in.trim().isEmpty() && !in.isEmpty()) {
+			if (in.length() == 1 && (in.charAt(0) == '.' || in.charAt(0) == '-')) return null;
 			boolean decimal = false;
+			boolean negative = false;
 			
 			for (int i = 0; i < in.length(); i++) {
 				char c = in.charAt(i);
 				
-				if (c == '.') {
+				//check if negative
+				if (i == 0 && c == '-') negative = true;
+				else if (c == '.') {
 					//if there is more than one decimal, it's not a number
-					if (decimal) { return null; }
+					if (decimal) return null;
 					decimal = true;
 				}
-				else if (!Character.isDigit(c)) { return null; }
+				else if (!Character.isDigit(c)) return null;
 			}
 			
 			try {
-				if (decimal) { return Double.valueOf(in); }
-				else { return Long.valueOf(in); }
+				Number val;
+				
+				if (decimal) {
+					val = (negative) ? -Double.valueOf(in) : Double.valueOf(in);
+				}
+				else {
+					val = (negative) ? -Long.valueOf(in) : Long.valueOf(in);
+				}
+				
+				return val;
 			}
 			catch (NumberFormatException e) { e.printStackTrace(); }
 		}
@@ -86,43 +98,43 @@ public class NumberUtil {
 	public static boolean isInteger(String s) { return s.matches("-?\\d+"); }
 	/** Returns true if the given string is an integer when using the specified base. */
 	public static boolean isInteger(String s, int radix) {
-		if (s.isEmpty()) { return false; }
+		if (s.isEmpty()) return false;
 		for (int i = 0; i < s.length(); i++) {
 			if (i == 0 && s.charAt(i) == '-') {
-				if (s.length() == 1) { return false; }
+				if (s.length() == 1) return false;
 				continue;
 			}
-			if (Character.digit(s.charAt(i), radix) < 0) { return false; }
+			if (Character.digit(s.charAt(i), radix) < 0) return false;
 		}
 		return true;
 	}
 	
 	/** Returns true if the given object is not a decimal value. (byte, short int, long) */
 	public static boolean isInteger(Object in) {
-		if (in instanceof Number) { return isInteger((Number) in); }
-		if (in instanceof String) { return isInteger((String) in); }
+		if (in instanceof Number n) return isInteger(n);
+		if (in instanceof String s) return isInteger(s);
 		return false;
 	}
 	
 	/** Returns true if the given number is not a decimal value. (byte, short, int, long) */
 	public static boolean isInteger(Number in) {
-		if (in instanceof Byte) { return true; }
-		if (in instanceof Short) { return true; }
-		if (in instanceof Integer) { return true; }
-		if (in instanceof Long) { return true; }
+		if (in instanceof Byte) 	return true;
+		if (in instanceof Short) 	return true;
+		if (in instanceof Integer) 	return true;
+		if (in instanceof Long) 	return true;
 		return false;
 	}
 	
 	/** Returns true if the given object is a decimal value. (float, double) */
 	public static boolean isDecimal(Object in) {
-		if (in instanceof Number) { return isDecimal((Number) in); }
+		if (in instanceof Number n) return isDecimal(n);
 		return false;
 	}
 	
 	/** Returns true if the given number is a decimal value. (float, double) */
 	public static boolean isDecimal(Number in) {
-		if (in instanceof Float) { return true; }
-		if (in instanceof Double) { return true; }
+		if (in instanceof Float) 	return true;
+		if (in instanceof Double) 	return true;
 		return false;
 	}
 	
@@ -132,7 +144,7 @@ public class NumberUtil {
 	}
 	
 	/** Returns the cartesian distance between two points within storage boxes. (the distance formula) */
-	public static double getDistance(Box<Double, Double> point1, Box<Double, Double> point2) {
+	public static double getDistance(Box2<Double, Double> point1, Box2<Double, Double> point2) {
 		if (point1 != null && point2 != null) {
 			if (point1.getA() != null && point1.getB() != null && point2.getA() != null && point2.getB() != null) {
 				double x1 = point1.getA();
@@ -148,12 +160,12 @@ public class NumberUtil {
 	
 	/** Returns the datatype of a given number. */
 	public static NumType getNumType(Class<? extends Number> c) {
-		if (c == Byte.class || c == byte.class) { return NumType.BYTE; }
-		if (c == Short.class || c == short.class) { return NumType.SHORT; }
-		if (c == Integer.class || c == int.class) { return NumType.INTEGER; }
-		if (c == Long.class || c == long.class) { return NumType.LONG; }
-		if (c == Float.class || c == float.class) { return NumType.FLOAT; }
-		if (c == Double.class || c == double.class) { return NumType.DOUBLE; }
+		if (c == Byte.class || c == byte.class) 	return NumType.BYTE;
+		if (c == Short.class || c == short.class) 	return NumType.SHORT;
+		if (c == Integer.class || c == int.class) 	return NumType.INTEGER;
+		if (c == Long.class || c == long.class) 	return NumType.LONG;
+		if (c == Float.class || c == float.class) 	return NumType.FLOAT;
+		if (c == Double.class || c == double.class) return NumType.DOUBLE;
 		return NumType.NULL;
 	}
 	
@@ -161,7 +173,9 @@ public class NumberUtil {
 	public static double sumValues(List<Number> valsIn) {
 		if (valsIn != null) {
 			double total = 0;
-			for (Number n : valsIn) { total += n.doubleValue(); }
+			for (Number n : valsIn) {
+				total += n.doubleValue();
+			}
 			return total;
 		}
 		return Double.NaN;
@@ -171,7 +185,9 @@ public class NumberUtil {
 	public static double squareAndPowValues(List<Number> valsIn, double expIn) {
 		if (valsIn != null) {
 			double total = 0;
-			for (Number n : valsIn) { total += Math.pow(n.doubleValue(), expIn); }
+			for (Number n : valsIn) {
+				total += Math.pow(n.doubleValue(), expIn);
+			}
 			return total;
 		}
 		return Double.NaN;

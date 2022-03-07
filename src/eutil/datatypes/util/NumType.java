@@ -1,4 +1,4 @@
-package eutil.datatypes;
+package eutil.datatypes.util;
 
 //Author: Hunter Bragg
 

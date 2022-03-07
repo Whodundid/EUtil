@@ -17,14 +17,14 @@ public class ColorBlender {
 		long bG = (base >> 8) & 0xff;
 		long bB = (base) & 0xff;
 		
-		long colorA = (bR << 16) + (bG << 8) + bB;
+		//long colorA = (bR << 16) + (bG << 8) + bB;
 		
 		long oA = (over >> 24) & 0xff;
 		long oR = (over >> 16) & 0xff;
 		long oG = (over >> 8) & 0xff;
 		long oB = (over) & 0xff;
 		
-		long colorB = (oR << 16) + (oG << 8) + oB;
+		//long colorB = (oR << 16) + (oG << 8) + oB;
 		long newAlpha = (long) (255 - (255 - oA) * (255 - bA));
 		
 		double newRed = oR * oA / newAlpha + (bR * bA * (255 - oA) / newAlpha) / 255;
