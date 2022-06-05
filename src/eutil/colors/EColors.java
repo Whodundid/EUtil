@@ -1,12 +1,12 @@
 package eutil.colors;
 
+import java.awt.Color;
+
 import eutil.math.Vec3f;
 import eutil.math.Vec3i;
 import eutil.math.Vec4f;
 import eutil.math.Vec4i;
 import eutil.random.RandomUtil;
-
-import java.awt.Color;
 
 //Author: Hunter Bragg
 
@@ -228,14 +228,14 @@ public enum EColors {
 	/** Returns an EColors with the corresponding integer color (if any). */
 	public static EColors byIntVal(int colorIn) {
 		for (EColors c : values()) {
-			if (c.intVal == colorIn) { return c; }
+			if (c.intVal == colorIn) return c;
 		}
 		return null;
 	}
 	
 	public static EColors getEColor(String nameIn) {
 		for (EColors c : values()) {
-			if (c.getClass().getSimpleName().equalsIgnoreCase(nameIn)) { return c; }
+			if (c.getClass().getSimpleName().equalsIgnoreCase(nameIn)) return c;
 		}
 		return null;
 	}
@@ -243,7 +243,7 @@ public enum EColors {
 	/** Returns an EColors with the corresponding code (if any). */
 	public static EColors byCode(int codeIn) {
 		for (EColors c : values()) {
-			if (c.color_replacement_code == codeIn) { return c; }
+			if (c.color_replacement_code == codeIn) return c;
 		}
 		return null;
 	}
@@ -252,7 +252,7 @@ public enum EColors {
 	public static EColors byName(String colorNameIn) {
 		if (colorNameIn != null) {
 			for (EColors c : values()) {
-				if (c.name.toLowerCase().equals(colorNameIn.toLowerCase())) { return c; }
+				if (c.name.toLowerCase().equals(colorNameIn.toLowerCase())) return c;
 			}
 		}
 		return null;
@@ -279,7 +279,7 @@ public enum EColors {
 	private static final class ColorID {
 		private static int ID = 0;
 		private ColorID() {}
-		public static int next() { return ID++; }
+		public static int next() return ID++;
 		public static String pad(int id) {
 			String s = String.valueOf(id);
 			return (s.length() == 1) ? "0" + s : s;

@@ -1,8 +1,7 @@
 package eutil;
 
-import static eutil.lambda.Predicates.*;
-
-import eutil.datatypes.EArrayList;
+import static eutil.lambda.Predicates.fileExists;
+import static eutil.lambda.Predicates.notNull;
 
 import java.io.File;
 import java.util.Arrays;
@@ -22,6 +21,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
+
+import eutil.storage.EArrayList;
 
 /** 
  * A static helper library containing a number of useful functions including, but not limited to:
@@ -43,7 +44,7 @@ import java.util.stream.Stream;
 public class EUtil {
 	
 	/** The EUtil library version. */
-	public static final String version = "1.2.0";
+	public static final String version = "1.3.0";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -239,6 +240,28 @@ public class EUtil {
 	//---------------
 	// Array Helpers
 	//---------------
+	
+	public static String toString(boolean[] e) { return toString(e, " "); }
+	public static String toString(byte[] e) { return toString(e, " "); }
+	public static String toString(char[] e) { return toString(e, " "); }
+	public static String toString(int[] e) { return toString(e, " "); }
+	public static String toString(short[] e) { return toString(e, " "); }
+	public static String toString(long[] e) { return toString(e, " "); }
+	public static String toString(float[] e) { return toString(e, " "); }
+	public static String toString(double[] e) { return toString(e, " "); }
+	public static <E> String toString(E[] e) { return toString(e, " "); }
+	public static String toString(List<?> e) { return toString(e, " "); }
+	
+	public static String toString(boolean[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
+	public static String toString(byte[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
+	public static String toString(char[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
+	public static String toString(int[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
+	public static String toString(short[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
+	public static String toString(long[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
+	public static String toString(float[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
+	public static String toString(double[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
+	public static <E> String toString(E[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
+	public static String toString(List<?> e, String separator) { String s = ""; for (int i = 0; i < e.size(); i++) { s += e.get(i) + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
 	
 	public static Object[] toObjArr(boolean[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
 	public static Object[] toObjArr(byte[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }

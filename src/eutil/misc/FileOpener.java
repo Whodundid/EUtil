@@ -13,7 +13,6 @@ public class FileOpener {
 		String s = file.getAbsolutePath();
 		if (OSType.getOS() == OSType.MAC) {
 			try {
-				//EnhancedMC.info(s);
 				Runtime.getRuntime().exec(new String[] {"/usr/bin/open", s});
 				return;
 			}
