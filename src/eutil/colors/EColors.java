@@ -279,7 +279,7 @@ public enum EColors {
 	private static final class ColorID {
 		private static int ID = 0;
 		private ColorID() {}
-		public static int next() return ID++;
+		public static int next() { return ID++; }
 		public static String pad(int id) {
 			String s = String.valueOf(id);
 			return (s.length() == 1) ? "0" + s : s;

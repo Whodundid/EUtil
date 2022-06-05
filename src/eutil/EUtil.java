@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-import eutil.storage.EArrayList;
+import eutil.datatypes.EArrayList;
 
 /** 
  * A static helper library containing a number of useful functions including, but not limited to:

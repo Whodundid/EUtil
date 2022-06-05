@@ -1,8 +1,5 @@
 package eutil.lambda;
 
-import eutil.EUtil;
-import eutil.debug.Experimental;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
@@ -20,7 +17,7 @@ public final class Functions {
 	
 	private Functions() {}
 	
-	/** A general string length comparision. */
+	/** A general string length comparison. */
 	public static final Comparator<String> strlen = Comparator.comparingInt(String::length);
 	
 	@Experimental

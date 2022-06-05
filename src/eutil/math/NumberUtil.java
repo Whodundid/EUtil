@@ -4,8 +4,8 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import eutil.EUtil;
-import eutil.datatypes.NumType;
-import eutil.storage.Box;
+import eutil.datatypes.Box2;
+import eutil.datatypes.util.NumType;
 import eutil.strings.StringUtil;
 
 /**
