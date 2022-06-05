@@ -106,7 +106,7 @@ public class EStringBuilder implements Appendable, CharSequence {
 	
 	public EStringBuilder trimRT() { internalString = new StringBuilder(internalString.toString().trim()); return this; }
 	public String trim() { return trimRT().toString(); }
-	public boolean isBlank() { return toString().isBlank(); }
+	public boolean isBlank() { return toString().trim().isEmpty(); }
 	
 	public String tempAdd(char c) { return tempAdd(String.valueOf(c)); }
 	public String tempAdd(CharSequence cs) { return new StringBuilder(toString()).append(cs).toString(); }

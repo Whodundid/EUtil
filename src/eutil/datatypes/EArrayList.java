@@ -134,6 +134,21 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	// WrapperList Methods
 	//--------------------
 	
+	/**
+	 * Returns true if each object specified is within this list.
+	 * Returns false if given 
+	 * 
+	 * @param objs
+	 * @return
+	 */
+	public boolean containsEach(E... objs) {
+		if (objs.length == 0) return false;
+		for (int i = 0; i < objs.length; i++) {
+			if (!contains(objs[i])) return false;
+		}
+		return true;
+	}
+	
 	/** Performs a size reduction on this list by cutting off all values after the given size. */
 	public EArrayList<E> trimToSize(int sizeIn) {
 		list = subList(0, sizeIn);

@@ -18,6 +18,8 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -36,12 +38,24 @@ import java.util.stream.Stream;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.2.0
+ *  @version 1.3.0
  */
 public class EUtil {
 	
 	/** The EUtil library version. */
 	public static final String version = "1.2.0";
+	/** EUtil static logger. */
+	public static final Logger logger = Logger.getLogger("EUtil");
+	
+	//----------------
+	// Static Loggers
+	//----------------
+	
+	public static void log(Level levelIn, String msg) { logger.log(levelIn, msg); }
+	public static void info(String msg) { logger.log(Level.INFO, msg); }
+	public static void error(String msg) { logger.log(Level.SEVERE, msg); }
+	public static void error(String msg, Throwable throwableIn) { logger.log(Level.SEVERE, msg, throwableIn); }
+	
 	
 	//---------
 	// Objects

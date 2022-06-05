@@ -1,7 +1,8 @@
 package eutil.lambda;
 
 import eutil.EUtil;
-import eutil.util.Experimental;
+import eutil.debug.Experimental;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;

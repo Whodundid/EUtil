@@ -97,6 +97,7 @@ public enum EColors {
 	
 	//------------------------------------------------------------------
 	
+	// \u222e == contour integral symbol
 	@Override public String toString() { return "\u222e" + color_replacement_code_string; }
 
 	//------------------------------------------------------------------
@@ -111,6 +112,14 @@ public enum EColors {
 	public int opacity(int val) {
 		return (intVal & 0x00ffffff) | val << 24;
 	}
+	
+	/** Returns the EColor's integer color with modified brightness. */
+	public int brightness(int val) {
+		return changeBrightness(intVal, val);
+	}
+	
+	public int mix(EColors c) { return mix(c.intVal); }
+	public int mix(int c) { return mix(intVal, c); }
 	
 	/** Returns the integer color value of this EColor broken up into it's [A, R, G, B] parts. */
 	public int[] argb() {
@@ -156,6 +165,28 @@ public enum EColors {
 		int r = (int) (((color >> 16) & 0xFF) * factor);
 		int g = (int) (((color >> 8) & 0xFF) * factor);
 		int b = (int) ((color & 0xFF) * factor);
+		return (a << 24) | (r << 16) | (g << 8) | b;
+	}
+	
+	public static int mix(EColors c1, EColors c2) { return mix(c1.intVal, c2.intVal); }
+	public static int mix(EColors c1, int c2) { return mix(c1.intVal, c2); }
+	public static int mix(int c1, EColors c2) { return mix(c1, c2.intVal); }
+	public static int mix(int c1, int c2) {
+		int a1 = (c1 >> 24) & 0xff;
+		int r1 = (int) ((c1 >> 16) & 0xff);
+		int g1 = (int) ((c1 >> 8) & 0xff);
+		int b1 = (int) (c1 & 0xff);
+		
+		int a2 = (c2 >> 24) & 0xff;
+		int r2 = (int) ((c2 >> 16) & 0xff);
+		int g2 = (int) ((c2 >> 8) & 0xff);
+		int b2 = (int) (c2 & 0xff);
+		
+		int a = Math.min(0xff, a1 + a2);
+		int r = Math.min(0xff, r1 + r2);
+		int g = Math.min(0xff, g1 + g2);
+		int b = Math.min(0xff, b1 + b2);
+		
 		return (a << 24) | (r << 16) | (g << 8) | b;
 	}
 	
@@ -227,6 +258,7 @@ public enum EColors {
 		return null;
 	}
 	
+	/** Returns a random EColors color. */
 	public static EColors random() {
 		return values()[RandomUtil.getRoll(0, values().length - 1)];
 	}

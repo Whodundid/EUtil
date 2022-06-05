@@ -1,4 +1,4 @@
-package eutil.util;
+package eutil.debug;
 
 import static java.lang.annotation.ElementType.*;
 
@@ -15,8 +15,10 @@ import java.lang.annotation.Target;
 @Target({ TYPE, METHOD, PACKAGE, FIELD })
 public @interface Experimental {
 	
-	/** The object's experimental version.
-	 *  By default it is set to the current EUtil library version. */
+	/**
+	 * The object's experimental version. By default it is set to the current EUtil
+	 * library version.
+	 */
 	public String since() default EUtil.version;
 	
 }

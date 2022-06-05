@@ -1,5 +1,6 @@
 package eutil.misc;
 
+import eutil.EUtil;
 import eutil.sys.*;
 import java.awt.Desktop;
 import java.io.File;
@@ -17,18 +18,19 @@ public class FileOpener {
 				return;
 			}
 			catch (IOException e) {
-				//EnhancedMC.error("Couldn\'t open file", e);
+				EUtil.error("Couldn\'t open file", e);
 			}
 		}
 		else if (OSType.getOS() == OSType.WINDOWS) {
 			String s1 = String.format("cmd.exe /C start \"Open file\" \"%s\"", new Object[] {s});
+			String[] args = new String[] { s1 };
 
 			try {
-				Runtime.getRuntime().exec(s1);
+				Runtime.getRuntime().exec(args);
 				return;
 			}
 			catch (IOException e) {
-				//EnhancedMC.error("Couldn\'t open file", e);
+				EUtil.error("Couldn\'t open file", e);
 			}
 		}
 
@@ -40,12 +42,12 @@ public class FileOpener {
 			oclass.getMethod("browse", new Class[] { URI.class }).invoke(object, new Object[] { file.toURI() });
 		}
 		catch (Throwable e) {
-			//EnhancedMC.error("Couldn\'t open link", e);
+			EUtil.error("Couldn\'t open link", e);
 			stillCantOpen = true;
 		}
 
 		if (stillCantOpen) {
-			//EnhancedMC.info("Opening via system class!");
+			EUtil.info("Attempting to open '" + file + "' via system class!");
 			try {
 				Desktop.getDesktop().open(file);
 			}
