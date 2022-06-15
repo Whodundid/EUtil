@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * @author Hunter Bragg
  * @since 1.1.1
  */
-@Target({ TYPE, METHOD, PACKAGE, FIELD })
+@Target({ TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE, ANNOTATION_TYPE, PACKAGE, TYPE_PARAMETER, TYPE_USE })
 public @interface Experimental {
 	
 	/**

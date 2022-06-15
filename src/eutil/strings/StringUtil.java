@@ -1,10 +1,8 @@
 package eutil.strings;
 
-import static eutil.EUtil.*;
-import static eutil.lambda.Comparisons.*;
-
-import eutil.EUtil;
-import eutil.debug.Experimental;
+import static eutil.EUtil.filterNull;
+import static eutil.EUtil.tryGet;
+import static eutil.lambda.Comparisons.strlen;
 
 import java.util.Collection;
 import java.util.List;

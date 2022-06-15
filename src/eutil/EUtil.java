@@ -39,12 +39,26 @@ import eutil.datatypes.EArrayList;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.3.0
+ *  @version 1.3.1
  */
 public class EUtil {
 	
+	//------------------
+	// Hide Constructor
+	//------------------
+	
+	/**
+	 * Hidden to prevent instantiation as EUtil is intended to be a library class
+	 * containing only utility methods.
+	 * 
+	 * @since 1.3.1
+	 */
+	private EUtil() {}
+	
+	//------------------
+	
 	/** The EUtil library version. */
-	public static final String version = "1.3.0";
+	public static final String version = "1.3.1";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -57,22 +71,42 @@ public class EUtil {
 	public static void error(String msg) { logger.log(Level.SEVERE, msg); }
 	public static void error(String msg, Throwable throwableIn) { logger.log(Level.SEVERE, msg, throwableIn); }
 	
+	//--------------
+	// Object Tests
+	//--------------
 	
-	//---------
-	// Objects
-	//---------
-	
-	/** Returns true if any of the given objects are null. */
+	/**
+	 * Returns true if any of the given objects are null.
+	 * In the event that nothing is passed to this method, false is returned by default.
+	 * 
+	 * @param objsIn the series of objects to check through
+	 * @return True if any of the given objects are null
+	 */
 	public static boolean anyNull(Object... objsIn) {
-		for (Object o : objsIn) if (o == null) return true;
+		for (Object o : objsIn)
+			if (o == null)
+				return true;
 		return false;
 	}
-	
-	/** Returns false if any of the given objects are null. */
-	public static boolean notNull(Object... objsIn) { return !anyNull(objsIn); }
-	
-	/** Returns true if the given objects are equal to each other, this method also accounts for null objects. */
-	public static boolean isEqual(Object a, Object b) { return (a != null) ? a.equals(b) : b == null; }
+
+	/**
+	 * Returns true if any of the given objects are not null.
+	 * In the event that nothing is passed to this method, false is returned by default.
+	 * 
+	 * @param objsIn the series of objects to check through
+	 * @return True if any of the given objects are null
+	 */
+	public static boolean notNull(Object... objsIn) {
+		return (objsIn.length > 0) ? !anyNull(objsIn) : false;
+	}
+
+	/**
+	 * Returns true if the given objects are equal to each other, this method also
+	 * accounts for null objects.
+	 */
+	public static boolean isEqual(Object a, Object b) {
+		return (a != null) ? a.equals(b) : b == null;
+	}
 	
 	/**
 	 * Compares the given list of grouped elements in a [A, A, B, B, C, C, ...] arrangement.
@@ -98,11 +132,25 @@ public class EUtil {
 		return val;
 	}
 	
+	/**
+	 * Returns true if any of the given values are true.
+	 * In the event that nothing is passed to this method, false is returned by default.
+	 * 
+	 * @param args Values to check for true within
+	 * @return True if any of the given values are true
+	 */
 	public static boolean anyTrue(boolean... args) {
 		for (boolean b : args) if (b) return true;
 		return false;
 	}
 	
+	/**
+	 * Returns true if any of the given values are false.
+	 * In the event that nothing is passed to this method, false is returned by default.
+	 * 
+	 * @param args Values to check for false within
+	 * @return True if any of the given values are false
+	 */
 	public static boolean anyFalse(boolean... args) {
 		for (boolean b : args) if (!b) return true;
 		return false;
@@ -113,44 +161,17 @@ public class EUtil {
 	//-------------
 	
 	/**
-	 * Returns true if any value within either list is equal. 
+	 * A statement that returns the specified 'ifTrue' value if any member within
+	 * the given iterable matches the given predicate. If none of the members in the
+	 * given iterable match the predicate then the 'ifFalse' value is returned
+	 * instead.
 	 * 
-	 * @param <E> The type of object being compared
-	 * @param A The first list
-	 * @param B The second list
-	 * 
-	 * @return {@code boolean}
-	 * 
-	 * @since 1.1
-	 */
-	public static <E> boolean compareLists(List<E> A, List<E> B) {
-		if (B != null && A.size() > 0) {
-			for (E element : B) {
-				if (element == null) {
-					for (E check : A) {
-						if (check == null) return true;
-					}
-				}
-				else {
-					for (E check : A) {
-						if (check.equals(element)) return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-	
-	/**
-	 * A statement that returns the specified 'ifTrue' value if any member within the given iterable matches the given predicate.
-	 * If none of the members in the given iterable match the predicate then the 'ifFalse' value is returned instead.
-	 * 
-	 * @param <A> The type of objects being compared
-	 * @param <R> The type of value being returned in either case
-	 * @param list The elements being compared
+	 * @param <A>       The type of objects being compared
+	 * @param <R>       The type of value being returned in either case
+	 * @param list      The elements being compared
 	 * @param predicate The comparison statement to be performed on each value
-	 * @param ifTrue Returned if any element matches the given comparison
-	 * @param ifFalse Returned if no element matches the given comparison
+	 * @param ifTrue    Returned if any element matches the given comparison
+	 * @param ifFalse   Returned if no element matches the given comparison
 	 * 
 	 */
 	public static <A, R> R anyMatch(Iterable<A> list, Predicate<? super A> predicate, R ifTrue, R ifFalse) {
@@ -164,7 +185,10 @@ public class EUtil {
 		return ifFalse;
 	}
 	
-	/** Returns the first member in an iterable that matches the given predicate. If no object matches, null is returned instead. */
+	/**
+	 * Returns the first member in an iterable that matches the given predicate. If
+	 * no object matches, null is returned instead.
+	 */
 	public static <E> E getFirst(Iterable<E> list, Predicate<? super E> predicate) {
 		Objects.requireNonNull(predicate);
 		
@@ -175,13 +199,19 @@ public class EUtil {
 		return null;
 	}
 	
-	/** Returns the first member in the list that matches the given predicate. If no object matches, the default value is returned instead. */
+	/**
+	 * Returns the first member in the list that matches the given predicate. If no
+	 * object matches, the default value is returned instead.
+	 */
 	public static <E> E getFirst(Iterable<E> list, Predicate<? super E> predicate, E defaultVal) {
 		E val = getFirst(list, predicate);
 		return (val != null) ? val : defaultVal;
 	}
 	
-	/** Returns the last member in a list that matches the given predicate. If no object matches, null is returned. */
+	/**
+	 * Returns the last member in a list that matches the given predicate. If no
+	 * object matches, null is returned.
+	 */
 	public static <E> E getLast(List<E> list, Predicate<? super E> predicate) {
 		Objects.requireNonNull(predicate);
 		
@@ -193,7 +223,10 @@ public class EUtil {
 		return null;
 	}
 	
-	/** Returns the last member in the list that matches the given predicate. If not object matches, the default value is returned instead. */
+	/**
+	 * Returns the last member in the list that matches the given predicate. If not
+	 * object matches, the default value is returned instead.
+	 */
 	public static <E> E getLast(List<E> list, Predicate<? super E> predicate, E defaultVal) {
 		E val = getLast(list, predicate);
 		return (val != null) ? val : defaultVal;
@@ -203,17 +236,35 @@ public class EUtil {
 	// Stack Util
 	//------------
 	
+	/**
+	 * Takes in a Stack of some type and returns a new Stack whose elements are in a
+	 * reversed order to the original Stack.
+	 * 
+	 * @param <E> The type of objects within the given Stack
+	 * @param in The given Stack
+	 * @return A new Stack with a reversed order of the original elements
+	 */
 	public static <E> Stack<E> reverseStack(Stack<E> in) {
 		if (in == null) return null;
 		
-		Stack<E> reversed = new Stack();
+		Stack<E> reversed = new Stack<>();
 		while (!in.isEmpty()) reversed.push(in.pop());
 		
 		return reversed;
 	}
 	
+	/**
+	 * Converts a Collection to a Stack of the same type.
+	 * <p>
+	 * Iterates over the given Collection pushing each element onto a newly created
+	 * Stack which will be returned.
+	 * 
+	 * @param <E> The type of objects within the given collection
+	 * @param in  The given Collection
+	 * @return A Stack containing the items in the given Collection
+	 */
 	public static <E> Stack<E> toStack(Collection<E> in) {
-		Stack<E> stack = new Stack();
+		Stack<E> stack = new Stack<>();
 		if (in != null) {
 			Iterator<E> it = in.iterator();
 			while (it.hasNext()) stack.add(it.next());
@@ -221,8 +272,18 @@ public class EUtil {
 		return stack;
 	}
 	
+	/**
+	 * Converts a Stack to a List of the same type.
+	 * <p>
+	 * Simply put, this method iterates over the contents of the given Stack, using
+	 * Stack::iterator, and adds them to a new list to be returned.
+	 * 
+	 * @param <E> The type of objects within the given Stack
+	 * @param in  The given Stack
+	 * @return A list containing the items in the given Stack
+	 */
 	public static <E> EArrayList<E> toList(Stack<E> in) {
-		EArrayList<E> list = new EArrayList();
+		EArrayList<E> list = new EArrayList<>();
 		if (in != null) {
 			Iterator<E> it = in.iterator();
 			while (it.hasNext()) list.add(it.next());
@@ -234,8 +295,12 @@ public class EUtil {
 	// File Checks
 	//-------------
 	
-	/** Returns true if the given file is not null and actually exists on the system. */
-	public static boolean fileExists(File f) { return fileExists.test(f); }
+	/**
+	 * Returns true if the given file is not null and actually exists on the system.
+	 */
+	public static boolean fileExists(File f) {
+		return fileExists.test(f);
+	}
 	
 	//---------------
 	// Array Helpers
@@ -309,7 +374,7 @@ public class EUtil {
 	}
 	
 	/** Checks if the values in one array match the values from another. */
-	public static boolean compareArrays(List list1, List list2) {
+	public static boolean compareLists(List list1, List list2) {
 		if (list1.size() != list2.size()) return false; //if the sizes differ, they're not the same.
 		for (int i = 0; i < list1.size(); i++) {
 			Object a = list1.get(i);
@@ -320,15 +385,15 @@ public class EUtil {
 	}
 	
 	/**
-	 * Reverses the incomming list.
+	 * Reverses the incoming list.
 	 * If the list is null, then null is returned instead.
 	 * 
 	 * @since 1.2.0
 	 * @param <E> Generic Type
-	 * @param in The incomming list to be reversed.
+	 * @param in The incoming list to be reversed.
 	 * @return List<E> The reversed list.
 	 */
-	public static <E> List<E> reverse(List<E> in) {
+	public static <E> List<E> reverseList(List<E> in) {
 		if (in == null) return null;
 		Collections.reverse(in);
 		return in;
@@ -342,10 +407,10 @@ public class EUtil {
 	
 	// array conversions
 	
-	/** Boxes a generic varags of typed-objects into a typed-array. */
+	/** Boxes a generic varargs of typed-objects into a typed-array. */
 	public static <E> E[] asArray(E... vals) { return asList(vals).toArray(vals); }
 	
-	/** Converts a generic varags of typed-objects into a typed-EArrayList. */
+	/** Converts a generic varargs of typed-objects into a typed-EArrayList. */
 	public static <E> EArrayList<E> asList(E... vals) { return new EArrayList<E>(vals); }
 	
 	public static <E> E[] toArray(Collection<? extends E> list) {

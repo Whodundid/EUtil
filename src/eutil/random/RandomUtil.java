@@ -52,7 +52,7 @@ public final class RandomUtil {
 	public static <E> E getRandVal(Iterable<E> in) {
 		Iterator<E> it = in.iterator();
 		ArrayList<E> a = new ArrayList();
-		while (it.hasNext()) { a.add(it.next()); }
+		while (it.hasNext()) a.add(it.next());
 		return a.get(getRoll(0, NumberUtil.clamp(a.size() - 1, 0, a.size() - 1)));
 	}
 	
@@ -107,16 +107,26 @@ public final class RandomUtil {
 	/** Returns a String of a specified length that is comprised of randomized, type-able ascii characters from a specified set. */
 	public static String randomString(int length, RandStringTypes typeIn) {
 		String str = "";
-		for (int i = 0; i < length; i++) { str += randomChar(typeIn); }
+		for (int i = 0; i < length; i++) str += randomChar(typeIn);
 		return str;
 	}
 	
-	/** Returns a String that holds a randomized human-esque name. (see RandomNames.class) */
+	/** Returns a String that holds a randomized human-esque name. @see RandomNames */
 	public static String randomName() { return RandomNames.get(); }
-	/** Returns a String that holds a randomized word. (see RandomWords.class) */
+	/** Returns a String that holds a randomized word. @see RandomWords */
 	public static String randomWord() { return RandomWords.get(); }
 	
 	/** An enum that specifies types of character sets. */
-	public enum RandStringTypes { ANY, LETTERS_ALL, LETTERS_UPPER, LETTERS_LOWER, NUMBERS, LETALL_NUM, LETUP_NUM, LETLOW_NUM, SYMBOLS; }
-	
+	public enum RandStringTypes {
+		LETTERS_ALL,
+		LETTERS_UPPER,
+		LETTERS_LOWER,
+		NUMBERS,
+		LETALL_NUM,
+		LETUP_NUM,
+		LETLOW_NUM,
+		SYMBOLS,
+		ANY;
+	}
+
 }

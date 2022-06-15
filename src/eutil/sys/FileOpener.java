@@ -1,7 +1,7 @@
-package eutil.misc;
+package eutil.sys;
 
 import eutil.EUtil;
-import eutil.sys.*;
+
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;

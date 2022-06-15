@@ -21,6 +21,6 @@ public final class Functions {
 	public static final Comparator<String> strlen = Comparator.comparingInt(String::length);
 	
 	@Experimental
-	public static final Function<List<?>, List<?>> reverse = (a) -> EUtil.reverse(a);
+	public static final Function<List<?>, List<?>> reverse = (a) -> EUtil.reverseList(a);
 	
 }
