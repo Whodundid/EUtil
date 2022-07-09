@@ -49,4 +49,6 @@ public final class Assertions {
 	public static void assertSize(Collection c, Number expectedSize) { if (c.size() != expectedSize.intValue()) throw new AssertionException("The given collection's size does not match '" + expectedSize + "'!"); }
 	public static void assertOnlyOne(Collection c) { if (c.size() != 1) throw new AssertionException("The given collection does not have a size of 1!"); }
 	
+	public static void TEST() {}
+	
 }
