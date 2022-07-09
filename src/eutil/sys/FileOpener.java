@@ -29,7 +29,7 @@ public class FileOpener {
 				return;
 			}
 			catch (IOException e) {
-				EUtil.error("Couldn\'t open file", e);
+				//EUtil.error("Couldn\'t open file", e);
 			}
 		}
 
@@ -41,7 +41,7 @@ public class FileOpener {
 			oclass.getMethod("browse", new Class[] { URI.class }).invoke(object, new Object[] { file.toURI() });
 		}
 		catch (Throwable e) {
-			EUtil.error("Couldn\'t open link", e);
+			//EUtil.error("Couldn\'t open link", e);
 			stillCantOpen = true;
 		}
 
@@ -51,7 +51,8 @@ public class FileOpener {
 				Desktop.getDesktop().open(file);
 			}
 			catch (IOException e) {
-				e.printStackTrace();
+				EUtil.error("Couldn\'t open link", e);
+				//e.printStackTrace();
 			}
 			//Sys.openURL("file://" + s);
 		}
