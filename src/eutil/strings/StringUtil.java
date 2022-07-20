@@ -1,14 +1,15 @@
 package eutil.strings;
 
-import static eutil.EUtil.*;
-import static eutil.lambda.Comparisons.*;
-
-import eutil.EUtil;
-import eutil.util.Experimental;
+import static eutil.EUtil.filterNull;
+import static eutil.EUtil.tryGet;
+import static eutil.lambda.Comparisons.strlen;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
+
+import eutil.EUtil;
+import eutil.debug.Experimental;
 
 /**
  * 
@@ -54,7 +55,7 @@ public final class StringUtil {
 			out.append(mapper.apply(e[i]));
 			out.append(separator);
 		}
-		return (out.isEmpty()) ? out.toString() : out.substring(0, out.length() - separator.length());
+		return (out.toString().isEmpty()) ? out.toString() : out.substring(0, out.length() - separator.length());
 	}
 	
 	public static <E, T> String toString(Collection<E> e, Function<? super E, ? extends T> mapper) { return toString(EUtil.mapList(e, mapper), " "); }
@@ -64,7 +65,7 @@ public final class StringUtil {
 			s.append(mapper.apply(val));
 			s.append(separator);
 		}
-		return (s.isEmpty()) ? s.toString() : s.substring(0, s.length() - separator.length());
+		return (s.toString().isEmpty()) ? s.toString() : s.substring(0, s.length() - separator.length());
 	}
 	
 	

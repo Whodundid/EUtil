@@ -14,7 +14,7 @@ public class EDateTime {
 	
 	//--------------
 	
-	public static String getDate() { return getMonth() + "/" + getDay() + "/" + getYear(); }
+	public static String getDate() { return getMonth() + "-" + getDay() + "-" + getYear(); }
 	public static String getTime() {
 		String hour = getHour() + "";
 		String min = getMinute() + "";
@@ -24,7 +24,7 @@ public class EDateTime {
 		min = (min.length() == 1) ? "0" + min : min;
 		sec = (sec.length() == 1) ? "0" + sec : sec;
 		
-		return hour + ":" + min + ":" + sec;
+		return hour + "-" + min + "-" + sec;
 	}
 	
 	//--------------

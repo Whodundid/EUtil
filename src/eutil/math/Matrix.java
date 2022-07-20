@@ -1,8 +1,8 @@
 package eutil.math;
 
 import eutil.datatypes.Box2;
+import eutil.datatypes.BoxList;
 import eutil.datatypes.EArrayList;
-import eutil.datatypes.util.BoxList;
 import eutil.datatypes.util.NumType;
 
 import java.util.List;

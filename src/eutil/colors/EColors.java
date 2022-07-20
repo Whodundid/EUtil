@@ -1,12 +1,12 @@
 package eutil.colors;
 
+import java.awt.Color;
+
 import eutil.math.Vec3f;
 import eutil.math.Vec3i;
 import eutil.math.Vec4f;
 import eutil.math.Vec4i;
 import eutil.random.RandomUtil;
-
-import java.awt.Color;
 
 //Author: Hunter Bragg
 
@@ -97,6 +97,7 @@ public enum EColors {
 	
 	//------------------------------------------------------------------
 	
+	// \u222e == contour integral symbol
 	@Override public String toString() { return "\u222e" + color_replacement_code_string; }
 
 	//------------------------------------------------------------------
@@ -111,6 +112,14 @@ public enum EColors {
 	public int opacity(int val) {
 		return (intVal & 0x00ffffff) | val << 24;
 	}
+	
+	/** Returns the EColor's integer color with modified brightness. */
+	public int brightness(int val) {
+		return changeBrightness(intVal, val);
+	}
+	
+	public int mix(EColors c) { return mix(c.intVal); }
+	public int mix(int c) { return mix(intVal, c); }
 	
 	/** Returns the integer color value of this EColor broken up into it's [A, R, G, B] parts. */
 	public int[] argb() {
@@ -159,6 +168,28 @@ public enum EColors {
 		return (a << 24) | (r << 16) | (g << 8) | b;
 	}
 	
+	public static int mix(EColors c1, EColors c2) { return mix(c1.intVal, c2.intVal); }
+	public static int mix(EColors c1, int c2) { return mix(c1.intVal, c2); }
+	public static int mix(int c1, EColors c2) { return mix(c1, c2.intVal); }
+	public static int mix(int c1, int c2) {
+		int a1 = (c1 >> 24) & 0xff;
+		int r1 = (int) ((c1 >> 16) & 0xff);
+		int g1 = (int) ((c1 >> 8) & 0xff);
+		int b1 = (int) (c1 & 0xff);
+		
+		int a2 = (c2 >> 24) & 0xff;
+		int r2 = (int) ((c2 >> 16) & 0xff);
+		int g2 = (int) ((c2 >> 8) & 0xff);
+		int b2 = (int) (c2 & 0xff);
+		
+		int a = Math.min(0xff, a1 + a2);
+		int r = Math.min(0xff, r1 + r2);
+		int g = Math.min(0xff, g1 + g2);
+		int b = Math.min(0xff, b1 + b2);
+		
+		return (a << 24) | (r << 16) | (g << 8) | b;
+	}
+	
 	public static Vec3i convertToVec3i(EColors color) { int[] c = color.argb(); return new Vec3i(c[1], c[2], c[3]); }
 	public static Vec4i convertToVec4i(EColors color) { int[] c = color.argb(); return new Vec4i(c[0], c[1], c[2], c[3]); }
 	public static Vec3f convertToVec3f(EColors color) { float[] c = color.argbf(); return new Vec3f(c[1], c[2], c[3]); }
@@ -197,14 +228,14 @@ public enum EColors {
 	/** Returns an EColors with the corresponding integer color (if any). */
 	public static EColors byIntVal(int colorIn) {
 		for (EColors c : values()) {
-			if (c.intVal == colorIn) { return c; }
+			if (c.intVal == colorIn) return c;
 		}
 		return null;
 	}
 	
 	public static EColors getEColor(String nameIn) {
 		for (EColors c : values()) {
-			if (c.getClass().getSimpleName().equalsIgnoreCase(nameIn)) { return c; }
+			if (c.getClass().getSimpleName().equalsIgnoreCase(nameIn)) return c;
 		}
 		return null;
 	}
@@ -212,7 +243,7 @@ public enum EColors {
 	/** Returns an EColors with the corresponding code (if any). */
 	public static EColors byCode(int codeIn) {
 		for (EColors c : values()) {
-			if (c.color_replacement_code == codeIn) { return c; }
+			if (c.color_replacement_code == codeIn) return c;
 		}
 		return null;
 	}
@@ -221,12 +252,13 @@ public enum EColors {
 	public static EColors byName(String colorNameIn) {
 		if (colorNameIn != null) {
 			for (EColors c : values()) {
-				if (c.name.toLowerCase().equals(colorNameIn.toLowerCase())) { return c; }
+				if (c.name.toLowerCase().equals(colorNameIn.toLowerCase())) return c;
 			}
 		}
 		return null;
 	}
 	
+	/** Returns a random EColors color. */
 	public static EColors random() {
 		return values()[RandomUtil.getRoll(0, values().length - 1)];
 	}

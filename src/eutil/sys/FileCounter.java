@@ -1,4 +1,4 @@
-package eutil.misc;
+package eutil.sys;
 
 import eutil.EUtil;
 

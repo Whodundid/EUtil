@@ -1,6 +1,7 @@
-package eutil.misc;
+package eutil.sys;
 
-import eutil.sys.*;
+import eutil.EUtil;
+
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -12,23 +13,23 @@ public class FileOpener {
 		String s = file.getAbsolutePath();
 		if (OSType.getOS() == OSType.MAC) {
 			try {
-				//EnhancedMC.info(s);
 				Runtime.getRuntime().exec(new String[] {"/usr/bin/open", s});
 				return;
 			}
 			catch (IOException e) {
-				//EnhancedMC.error("Couldn\'t open file", e);
+				EUtil.error("Couldn\'t open file", e);
 			}
 		}
 		else if (OSType.getOS() == OSType.WINDOWS) {
 			String s1 = String.format("cmd.exe /C start \"Open file\" \"%s\"", new Object[] {s});
+			String[] args = new String[] { s1 };
 
 			try {
-				Runtime.getRuntime().exec(s1);
+				Runtime.getRuntime().exec(args);
 				return;
 			}
 			catch (IOException e) {
-				//EnhancedMC.error("Couldn\'t open file", e);
+				//EUtil.error("Couldn\'t open file", e);
 			}
 		}
 
@@ -40,17 +41,18 @@ public class FileOpener {
 			oclass.getMethod("browse", new Class[] { URI.class }).invoke(object, new Object[] { file.toURI() });
 		}
 		catch (Throwable e) {
-			//EnhancedMC.error("Couldn\'t open link", e);
+			//EUtil.error("Couldn\'t open link", e);
 			stillCantOpen = true;
 		}
 
 		if (stillCantOpen) {
-			//EnhancedMC.info("Opening via system class!");
+			EUtil.info("Attempting to open '" + file + "' via system class!");
 			try {
 				Desktop.getDesktop().open(file);
 			}
 			catch (IOException e) {
-				e.printStackTrace();
+				EUtil.error("Couldn\'t open link", e);
+				//e.printStackTrace();
 			}
 			//Sys.openURL("file://" + s);
 		}

@@ -1,9 +1,10 @@
 package eutil.reflection;
 
-import eutil.EUtil;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import eutil.EUtil;
 
 /**
  * A collection of useful functions which help streamline various Java reflection operations.
@@ -15,7 +16,7 @@ public final class ReflectionHelper {
 	
 	//----------------------------
 	
-	// prevent instantiaion
+	// prevent instantiation
 	private ReflectionHelper() {}
 	
 	//----------------------------
@@ -204,7 +205,7 @@ public final class ReflectionHelper {
 	
 	
 	protected static Constructor findConstructor(Class c, Class... parameters) throws Exception {
-		if (c == null) { throw new NullPointerException("The original class is null!"); }
+		if (c == null) throw new NullPointerException("The original class is null!");
 		Class original = c;
 		Constructor f = null;
 		
@@ -218,8 +219,11 @@ public final class ReflectionHelper {
 		}
 		
 		if (f == null) {
-			if (c != null) { throw new NoSuchMethodException(c.getSimpleName()); }
-			else { throw new NullPointerException("The class '" + original + "' does not have a constructor with the given parameters: [" + EUtil.toList(parameters) + "]!"); }
+			if (c != null) throw new NoSuchMethodException(c.getSimpleName());
+			else
+				throw new NullPointerException("The class '" + original + "' does " +
+											   "not have a constructor with the given parameters: [" +
+											   EUtil.asList(parameters) + "]!");
 		}
 		
 		return f;

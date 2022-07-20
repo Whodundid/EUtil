@@ -1,8 +1,5 @@
 package eutil.datatypes;
 
-import eutil.EUtil;
-import eutil.random.RandomUtil;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,6 +23,9 @@ import java.util.function.UnaryOperator;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import eutil.EUtil;
+import eutil.random.RandomUtil;
 
 /**
  * A customized wrapper implementation of a normal ArrayList.
@@ -89,8 +89,8 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	// ArrayList Overrides
 	//---------------------
 	
-	@Override public void trimToSize() { ((ArrayList) list).trimToSize(); }
-	@Override public void ensureCapacity(int minCapacity) { ((ArrayList) list).ensureCapacity(minCapacity); }
+	@Override public void trimToSize() { ((ArrayList<E>) list).trimToSize(); }
+	@Override public void ensureCapacity(int minCapacity) { ((ArrayList<E>) list).ensureCapacity(minCapacity); }
 	@Override public int hashCode() { return list.hashCode(); }
 	@Override public List<E> subList(int fromIndex, int toIndex) { return list.subList(fromIndex, toIndex); }
 	@Override public void replaceAll(UnaryOperator<E> operator) { list.replaceAll(operator); }
@@ -117,7 +117,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	@Override public boolean remove(Object o) { return list.remove(o); }
 	@Override public boolean removeAll(Collection<?> c) { return list.removeAll(c); }
 	@Override public boolean retainAll(Collection<?> c) { return list.retainAll(c); }
-	@Override public Object clone() { return ((ArrayList) list).clone(); }
+	@Override public Object clone() { return ((ArrayList<E>) list).clone(); }
 	@Override public void forEach(Consumer<? super E> action) { list.forEach(action); }
 	
 	//------------------------------
@@ -134,6 +134,21 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	// WrapperList Methods
 	//--------------------
 	
+	/**
+	 * Returns true if each object specified is within this list.
+	 * Returns false if given 
+	 * 
+	 * @param objs
+	 * @return
+	 */
+	public boolean containsEach(E... objs) {
+		if (objs.length == 0) return false;
+		for (int i = 0; i < objs.length; i++) {
+			if (!contains(objs[i])) return false;
+		}
+		return true;
+	}
+	
 	/** Performs a size reduction on this list by cutting off all values after the given size. */
 	public EArrayList<E> trimToSize(int sizeIn) {
 		list = subList(0, sizeIn);
@@ -143,8 +158,8 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	/** If the given value is currently present within the list, the value is replaced, otherwise it is added. */
 	public E put(E val) {
 		int i = indexOf(val);
-		if (i >= 0) { set(i, val); }
-		else { add(val); }
+		if (i >= 0) set(i, val);
+		else add(val);
 		return val;
 	}
 	

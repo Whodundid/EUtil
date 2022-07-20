@@ -1,7 +1,4 @@
-package eutil.datatypes.util;
-
-import eutil.datatypes.Box2;
-import eutil.datatypes.EArrayList;
+package eutil.datatypes;
 
 import java.util.Collections;
 import java.util.Comparator;
