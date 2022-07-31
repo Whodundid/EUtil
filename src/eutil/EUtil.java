@@ -28,7 +28,7 @@ import eutil.datatypes.EArrayList;
  * A static helper library containing a number of useful functions including, but not limited to:
  * 
  * <ul>
- * 		<li> Versitile storage datatypes
+ * 		<li> Versatile storage datatypes
  * 		<li> Math operations and helpers
  * 		<li> Date/Time helpers
  * 		<li> Reflection helpers

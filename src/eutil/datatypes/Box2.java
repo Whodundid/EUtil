@@ -1,7 +1,7 @@
 package eutil.datatypes;
 
 /**
- * A gropuing of two distinct object types.
+ * A grouping of two distinct object types.
  * 
  * @param <A>
  * @param <B>
@@ -27,9 +27,15 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
 	// Overrides
 	//-----------
 	
-	@Override public String toString() { return "[" + a + ", " + b + "]"; }
+	@Override
+	public String toString() {
+		return "[" + a + ", " + b + "]";
+	}
 	
-	@Override public int compareTo(Box2<A, B> o) { return (a instanceof Comparable) ? ((Comparable) a).compareTo(b) : 0; }
+	@Override
+	public int compareTo(Box2<A, B> o) {
+		return (a instanceof Comparable c) ? c.compareTo(b) : 0;
+	}
 	
 	//---------
 	// Methods
@@ -37,7 +43,7 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
 	
 	/** Returns true if this box's A or B value matches the given obj. */
 	public boolean contains(Object obj) {
-		if (obj == null) { return a == null || b == null; }
+		if (obj == null) return a == null || b == null;
 		return ((a != null ? a.equals(obj) : false) || (b != null ? b.equals(obj) : false));
 	}
 	
@@ -65,7 +71,12 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
 	//---------
 	
 	/** Sets this box's values to the values of another box. */
-	public Box2<A, B> set(Box2<A, B> boxIn) { a = (boxIn != null) ? boxIn.a : null; b = (boxIn != null) ? boxIn.b : null; return this; }
+	public Box2<A, B> set(Box2<A, B> boxIn) {
+		a = (boxIn != null) ? boxIn.a : null;
+		b = (boxIn != null) ? boxIn.b : null;
+		return this;
+	}
+	
 	/** Sets this box's values to the given A and B values. */
 	public Box2<A, B> set(A obj, B val) { a = obj; b = val; return this; }
 	/** Sets this box's A value to the given object. */
