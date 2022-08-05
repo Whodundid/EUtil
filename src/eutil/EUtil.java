@@ -39,7 +39,7 @@ import eutil.datatypes.EArrayList;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.3.1
+ *  @version 1.4.0
  */
 public class EUtil {
 	
@@ -58,7 +58,7 @@ public class EUtil {
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "1.3.1";
+	public static final String version = "1.4.0";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -97,7 +97,11 @@ public class EUtil {
 	 * @return True if any of the given objects are null
 	 */
 	public static boolean notNull(Object... objsIn) {
-		return (objsIn.length > 0) ? !anyNull(objsIn) : false;
+		if (objsIn.length == 0) return false;
+		for (var o : objsIn)
+			if (o == null)
+				return false;
+		return true;
 	}
 
 	/**
@@ -106,6 +110,14 @@ public class EUtil {
 	 */
 	public static boolean isEqual(Object a, Object b) {
 		return (a != null) ? a.equals(b) : b == null;
+	}
+	
+	/**
+	 * Returns true if the given objects are not equal to each other, this
+	 * method also accounts for null objects.
+	 */
+	public static boolean isNotEqual(Object a, Object b) {
+		return (a != null) ? !a.equals(b) : b != null;
 	}
 	
 	/**
@@ -123,7 +135,7 @@ public class EUtil {
 		
 		// iterates across the given list comparing the given element vs. the very next element.
 		for (int i = 0; i < objs.length; i += 2) {
-			if (!isEqual(objs[i], objs[i + 1])) {
+			if (isNotEqual(objs[i], objs[i + 1])) {
 				val = false;
 				break;
 			}
@@ -178,9 +190,9 @@ public class EUtil {
 		Objects.requireNonNull(list);
 		Objects.requireNonNull(predicate);
 		
-		for (A a : list) {
-			if (predicate.test(a)) return ifTrue;
-		}
+		for (A a : list)
+			if (predicate.test(a))
+				return ifTrue;
 		
 		return ifFalse;
 	}
@@ -192,9 +204,9 @@ public class EUtil {
 	public static <E> E getFirst(Iterable<E> list, Predicate<? super E> predicate) {
 		Objects.requireNonNull(predicate);
 		
-		for (E e : list) {
-			if (predicate.test(e)) return e;
-		}
+		for (E e : list)
+			if (predicate.test(e))
+				return e;
 		
 		return null;
 	}
@@ -247,7 +259,7 @@ public class EUtil {
 	public static <E> Stack<E> reverseStack(Stack<E> in) {
 		if (in == null) return null;
 		
-		Stack<E> reversed = new Stack<>();
+		var reversed = new Stack<E>();
 		while (!in.isEmpty()) reversed.push(in.pop());
 		
 		return reversed;
@@ -264,9 +276,9 @@ public class EUtil {
 	 * @return A Stack containing the items in the given Collection
 	 */
 	public static <E> Stack<E> toStack(Collection<E> in) {
-		Stack<E> stack = new Stack<>();
+		var stack = new Stack<E>();
 		if (in != null) {
-			Iterator<E> it = in.iterator();
+			var it = in.iterator();
 			while (it.hasNext()) stack.add(it.next());
 		}
 		return stack;
@@ -283,9 +295,9 @@ public class EUtil {
 	 * @return A list containing the items in the given Stack
 	 */
 	public static <E> EArrayList<E> toList(Stack<E> in) {
-		EArrayList<E> list = new EArrayList<>();
+		var list = new EArrayList<E>();
 		if (in != null) {
-			Iterator<E> it = in.iterator();
+			var it = in.iterator();
 			while (it.hasNext()) list.add(it.next());
 		}
 		return list;
@@ -355,18 +367,18 @@ public class EUtil {
 	}
 	
 	public static <E> E[] add(E obj, E[] array) {
-		EArrayList<E> list = new EArrayList(obj).addA(array);
+		var list = new EArrayList<E>(obj).addA(array);
 		return list.toArray(array);
 	}
 	
 	public static <E> E[] addEnd(E obj, E[] array) {
-		EArrayList<E> list = new EArrayList().addA(array);
+		var list = new EArrayList<E>().addA(array);
 		list.add(obj);
 		return list.toArray(array);
 	}
 	
 	public static <E> E[] addAt(E obj, int pos, E[] array) {
-		EArrayList<E> list = new EArrayList().addA(array);
+		var list = new EArrayList<E>().addA(array);
 		if (pos >= 0 && pos < array.length + 1) {
 			list.add(pos, obj);
 		}
@@ -374,11 +386,11 @@ public class EUtil {
 	}
 	
 	/** Checks if the values in one array match the values from another. */
-	public static boolean compareLists(List list1, List list2) {
+	public static boolean compareLists(List<?> list1, List<?> list2) {
 		if (list1.size() != list2.size()) return false; //if the sizes differ, they're not the same.
 		for (int i = 0; i < list1.size(); i++) {
-			Object a = list1.get(i);
-			Object b = list2.get(i);
+			var a = list1.get(i);
+			var b = list2.get(i);
 			if (!isEqual(a, b)) return false;
 		}
 		return true;
@@ -415,7 +427,7 @@ public class EUtil {
 	
 	public static <E> E[] toArray(Collection<? extends E> list) {
 		E[] arr = (E[]) new Object[list.size()];
-		for (int i = 0; i < list.size(); i++) { arr[i] = (E) list.toArray()[i]; }
+		for (int i = 0; i < list.size(); i++) arr[i] = (E) list.toArray()[i];
 		return arr;
 	}
 	
@@ -625,7 +637,9 @@ public class EUtil {
 				return true;
 			}
 		}
-		catch(Throwable e) { e.printStackTrace(); }
+		catch(Throwable e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 	
@@ -633,7 +647,9 @@ public class EUtil {
 		try {
 			if (check) func.run();
 		}
-		catch(Throwable e) { e.printStackTrace(); }
+		catch(Throwable e) {
+			e.printStackTrace();
+		}
 		return returnVal;
 	}
 	
@@ -645,7 +661,9 @@ public class EUtil {
 			try {
 				val = func.apply(null);
 			}
-			catch (Throwable e) { e.printStackTrace(); }
+			catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 		return val;
 	}
@@ -658,7 +676,9 @@ public class EUtil {
 			try {
 				val = func.apply(null);
 			}
-			catch (Throwable e) { e.printStackTrace(); }
+			catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 		return val;
 	}
@@ -671,7 +691,9 @@ public class EUtil {
 			try {
 				val = func.apply(object);
 			}
-			catch (Throwable e) { e.printStackTrace(); }
+			catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 		return val;
 	}
@@ -684,7 +706,9 @@ public class EUtil {
 			try {
 				val = func.apply(object);
 			}
-			catch (Throwable e) { e.printStackTrace(); }
+			catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 		return val;
 	}
@@ -692,8 +716,15 @@ public class EUtil {
 	public static <R> R tryCodeR(Runnable func, R ifPass, R ifFail) { return (tryCode(func)) ? ifPass : ifFail; }
 	public static <R> R tryIfCodeR(boolean check, Runnable func, R ifPass, R ifFail) { return (tryIfCode(check, func)) ? ifPass : ifFail; }
 	
-	public static <E> void tryDo(E obj, Consumer<? super E> action) { try { action.accept(obj); } catch (Throwable e) { e.printStackTrace(); } }
-	public static <E, A> void tryDo(E obj1, A obj2, BiConsumer<? super E, ? super A> action) { try { action.accept(obj1, obj2); } catch (Throwable e) { e.printStackTrace(); } }
+	public static <E> void tryDo(E obj, Consumer<? super E> action) {
+		try { action.accept(obj); }
+		catch (Throwable e) { e.printStackTrace(); }
+	}
+	
+	public static <E, A> void tryDo(E obj1, A obj2, BiConsumer<? super E, ? super A> action) {
+		try { action.accept(obj1, obj2); }
+		catch (Throwable e) { e.printStackTrace(); }
+	}
 	
 	public static <E> boolean tryNullDo(E obj, Consumer<? super E> action) {
 		boolean val = false;
@@ -701,6 +732,7 @@ public class EUtil {
 		catch (Throwable e) { e.printStackTrace(); }
 		return val;
 	}
+	
 	public static <E, A> boolean tryNullDo(E obj1, A obj2, BiConsumer<? super E, ? super A> action) {
 		boolean val = false;
 		try { val = nullDo(obj1, obj2, action); }
@@ -708,24 +740,37 @@ public class EUtil {
 		return val;
 	}
 	
-	public static <E, R> R tryDoR(E obj, Consumer<? super E> action, R returnVal) { tryDo(obj, action); return returnVal; }
+	public static <E, R> R tryDoR(E obj, Consumer<? super E> action, R returnVal) {
+		tryDo(obj, action);
+		return returnVal;
+	}
+	
 	public static <E, R> R tryDoR(E obj, Consumer<? super E> action, R ifPass, R ifFail) {
 		boolean val = false;
 		try {
 			action.accept(obj);
 			val = true;
 		}
-		catch (Throwable e) { e.printStackTrace(); }
+		catch (Throwable e) {
+			e.printStackTrace();
+		}
 		return (val) ? ifPass : ifFail;
 	}
-	public static <E, A, R> R tryDoR(E obj1, A obj2, BiConsumer<? super E, ? super A> action, R returnVal) { tryDo(obj1, obj2, action); return returnVal; }
+	
+	public static <E, A, R> R tryDoR(E obj1, A obj2, BiConsumer<? super E, ? super A> action, R returnVal) {
+		tryDo(obj1, obj2, action);
+		return returnVal;
+	}
+	
 	public static <E, A, R> R tryDoR(E obj1, A obj2, BiConsumer<? super E, ? super A> action, R ifPass, R ifFail) {
 		boolean val = false;
 		try {
 			action.accept(obj1, obj2);
 			val = true;
 		}
-		catch (Throwable e) { e.printStackTrace(); }
+		catch (Throwable e) {
+			e.printStackTrace();
+		}
 		return (val) ? ifPass : ifFail;
 	}
 	
