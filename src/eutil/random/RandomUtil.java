@@ -56,6 +56,11 @@ public final class RandomUtil {
 		return a.get(getRoll(0, NumberUtil.clamp(a.size() - 1, 0, a.size() - 1)));
 	}
 	
+	/** Returns a random boolean value. */
+	public static boolean randomBool() {
+		return ThreadLocalRandom.current().nextBoolean();
+	}
+	
 	public static Direction randomDir() { return randomDir(false); }
 	public static Direction randomDir(boolean cardinal) {
 		return (cardinal) ? getRandVal(Direction.cardinals()) : getRandVal(Direction.directions());
