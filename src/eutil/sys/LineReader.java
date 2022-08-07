@@ -69,7 +69,7 @@ public class LineReader implements Closeable {
 	 * @throws IOException if any error occurs within the underlying BufferedReader
 	 */
 	public String nextLine() throws IOException {
-		hasNext();
+		if (hasNext()) grabbed = false;
 		return grabbedLine;
 	}
 	
