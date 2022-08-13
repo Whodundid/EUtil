@@ -1,15 +1,8 @@
 package eutil.datatypes;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import java.util.function.BiConsumer;
-import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -42,14 +35,14 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 		allowDuplicates = allowDuplicatesIn;
 	}
 	
-	public BoxList(A obj, B val) {
+	public BoxList(A a, B b) {
 		this(true);
-		add(obj, val);
+		add(a, b);
 	}
 	
-	public BoxList(boolean allowDuplicatesIn, A obj, B val) {
+	public BoxList(boolean allowDuplicatesIn, A a, B b) {
 		this(allowDuplicatesIn);
-		add(obj, val);
+		add(a, b);
 	}
 	
 	public BoxList(BoxList<A, B> holderIn) {
@@ -68,12 +61,12 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	
 	@Override
 	public String toString() {
-		String returnString = "[";
+		var r = new StringBuilder("[");
 		for (int i = 0; i < createdList.size(); i++) {
-			returnString += ("(" + getA(i) + ", " + getB(i) + (i == createdList.size() - 1 ? ")" : "), "));
+			r.append("(" + getA(i) + ", " + getB(i) + (i == createdList.size() - 1 ? ")" : "), "));
 		}
-		returnString += "]";
-		return returnString;
+		r.append("]");
+		return r.toString();
 	}
 	
 	//---------
@@ -99,15 +92,24 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	/** Removes every box from this holder. */
 	public void clear() { createdList.clear(); }
 	
-	/** Sets this box to not have duplicates and procedes to purge any and all duplicates from this holder. */
-	public BoxList<A, B> noDuplicates() { allowDuplicates = false; purgeDuplicates(this); return this; }
+	/** Sets this box to not have duplicates and proceeds to purge any and all duplicates from this holder. */
+	public BoxList<A, B> noDuplicates() {
+		allowDuplicates = false;
+		purgeDuplicates(this);
+		return this;
+	}
+	
 	/** Sets this box to have duplicates or not. If no, all duplicates are purged from this holder. */
-	public BoxList<A, B> setAllowDuplicates(boolean val) { allowDuplicates = val; if (!allowDuplicates) { purgeDuplicates(this); } return this; }
+	public BoxList<A, B> setAllowDuplicates(boolean val) {
+		allowDuplicates = val;
+		if (!allowDuplicates) purgeDuplicates(this);
+		return this;
+	}
 	
 	/** Returns true if this holder has any box with the specified A value. */
-	public boolean contains(A obj) {
+	public boolean contains(A a) {
 		for (Box2<A, B> getBox : createdList) {
-			if (getBox.containsA(obj)) return true;
+			if (getBox.containsA(a)) return true;
 		}
 		return false;
 	}
@@ -120,9 +122,9 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	}
 	
 	/** Returns true if this holder has any box with both the specified A and B pair. */
-	public boolean containsBoth(A obj1, B obj2) {
+	public boolean containsBoth(A a, B b) {
 		for (Box2<A, B> getBox : createdList) {
-			if (getBox.compare(obj1, obj2)) return true;
+			if (getBox.compare(a, b)) return true;
 		}
 		return false;
 	}
@@ -132,23 +134,25 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	//------------------
 	
 	public boolean add() { return add(null, null); }
-	/** Creates a new StorageBox with the given A and B values and then adds it to the specified position of this holder. */
-	public void add(int pos, A obj, B value) {
-		if (allowDuplicates || !contains(obj)) createdList.add(pos, new Box2<A, B>(obj, value));
-	}
 	
 	/** Creates a new StorageBox with the given A and B values and then adds it to the end of this holder. */
-	public boolean add(A obj, B value) {
-		return (allowDuplicates || !contains(obj)) ? createdList.add(new Box2<A, B>(obj, value)) : false;
+	public boolean add(A a, B b) {
+		return (allowDuplicates || !contains(a)) ? createdList.add(new Box2<A, B>(a, b)) : false;
 	}
+	
+	/** Creates a new StorageBox with the given A and B values and then adds it to the specified position of this holder. */
+	public void add(int pos, A a, B b) {
+		if (allowDuplicates || !contains(a)) createdList.add(pos, new Box2<A, B>(a, b));
+	}
+
 	/** Adds the specified box if it is not null to this BoxList. */
 	public boolean add(Box2<A, B> boxIn) {
 		return (boxIn != null && (allowDuplicates || !contains(boxIn))) ? createdList.add(boxIn) : false;
 	}
 	
 	/** Creates a new StorageBox with the given A and B values and then adds it to the end of this holder. */
-	public <R> R addR(A obj, B value, R returnVal) {
-		if (allowDuplicates || !contains(obj)) createdList.add(new Box2<A, B>(obj, value));
+	public <R> R addR(A a, B b, R returnVal) {
+		if (allowDuplicates || !contains(a)) createdList.add(new Box2<A, B>(a, b));
 		return returnVal;
 	}
 	/** Adds the specified box if it is not null to this BoxList. */
@@ -158,8 +162,8 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	}
 	
 	/** Creates a new StorageBox with the given A and B values and then adds it to the end of this holder. */
-	public BoxList<A, B> addRT(A obj, B value) {
-		if (allowDuplicates || !contains(obj)) createdList.add(new Box2<A, B>(obj, value));
+	public BoxList<A, B> addRT(A a, B b) {
+		if (allowDuplicates || !contains(a)) createdList.add(new Box2<A, B>(a, b));
 		return this;
 	}
 	/** Adds the specified box if it is not null to this BoxList. */
@@ -168,7 +172,7 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 		return this;
 	}
 	
-	public boolean addIf(boolean condition, A obj, B value) { if (condition) return add(obj, value); return false; }
+	public boolean addIf(boolean condition, A a, B b) { if (condition) return add(a, b); return false; }
 	public boolean addIf(boolean condition, Box2<A, B> boxIn) { if (condition) return add(boxIn); return false; }
 	
 	public BoxList<A, B> addAll(List<A> a, List<B> b) {
@@ -193,10 +197,10 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	}
 	
 	/** Adds if the object does not already exist, or updates the B value of the existing box with the given A value. */
-	public void put(A obj, B value) {
-		Box2<A, B> box = getBoxWithA(obj);
-		if (box != null) box.setB(value);
-		else add(obj, value);
+	public void put(A a, B b) {
+		Box2<A, B> box = getBoxWithA(a);
+		if (box != null) box.setB(b);
+		else add(a, b);
 	}
 	
 	//--------------------
@@ -204,31 +208,45 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	//--------------------
 	
 	/** Removes the box at the specified point number. */
-	public boolean remove(int pointNumber) { return createdList.remove(pointNumber) != null; }
+	public boolean remove(int index) { return createdList.remove(index) != null; }
 	
 	/** Removes every box that contains the given A value. */
-	public List<Box2<A, B>> removeBoxesContainingA(A obj) {
+	public List<Box2<A, B>> removeBoxesContainingA(A a) {
 		List<Box2<A, B>> returnList = new EArrayList();
-		Iterator<Box2<A, B>> i = createdList.iterator();
-		while (i.hasNext()) {
-			Box2<A, B> getBox = i.next();
-			if (getBox.contains(obj)) {
+		Iterator<Box2<A, B>> it = createdList.iterator();
+		while (it.hasNext()) {
+			Box2<A, B> getBox = it.next();
+			if (getBox.containsA(a)) {
 				returnList.add(getBox);
-				i.remove();
+				it.remove();
+			}
+		}
+		return returnList;
+	}
+	
+	/** Removes every box that contains the given B value. */
+	public List<Box2<A, B>> removeBoxesContainingB(B b) {
+		List<Box2<A, B>> returnList = new EArrayList<>();
+		Iterator<Box2<A, B>> it = createdList.iterator();
+		while (it.hasNext()) {
+			Box2<A, B> getBox = it.next();
+			if (getBox.containsB(b)) {
+				returnList.add(getBox);
+				it.remove();
 			}
 		}
 		return returnList;
 	}
 	
 	/** Removes every box that has the exact A and B values. */
-	public List<Box2<A, B>> removeBoxesWithSaidValues(A obj1, B obj2) {
-		List<Box2<A, B>> returnList = new EArrayList();
-		Iterator<Box2<A, B>> i = createdList.iterator();
-		while (i.hasNext()) {
-			Box2<A, B> getBox = i.next();
-			if (getBox.compare(obj1, obj2)) {
+	public List<Box2<A, B>> removeBoxesWithSaidValues(A a, B b) {
+		List<Box2<A, B>> returnList = new EArrayList<>();
+		Iterator<Box2<A, B>> it = createdList.iterator();
+		while (it.hasNext()) {
+			Box2<A, B> getBox = it.next();
+			if (getBox.compare(a, b)) {
 				returnList.add(getBox);
-				i.remove();
+				it.remove();
 			}
 		}
 		return returnList;
@@ -252,12 +270,12 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	}
 	
 	public Box2<A, B> getFirst() { return (isNotEmpty()) ? get(0) : null; }
-	public A getFirstA() { return (isNotEmpty()) ? createdList.get(0).getA() : null; }
-	public B getFirstB() { return (isNotEmpty()) ? createdList.get(0).getB() : null; }
+	public A getFirstA() { return (isNotEmpty()) ? get(0).getA() : null; }
+	public B getFirstB() { return (isNotEmpty()) ? get(0).getB() : null; }
 	
 	public Box2<A, B> getLast() { return (isNotEmpty()) ? get(size() - 1) : null; }
-	public A getLastA() { return (isNotEmpty()) ? createdList.get(size() - 1).getA() : null; }
-	public B getLastB() { return (isNotEmpty()) ? createdList.get(size() - 1).getB() : null; }
+	public A getLastA() { return (isNotEmpty()) ? get(size() - 1).getA() : null; }
+	public B getLastB() { return (isNotEmpty()) ? get(size() - 1).getB() : null; }
 	
 	/** Retrieves the first box that contains the specified A value. */
 	public Box2<A, B> getBoxWithA(A objIn) {
@@ -332,40 +350,32 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	/** Static method used to create a new BoxList parametized with the given object and value types for each list.
 	 *  If values are to be passed, they must be passed in list objects, and each list must have the same size. If both lists
 	 *  are null, an empty parametized holder with be returned. If one list is null and the other is not, nothing is returned. */
-	public static <thing1, thing2> BoxList<thing1, thing2> createBox(List<thing1> objectsIn, List<thing2> valuesIn) {
-		if (objectsIn != null && valuesIn != null) {
-			if (objectsIn.size() == valuesIn.size()) {
-				BoxList<thing1, thing2> newHolder = new BoxList();
-				for (int i = 0; i < objectsIn.size(); i++) {
-					newHolder.add(objectsIn.get(i), valuesIn.get(i));
-				}
-				return newHolder;
-			}
+	public static <A, B> BoxList<A, B> createBox(List<A> a, List<B> b) {
+		if (a == null || b == null) return null;
+		if (a.size() != b.size()) return null;
+		BoxList<A, B> newHolder = new BoxList();
+		for (int i = 0; i < a.size(); i++) {
+			newHolder.add(a.get(i), b.get(i));
 		}
-		else if (objectsIn == null && valuesIn == null) {
-			return new BoxList<thing1, thing2>();
-		}
-		return null;
+		return newHolder;
 	}
 	
 	/** Static method used to create a new BoxList parametized with the given object and value types.
 	 *  A variable sized list of argument is passed to initialize the values of this holder. For every argument
 	 *  passed, a corresponding value must also be passed along with it so that is adheres to the <Object, Value>
 	 *  relationship. */
-	public static <T, V> BoxList<T, V> of(Class<T> tType, Class<V> vType, Object... dataIn) {
-		if (dataIn.length % 2 == 0) {
-			BoxList<T, V> newHolder = new BoxList();
-			for (int i = 0; i < dataIn.length; i += 2) {
-				newHolder.add((T) dataIn[i], (V) dataIn[i + 1]);
-			}
-			return newHolder;
+	public static <A, B> BoxList<A, B> of(Class<A> aType, Class<B> bType, Object... dataIn) {
+		if (dataIn.length % 2 == 1) return null;
+		BoxList<A, B> newHolder = new BoxList();
+		for (int i = 0; i < dataIn.length; i += 2) {
+			newHolder.add((A) dataIn[i], (B) dataIn[i + 1]);
 		}
-		return null;
+		return newHolder;
 	}
 	
 	/** Collector implementation used to be able to convert a typed stream of data into an EArrayList of the same type. */
 	public static <X, Y> Collector<Box2<X, Y>, ?, BoxList<X, Y>> toBoxHolder() {
-		return Collector.of((Supplier<BoxList<X, Y>>) BoxList::new, BoxList::add, (left, right) -> { left.addAll(right); return left; });
+		return Collector.of(BoxList::new, BoxList::add, (left, right) -> { left.addAll(right); return left; });
 	}
 	
 	//------------------------
@@ -374,61 +384,27 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	
 	/** Internal function used to remove duplicates from a specified holder. */
 	private static void purgeDuplicates(BoxList holderIn) {
-		if (holderIn != null) {
-			EArrayList<Box2> noDups = new EArrayList();
-			Iterator<Box2> it = holderIn.iterator();
-			
-			while (it.hasNext()) {
-				Box2 box = it.next();
-				if (box != null) {
-					boolean contains = false;
-					for (Box2 b : noDups) {
-						if (Box2.compare(box, b)) {
-							contains = true;
-							break;
-						}
+		if (holderIn == null) return;
+		EArrayList<Box2> noDups = new EArrayList();
+		Iterator<Box2> it = holderIn.iterator();
+		
+		while (it.hasNext()) {
+			Box2 box = it.next();
+			if (box != null) {
+				boolean contains = false;
+				for (Box2 b : noDups) {
+					if (Box2.compare(box, b)) {
+						contains = true;
+						break;
 					}
-					if (!contains) noDups.add(box);
 				}
-				
-				it.remove();
+				if (!contains) noDups.add(box);
 			}
 			
-			holderIn.addAll(noDups);
+			it.remove();
 		}
-	}
-	
-	//------------------
-	// Internal Classes
-	//------------------
-	
-	static class BoxCollector<T, A, R> implements Collector<T, A, R> {
 		
-		private static <I, R> Function<I, R> castingIdentity() { return i -> (R) i; }
-		
-		private final Supplier<A> supplier;
-		private final BiConsumer<A, T> accumulator;
-		private final BinaryOperator<A> combiner;
-		private final Function<A, R> finisher;
-		private final Set<Characteristics> characteristics;
-
-		BoxCollector(Supplier<A> supplierIn, BiConsumer<A, T> accumulatorIn, BinaryOperator<A> combinerIn, Function<A, R> finisherIn) {
-			supplier = supplierIn;
-			accumulator = accumulatorIn;
-			combiner = combinerIn;
-			finisher = finisherIn;
-			characteristics = Collections.unmodifiableSet(EnumSet.of(Collector.Characteristics.IDENTITY_FINISH));
-		}
-
-		BoxCollector(Supplier<A> supplier, BiConsumer<A, T> accumulator, BinaryOperator<A> combiner) {
-			this(supplier, accumulator, combiner, castingIdentity());
-		}
-
-		@Override public BiConsumer<A, T> accumulator() { return accumulator; }
-		@Override public Supplier<A> supplier() { return supplier; }
-		@Override public BinaryOperator<A> combiner() { return combiner; }
-		@Override public Function<A, R> finisher() { return finisher; }
-		@Override public Set<Characteristics> characteristics() { return characteristics; }
+		holderIn.addAll(noDups);
 	}
 	
 }
