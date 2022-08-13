@@ -5,7 +5,7 @@ import java.util.List;
 
 import eutil.EUtil;
 import eutil.datatypes.Box2;
-import eutil.datatypes.util.NumType;
+import eutil.datatypes.util.ENumType;
 import eutil.strings.StringUtil;
 
 /**
@@ -160,14 +160,14 @@ public class NumberUtil {
 	}
 	
 	/** Returns the datatype of a given number. */
-	public static NumType getNumType(Class<? extends Number> c) {
-		if (c == Byte.class || c == byte.class) 	return NumType.BYTE;
-		if (c == Short.class || c == short.class) 	return NumType.SHORT;
-		if (c == Integer.class || c == int.class) 	return NumType.INTEGER;
-		if (c == Long.class || c == long.class) 	return NumType.LONG;
-		if (c == Float.class || c == float.class) 	return NumType.FLOAT;
-		if (c == Double.class || c == double.class) return NumType.DOUBLE;
-		return NumType.NULL;
+	public static ENumType getNumType(Class<? extends Number> c) {
+		if (c == Byte.class || c == byte.class) 	return ENumType.BYTE;
+		if (c == Short.class || c == short.class) 	return ENumType.SHORT;
+		if (c == Integer.class || c == int.class) 	return ENumType.INTEGER;
+		if (c == Long.class || c == long.class) 	return ENumType.LONG;
+		if (c == Float.class || c == float.class) 	return ENumType.FLOAT;
+		if (c == Double.class || c == double.class) return ENumType.DOUBLE;
+		return ENumType.NULL;
 	}
 	
 	/** Returns the sum of all numbers within the given list. (does not check for null values!) */

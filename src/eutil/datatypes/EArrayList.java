@@ -221,13 +221,12 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	
 	@Override
 	public boolean removeFirstOccurrence(Object o) {
-		if (isNotEmpty()) {
-			int s = size();
-			for (int i = 0; i < s; i++) {
-				if (EUtil.isEqual(get(i), o)) {
-					remove(i);
-					return true;
-				}
+		if (isEmpty()) return false;
+		int s = size();
+		for (int i = 0; i < s; i++) {
+			if (EUtil.isEqual(get(i), o)) {
+				remove(i);
+				return true;
 			}
 		}
 		return false;
@@ -235,13 +234,12 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	
 	@Override
 	public boolean removeLastOccurrence(Object o) {
-		if (isNotEmpty()) {
-			int s = size();
-			for (int i = s - 1; i >= 0; i--) {
-				if (EUtil.isEqual(get(i), o)) {
-					remove(i);
-					return true;
-				}
+		if (isEmpty()) return false;
+		int s = size();
+		for (int i = s - 1; i >= 0; i--) {
+			if (EUtil.isEqual(get(i), o)) {
+				remove(i);
+				return true;
 			}
 		}
 		return false;
@@ -253,11 +251,11 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	public EArrayList<E> replaceFrom(int from, E value) { return replaceFrom(from, size(), value); }
 	/** Replaces a range of values in this list with the given value. */
 	public EArrayList<E> replaceFrom(int from, int to, E value) {
-		if (from >= 0) {
-			set(from, value);
-			for (int i = from + 1; i < to; i++) {
-				remove(from + 1);
-			}
+		if (from < 0) return this;
+		if (to >= size()) return this;
+		set(from, value);
+		for (int i = from + 1; i < to; i++) {
+			remove(from + 1);
 		}
 		return this;
 	}
@@ -381,7 +379,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	public E getFirst(Predicate<? super E> condition) {
 		for (int i = 0; i < size(); i++) {
 			E e = get(i);
-			if (condition.test(e)) { return e; }
+			if (condition.test(e)) return e;
 		}
 		return null;
 	}
@@ -389,7 +387,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	public E getLast(Predicate<? super E> condition) {
 		for (int i = size() - 1; i >= 0; i--) {
 			E e = get(i);
-			if (condition.test(e)) { return e; }
+			if (condition.test(e)) return e;
 		}
 		return null;
 	}
@@ -397,7 +395,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	public E removeFirst(Predicate<? super E> condition) {
 		for (int i = 0; i < size(); i++) {
 			E e = remove(i);
-			if (condition.test(e)) { return e; }
+			if (condition.test(e)) return e;
 		}
 		return null;
 	}
@@ -405,7 +403,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	public E removeLast(Predicate<? super E> condition) {
 		for (int i = size() - 1; i >= 0; i--) {
 			E e = remove(i);
-			if (condition.test(e)) { return e; }
+			if (condition.test(e)) return e;
 		}
 		return null;
 	}
@@ -468,8 +466,8 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	 *  elements in list B. */
 	public static <E> EArrayList<E> combineLists(List<E> a, List<E> b) {
 		EArrayList<E> l = new EArrayList();
-		if (a != null) { l.addAll(a); }
-		if (b != null) { l.addAll(b); }
+		if (a != null) l.addAll(a);
+		if (b != null) l.addAll(b);
 		return l;
 	}
 	
@@ -506,7 +504,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	/** Returns the first element in this list that is an instance of the given class. */
 	public E getFirstInstanceOf(Class<?> cIn) {
 		for (Object e : list) {
-			if (cIn.isInstance(e)) { return (E) e; }
+			if (cIn.isInstance(e)) return (E) e;
 		}
 		return null;
 	}
@@ -515,7 +513,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	public EArrayList<E> getAllInstancesOf(Class<?> cIn) {
 		EArrayList<E> instances = new EArrayList();
 		for (Object e : list) {
-			if (cIn.isInstance(e)) { instances.add((E) e); }
+			if (cIn.isInstance(e)) instances.add((E) e);
 		}
 		return instances;
 	}
@@ -524,16 +522,16 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	public EArrayList<E> removeAllInstancesOf(Class<?> cIn) {
 		EArrayList<E> toBeRemoved = new EArrayList();
 		for (Object e : list) {
-			if (cIn.isInstance(e)) { toBeRemoved.add((E) e); }
+			if (cIn.isInstance(e)) toBeRemoved.add((E) e);
 		}
-		for (E e : toBeRemoved) { remove(e); }
+		for (E e : toBeRemoved) remove(e);
 		return this;
 	}
 
 	/** Returns true if any of the elements in this list are an instance of the given class. */
 	public boolean containsInstanceOf(Class<?> cIn) {
 		for (Object e : list) {
-			if (cIn.isInstance(e)) { return true; }
+			if (cIn.isInstance(e)) return true;
 		}
 		return false;
 	}
@@ -541,7 +539,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	/** Returns true if none of the elements in this list are an instance of the given class. */
 	public boolean containsNoInstanceOf(Class<?> cIn) {
 		for (Object e : list) {
-			if (cIn.isInstance(e)) { return false; }
+			if (cIn.isInstance(e)) return false;
 		}
 		return true;
 	}
@@ -557,7 +555,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 
 	/** Adds each of the elements to this list. */
 	public EArrayList<E> add(E... e) {
-		for (int i = 0; i < e.length; i++) { add(e[i]); }
+		for (int i = 0; i < e.length; i++) add(e[i]);
 		return this;
 	}
 	
@@ -568,7 +566,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	
 	/** Adds each of the elements in the given array to this list. */
 	public EArrayList<E> addA(E[] e) {
-		for (E val : e) { add(val); }
+		for (E val : e) add(val);
 		return this;
 	}
 	
@@ -584,7 +582,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	/** Adds the given value if and only if the given condition is true,
 	 *  then the result of the given condition is returned. */
 	public boolean addIf(boolean condition, E e) {
-		if (condition) { add(e); }
+		if (condition) add(e);
 		return condition;
 	}
 	
@@ -599,7 +597,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	 *  current value is not null. */
 	public void addIfNotNull(E... e) {
 		for (E entry : e) {
-			if (entry != null) { add(entry); }
+			if (entry != null) add(entry);
 		}
 	}
 

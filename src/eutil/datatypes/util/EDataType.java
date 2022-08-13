@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
  * @author Hunter Bragg
  * @since 1.0.0
  */
-public enum DataTypeUtil {
+public enum EDataType {
 	
 	// Standard Java datatypes
 	BOOLEAN,
@@ -45,18 +45,21 @@ public enum DataTypeUtil {
 	/** Returns true if the given dataType is a number. */
 	public boolean isNumber() {
 		switch (this) {
-		case NUMBER: case CHAR: case BYTE: case SHORT: case INT: case LONG: case FLOAT: case DOUBLE: return true;
-		default: return false;
+		case NUMBER: case CHAR: case BYTE: case SHORT:
+		case INT: case LONG: case FLOAT: case DOUBLE:
+			return true;
+		default:
+			return false;
 		}
 	}
 	
 	/**
-	 * Returns {@code true} if this datatype is able to be created normally thorugh Java code.
+	 * Returns {@code true} if this datatype is able to be created normally through Java code.
 	 * More specifically, a boolean can be defined, where a void value cannot.
 	 * 
 	 * <blockquote>
 	 * Note: While 'null' can be assigned to objects as a placeholder, by definition 'null' is the absence of a type and can not be created, only assigned.
-	 * Therefore, 'null', at least by this library's defintion, is not considered a standard datatype.
+	 * Therefore, 'null', at least by this library's definition, is not considered a standard datatype.
 	 * </blockquote>
 	 * 
 	 * @return {@code boolean}
@@ -77,12 +80,12 @@ public enum DataTypeUtil {
 	//----------------
 	
 	/** Returns true if the given dataType is a number. */
-	public static boolean isNumber(DataTypeUtil typeIn) {
+	public static boolean isNumber(EDataType typeIn) {
 		return (typeIn != null) ? typeIn.isNumber() : false;
 	}
 	
 	/** Returns the dataType of the given Number. If the input is null, null is returned instead. */
-	public static DataTypeUtil getNumberType(Number in) {
+	public static EDataType getNumberType(Number in) {
 		if (in instanceof Byte) return BYTE;
 		if (in instanceof Short) return SHORT;
 		if (in instanceof Integer) return INT;
@@ -92,7 +95,7 @@ public enum DataTypeUtil {
 		return NULL;
 	}
 	
-	public static DataTypeUtil getDataType(Object in) {
+	public static EDataType getDataType(Object in) {
 		if (in == null) return NULL;
 		if (in instanceof Boolean) return BOOLEAN;
 		if (in instanceof Character) return CHAR;
@@ -109,7 +112,7 @@ public enum DataTypeUtil {
 		return OBJECT;
 	}
 	
-	public static DataTypeUtil getStringDataType(String in) {
+	public static EDataType getStringDataType(String in) {
 		if (in == null || in.equals("null")) return NULL;
 		if (in.equals("true") || in.equals("false")) return BOOLEAN;
 		if (in.isEmpty() || in.trim().isEmpty()) return STRING;
@@ -121,11 +124,11 @@ public enum DataTypeUtil {
 	/** Returns the dataType of the given String.
 	 *  If the input is found to not be a number, null is returned instead.
 	 *  If the input is null, null is returned instead. */
-	public static DataTypeUtil getNumberType(String in) {
+	public static EDataType getNumberType(String in) {
 		return getNumberType(NumberUtil.parseNumber(in));
 	}
 	
-	public static Object castTo(Number in, DataTypeUtil typeOut) {
+	public static Object castTo(Number in, EDataType typeOut) {
 		if (in != null && typeOut != null && typeOut.isNumber()) {
 			switch (typeOut) {
 			case BYTE: return in.byteValue();
@@ -140,20 +143,14 @@ public enum DataTypeUtil {
 		return null;
 	}
 	
-	public static Object castTo(Object in, DataTypeUtil typeOut) {
-		if (in != null) {
-			if (in instanceof String) {
-				if (typeOut.isNumber()) return castTo(NumberUtil.parseNumber((String) in), typeOut);
-				else if (typeOut == DataTypeUtil.CHAR) {
-					String s = (String) in;
-					if (s.isEmpty()) return '\u0000';
-					else return s.charAt(0);
-				}
-				else return in;
-			}
-			if (in instanceof Number) return castTo((Number) in, typeOut);
+	public static Object castTo(Object in, EDataType typeOut) {
+		if (in == null) return null;
+		if (in instanceof Number n) return castTo(n, typeOut);
+		if (in instanceof String s) {
+			if (typeOut.isNumber()) return castTo(NumberUtil.parseNumber(s), typeOut);
+			if (typeOut == EDataType.CHAR) return (s.isEmpty()) ? '\u0000' : s.charAt(0);
 		}
-		return null;
+		return in;
 	}
 	
 }
