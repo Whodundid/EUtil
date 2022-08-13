@@ -40,7 +40,7 @@ import eutil.strings.StringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.4.0
+ *  @version 1.4.1
  */
 public class EUtil {
 	
@@ -59,7 +59,7 @@ public class EUtil {
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "1.4.0";
+	public static final String version = "1.4.1";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -119,6 +119,24 @@ public class EUtil {
 	 */
 	public static boolean isNotEqual(Object a, Object b) {
 		return (a != null) ? !a.equals(b) : b != null;
+	}
+	
+	/**
+	 * Returns true if any of the given 'toCheck' values match the given
+	 * 'obj'.
+	 * 
+	 * @param obj     The base object
+	 * @param toCheck A list of objects to compare against the base object
+	 * 
+	 * @return True if any of the 'toCheck' objects match the base object
+	 * 
+	 * @since 1.4.1
+	 */
+	public static boolean isAnyEqual(Object obj, Object... toCheck) {
+		if (toCheck.length == 0) return false;
+		for (var o : toCheck)
+			if (isEqual(obj, o)) return true;
+		return false;
 	}
 	
 	/**

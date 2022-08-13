@@ -1,5 +1,7 @@
 package eutil.datatypes;
 
+import static eutil.EUtil.*;
+
 /**
  * A grouping of two distinct object types.
  * 
@@ -41,21 +43,24 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
 	// Methods
 	//---------
 	
+	/** Sets this box's A and B values to null. */
+	public Box2<A, B> clear() { a = null; b = null; return this; }
+	
 	/** Returns true if this box's A or B value matches the given obj. */
 	public boolean contains(Object obj) {
 		if (obj == null) return a == null || b == null;
-		return ((a != null ? a.equals(obj) : false) || (b != null ? b.equals(obj) : false));
+		return isAnyEqual(obj, a, b);
 	}
 	
 	/** Returns true if this box's A value matches the given object. */
-	public boolean containsA(Object obj) { return (obj == null) ? a == null : obj.equals(a); }
+	public boolean containsA(Object obj) { return isEqual(a, obj); }
 	/** Returns true if this box's B value matches the given object. */
-	public boolean containsB(Object obj) { return (obj == null) ? b == null : obj.equals(b); }
+	public boolean containsB(Object obj) { return isEqual(b, obj); }
 	
 	/** Returns true if this box's contents match the given box's contents. */
 	public boolean compare(Box2<?, ?> boxIn) { return compare(boxIn.getA(), boxIn.getB()); }
 	/** Returns true if this box's contents match the given A and B values. */
-	public boolean compare(Object inA, Object inB) { return (a.equals(inA) && b.equals(inB)); }
+	public boolean compare(Object inA, Object inB) { return isEqual(a, inA) && isEqual(b, inB); }
 	
 	//---------
 	// Getters
@@ -83,8 +88,6 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
 	public Box2<A, B> setA(A obj) { a = obj; return this; }
 	/** Sets this box's B value to the given object. */
 	public Box2<A, B> setB(B obj) { b = obj; return this; }
-	/** Sets this box's A and B values to null. */
-	public Box2<A, B> clear() { a = null; b = null; return this; }
 	
 	//----------------
 	// Static Methods
