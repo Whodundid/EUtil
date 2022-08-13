@@ -36,6 +36,11 @@ public class EDimensionI {
 		midY = getMidY();
 	}
 	
+	@Override
+	public String toString() {
+		return "[startX/Y: " + startX + ", " + startY + "; endX/Y: " + endX + ", " + endY + "; width/Height: " + width + ", " + height + "]";
+	}
+	
 	public EDimensionI move(long changeX, long changeY) {
 		startX += changeX;
 		startY += changeY;
@@ -114,8 +119,6 @@ public class EDimensionI {
 	public boolean isGreaterThan(EDimensionI dimIn) { return startX > dimIn.startX && startY > dimIn.startY && width > dimIn.width && height > dimIn.height; }
 	public boolean isLessThan(EDimensionI dimIn) { return startX < dimIn.startX && startY < dimIn.startY && width < dimIn.width && height < dimIn.height; }
 	public boolean isEqualTo(EDimensionI dimIn) { return startX == dimIn.startX && startY == dimIn.startY && width == dimIn.width && height == dimIn.height; }
-	
-	@Override public String toString() { return "[startX/Y: " + startX + ", " + startY + "; endX/Y: " + endX + ", " + endY + "; width/Height: " + width + ", " + height + "]"; }
 	
 	public static EDimensionI of(long startXIn, long startYIn, long endXIn, long endYIn) { return new EDimensionI(startXIn, startYIn, endXIn, endYIn); }
 	public static EDimensionI of(EDimensionI in) { return new EDimensionI(in); }

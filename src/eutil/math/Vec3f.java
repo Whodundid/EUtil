@@ -146,7 +146,7 @@ public class Vec3f {
 		return new Vec3f(v.x * s, v.y * s, v.z * s);
 	}
 	
-	/** Returns a new Vec3f containg the cross product of the two given Vector3 objects. */
+	/** Returns a new Vec3f containing the cross product of the two given Vector3 objects. */
 	public static Vec3f cross(Vec3f vec1, Vec3f vec2) {
 		Vec3f a = vec1, b = vec2;
 		return new Vec3f((a.y*b.z - a.z*b.y), (a.z*b.x - a.x*b.z), (a.x*b.y - a.y*b.x));

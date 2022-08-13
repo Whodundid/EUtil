@@ -139,12 +139,12 @@ public class NumberUtil {
 		return false;
 	}
 	
-	/** Returns the cartesian distance between two points. (the distance formula) */
+	/** Returns the Cartesian distance between two points. (the distance formula) */
 	public static double distance(double x1, double y1, double x2, double y2) {
 		return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
 	}
 	
-	/** Returns the cartesian distance between two points within storage boxes. (the distance formula) */
+	/** Returns the Cartesian distance between two points within storage boxes. (the distance formula) */
 	public static double getDistance(Box2<Double, Double> point1, Box2<Double, Double> point2) {
 		if (point1 != null && point2 != null) {
 			if (point1.getA() != null && point1.getB() != null && point2.getA() != null && point2.getB() != null) {

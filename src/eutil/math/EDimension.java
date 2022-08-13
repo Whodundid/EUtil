@@ -40,7 +40,10 @@ public class EDimension {
 		midY = getMidY();
 	}
 	
-	@Override public String toString() { return "[startX/Y: " + startX + ", " + startY + "; endX/Y: " + endX + ", " + endY + "; width/Height: " + width + ", " + height + "]"; }
+	@Override
+	public String toString() {
+		return "[startX/Y: " + startX + ", " + startY + "; endX/Y: " + endX + ", " + endY + "; width/Height: " + width + ", " + height + "]";
+	}
 	
 	public EDimension move(double changeX, double changeY) {
 		startX += changeX;
