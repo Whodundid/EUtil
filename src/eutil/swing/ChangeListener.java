@@ -10,18 +10,18 @@ import java.beans.PropertyChangeListener;
  */
 public class ChangeListener implements PropertyChangeListener {
 
-	protected ISwingAction action;
+	protected Runnable action;
 	
-	public ChangeListener(ISwingAction actionIn) {
+	public ChangeListener(Runnable actionIn) {
 		action = actionIn;
 	}
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		action.runAction();
+		action.run();
 	}
 	
-	public static ChangeListener of(ISwingAction actionIn) {
+	public static ChangeListener of(Runnable actionIn) {
 		return new ChangeListener(actionIn);
 	}
 	

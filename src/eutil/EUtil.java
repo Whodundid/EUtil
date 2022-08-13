@@ -1,7 +1,6 @@
 package eutil;
 
-import static eutil.lambda.Predicates.fileExists;
-import static eutil.lambda.Predicates.notNull;
+import static eutil.lambda.Predicates.*;
 
 import java.io.File;
 import java.util.Arrays;
@@ -24,6 +23,7 @@ import java.util.stream.Stream;
 
 import eutil.datatypes.EArrayList;
 import eutil.strings.StringUtil;
+import eutil.sys.FileUtil;
 
 /** 
  * A static helper library containing a number of useful functions including, but not limited to:
@@ -328,9 +328,10 @@ public class EUtil {
 	
 	/**
 	 * Returns true if the given file is not null and actually exists on the system.
+	 * @see FileUtil
 	 */
 	public static boolean fileExists(File f) {
-		return fileExists.test(f);
+		return FileUtil.fileExists(f);
 	}
 	
 	//---------------
@@ -811,10 +812,5 @@ public class EUtil {
 		try { return optional.get(); }
 		catch (Throwable e) { return null; }
 	}
-	
-	public static boolean tryFileCode(File fileIn, Runnable func) { return (fileExists(fileIn)) ? tryCode(func) : false; }
-	public static <R> R tryFileCodeR(File fileIn, Runnable func, R returnVal) { tryFileCode(fileIn, func); return returnVal; }
-	public static <R> R tryFileCodeR(File fileIn, Runnable func, R ifPass, R ifFail) { return (tryFileCode(fileIn, func)) ? ifPass : ifFail; }
-	public static <R> boolean tryFileCodeR(File fileIn, Function<Object, Boolean> func) { return (fileExists(fileIn)) ? func.apply(null) : false; }
 	
 }

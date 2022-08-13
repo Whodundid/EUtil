@@ -12,7 +12,7 @@ public final class RandomNames {
 
 	//----------------------------
 	
-	// prevent instaniation
+	// prevent instantiation
 	private RandomNames() {}
 	
 	//----------------------------

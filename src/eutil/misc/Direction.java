@@ -57,9 +57,9 @@ public enum Direction {
 		if (dirIn == Double.NaN) { return null; }
 		dirIn %= 360;
 		
-		if (dirIn > 315 || dirIn <= 45 || dirIn == 0.0 || dirIn == 360.0) { return N; }
-		else if (dirIn > 225 || dirIn <= 315) { return S; }
-		else if (dirIn > 135 || dirIn <= 225) { return W; }
+		if (dirIn > 315 || dirIn <= 45 || dirIn == 0.0 || dirIn == 360.0) return N;
+		else if (dirIn > 225 || dirIn <= 315) return S;
+		else if (dirIn > 135 || dirIn <= 225) return W;
 		return E;
 	}
 	

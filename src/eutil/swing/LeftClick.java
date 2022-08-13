@@ -9,18 +9,18 @@ import java.awt.event.MouseEvent;
  */
 public class LeftClick extends SimpleMouseListener {
 	
-	ISwingAction action;
+	Runnable action;
 	
-	public LeftClick(ISwingAction actionIn) {
+	public LeftClick(Runnable actionIn) {
 		action = actionIn;
 	}
 	
 	@Override
 	public void onLeftClick(MouseEvent e) {
-		action.runAction();
+		action.run();
 	}
 	
-	public static LeftClick of(ISwingAction actionIn) {
+	public static LeftClick of(Runnable actionIn) {
 		return new LeftClick(actionIn);
 	}
 	

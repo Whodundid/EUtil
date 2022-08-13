@@ -9,18 +9,18 @@ import java.awt.event.MouseEvent;
  */
 public class MiddleClick extends SimpleMouseListener {
 	
-	ISwingAction action;
+	Runnable action;
 	
-	public MiddleClick(ISwingAction actionIn) {
+	public MiddleClick(Runnable actionIn) {
 		action = actionIn;
 	}
 	
 	@Override
 	public void onMiddleClick(MouseEvent e) {
-		action.runAction();
+		action.run();
 	}
 	
-	public static MiddleClick of(ISwingAction actionIn) {
+	public static MiddleClick of(Runnable actionIn) {
 		return new MiddleClick(actionIn);
 	}
 	

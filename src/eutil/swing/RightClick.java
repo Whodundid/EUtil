@@ -9,18 +9,18 @@ import java.awt.event.MouseEvent;
  */
 public class RightClick extends SimpleMouseListener {
 	
-	ISwingAction action;
+	Runnable action;
 	
-	public RightClick(ISwingAction actionIn) {
+	public RightClick(Runnable actionIn) {
 		action = actionIn;
 	}
 	
 	@Override
 	public void onRightClick(MouseEvent e) {
-		action.runAction();
+		action.run();
 	}
 	
-	public static RightClick of(ISwingAction actionIn) {
+	public static RightClick of(Runnable actionIn) {
 		return new RightClick(actionIn);
 	}
 	

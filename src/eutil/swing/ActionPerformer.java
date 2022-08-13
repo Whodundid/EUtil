@@ -11,18 +11,18 @@ import java.awt.event.ActionListener;
  */
 public class ActionPerformer implements ActionListener {
 
-	protected ISwingAction action;
+	protected Runnable action;
 	
-	public ActionPerformer(ISwingAction actionIn) {
+	public ActionPerformer(Runnable actionIn) {
 		action = actionIn;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		action.runAction();
+		action.run();
 	}
 	
-	public static ActionPerformer of(ISwingAction actionIn) {
+	public static ActionPerformer of(Runnable actionIn) {
 		return new ActionPerformer(actionIn);
 	}
 	
