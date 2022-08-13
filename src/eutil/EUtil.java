@@ -23,6 +23,7 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import eutil.datatypes.EArrayList;
+import eutil.strings.StringUtil;
 
 /** 
  * A static helper library containing a number of useful functions including, but not limited to:
@@ -318,27 +319,29 @@ public class EUtil {
 	// Array Helpers
 	//---------------
 	
-	public static String toString(boolean[] e) { return toString(e, " "); }
-	public static String toString(byte[] e) { return toString(e, " "); }
-	public static String toString(char[] e) { return toString(e, " "); }
-	public static String toString(int[] e) { return toString(e, " "); }
-	public static String toString(short[] e) { return toString(e, " "); }
-	public static String toString(long[] e) { return toString(e, " "); }
-	public static String toString(float[] e) { return toString(e, " "); }
-	public static String toString(double[] e) { return toString(e, " "); }
-	public static <E> String toString(E[] e) { return toString(e, " "); }
-	public static String toString(List<?> e) { return toString(e, " "); }
+	//convenience mappings to StringUtil
+	public static String toString(boolean[] e) { return StringUtil.toString(e); }
+	public static String toString(byte[] e) { return StringUtil.toString(e); }
+	public static String toString(char[] e) { return StringUtil.toString(e); }
+	public static String toString(int[] e) { return StringUtil.toString(e); }
+	public static String toString(short[] e) { return StringUtil.toString(e); }
+	public static String toString(long[] e) { return StringUtil.toString(e); }
+	public static String toString(float[] e) { return StringUtil.toString(e); }
+	public static String toString(double[] e) { return StringUtil.toString(e); }
+	public static <E> String toString(E[] e) { return StringUtil.toString(e); }
+	public static String toString(List<?> e) { return StringUtil.toString(e); }
 	
-	public static String toString(boolean[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(byte[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(char[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(int[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(short[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(long[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(float[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(double[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static <E> String toString(E[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(List<?> e, String separator) { String s = ""; for (int i = 0; i < e.size(); i++) { s += e.get(i) + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
+	//convenience mappings to StringUtil
+	public static String toString(boolean[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(byte[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(char[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(int[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(short[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(long[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(float[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(double[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static <E> String toString(E[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(List<?> e, String separator) { return StringUtil.toString(e, separator); }
 	
 	public static Object[] toObjArr(boolean[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
 	public static Object[] toObjArr(byte[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
