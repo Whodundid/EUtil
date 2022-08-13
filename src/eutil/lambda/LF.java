@@ -15,14 +15,14 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * A Java implementation of a sudo Lambda-For loop structure.
+ * A Java implementation of a sudo-Lambda-For loop structure.
  * 
  * <p>
  * Lambda-For loops expand upon the existing capability of traditional for-each loops by introducing
  * the ability to perform functional operations on iterable inputs. Furthermore, Lambda-For
  * loops possess access to both the current loop integer index as well as the element
  * produced by each loop iteration. Passing an iterable object to this structure will produce an Iterable
- * consiting of lambda productions each with their proper element and coresponding loop index. The loop can
+ * consisting of lambda productions each with their proper element and corresponding loop index. The loop can
  * also be set to start at a specific index as well as be incremented by a specific amount.
  * 
  * @implSpec

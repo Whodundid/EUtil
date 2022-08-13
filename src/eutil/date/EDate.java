@@ -71,9 +71,9 @@ public class EDate implements Comparable<EDate> {
 	@Override
 	public int compareTo(EDate d) {
 		if (d != null) {
-			if (year >= d.year) { return -1; }
-			if (month >= d.month) { return -1; }
-			if (day >= d.day) { return -1; }
+			if (year >= d.year) return -1;
+			if (month >= d.month) return -1;
+			if (day >= d.day) return -1;
 		}
 		return 0;
 	}
