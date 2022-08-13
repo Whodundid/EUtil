@@ -22,8 +22,8 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import eutil.datatypes.EArrayList;
+import eutil.file.FileUtil;
 import eutil.strings.StringUtil;
-import eutil.sys.FileUtil;
 
 /** 
  * A static helper library containing a number of useful functions including, but not limited to:
