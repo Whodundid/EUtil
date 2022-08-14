@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  */
 public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	
-	private final EList<Box2<A, B>> createdList = new EArrayList<>();
+	private final EArrayList<Box2<A, B>> createdList = new EArrayList<>();
 	public boolean allowDuplicates = false;
 	
 	//--------------
@@ -212,7 +212,7 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	
 	/** Removes every box that contains the given A value. */
 	public List<Box2<A, B>> removeBoxesContainingA(A a) {
-		EList<Box2<A, B>> returnList = new EArrayList<>();
+		EArrayList<Box2<A, B>> returnList = new EArrayList<>();
 		Iterator<Box2<A, B>> it = createdList.iterator();
 		while (it.hasNext()) {
 			Box2<A, B> getBox = it.next();
@@ -226,7 +226,7 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	
 	/** Removes every box that contains the given B value. */
 	public List<Box2<A, B>> removeBoxesContainingB(B b) {
-		EList<Box2<A, B>> returnList = new EArrayList<>();
+		EArrayList<Box2<A, B>> returnList = new EArrayList<>();
 		Iterator<Box2<A, B>> it = createdList.iterator();
 		while (it.hasNext()) {
 			Box2<A, B> getBox = it.next();
@@ -240,7 +240,7 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	
 	/** Removes every box that has the exact A and B values. */
 	public List<Box2<A, B>> removeBoxesWithSaidValues(A a, B b) {
-		EList<Box2<A, B>> returnList = new EArrayList<>();
+		EArrayList<Box2<A, B>> returnList = new EArrayList<>();
 		Iterator<Box2<A, B>> it = createdList.iterator();
 		while (it.hasNext()) {
 			Box2<A, B> getBox = it.next();
@@ -292,15 +292,15 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	}
 	
 	/** Retrieves all boxes that contain the specified A value. */
-	public EList<Box2<A, B>> getAllBoxesWithA(A obj) { return createdList.filter(b -> b.getA().equals(obj)); }
+	public EArrayList<Box2<A, B>> getAllBoxesWithA(A obj) { return createdList.filter(b -> b.getA().equals(obj)); }
 	
 	/** Returns a list of every A value in each box. */
-	public EList<A> getAVals() { return createdList.map(Box2::getA); }
+	public EArrayList<A> getAVals() { return createdList.map(Box2::getA); }
 	/** Returns a list of every B value in each box. */
-	public EList<B> getBVals() { return createdList.map(Box2::getB); }
+	public EArrayList<B> getBVals() { return createdList.map(Box2::getB); }
 	
 	/** Returns a list containing every box in this holder. */
-	public EList<Box2<A, B>> getBoxes() { return new EArrayList<Box2<A, B>>(createdList); }
+	public EArrayList<Box2<A, B>> getBoxes() { return new EArrayList<Box2<A, B>>(createdList); }
 	
 	/** Returns the boxes of this holder within an array of StorageBox objects with the corresponding parameters. */
 	public Box2<A, B>[] getBoxesAsArray() {
@@ -385,7 +385,7 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	/** Internal function used to remove duplicates from a specified holder. */
 	private static void purgeDuplicates(BoxList holderIn) {
 		if (holderIn == null) return;
-		EList<Box2> noDups = new EArrayList<>();
+		EArrayList<Box2> noDups = new EArrayList<>();
 		Iterator<Box2> it = holderIn.iterator();
 		
 		while (it.hasNext()) {

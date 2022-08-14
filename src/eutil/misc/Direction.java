@@ -1,7 +1,8 @@
 package eutil.misc;
 
+import java.util.List;
+
 import eutil.datatypes.EArrayList;
-import eutil.datatypes.EList;
 
 /**
  * An enum representing standard compass directions and their various properties.
@@ -81,10 +82,10 @@ public enum Direction {
 	public static Direction get(int ordinal) { return values()[ordinal]; }
 	
 	/** Returns a list containing only cardinal directions. */
-	public static EList<Direction> cardinals() { return new EArrayList<>(N, E, S, W); }
+	public static List<Direction> cardinals() { return new EArrayList<>(N, E, S, W); }
 	/** Returns a list containing only ordinal directions. */
-	public static EList<Direction> ordinals() { return new EArrayList<>(NE, NW, SE, SW); }
+	public static List<Direction> ordinals() { return new EArrayList<>(NE, NW, SE, SW); }
 	/** Returns a list containing all real directions. */
-	public static EList<Direction> directions() { return new EArrayList<>(N, NE, E, NW, S, SE, W, SW); }
+	public static List<Direction> directions() { return new EArrayList<>(N, NE, E, NW, S, SE, W, SW); }
 	
 }

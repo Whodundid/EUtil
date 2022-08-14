@@ -5,7 +5,6 @@ import java.util.List;
 import eutil.datatypes.Box2;
 import eutil.datatypes.BoxList;
 import eutil.datatypes.EArrayList;
-import eutil.datatypes.EList;
 import eutil.datatypes.util.ENumType;
 
 /**
@@ -244,7 +243,7 @@ public class Matrix {
 	}
 	
 	public List<Number> toList() {
-		EList<Number> l = new EArrayList<>();
+		EArrayList<Number> l = new EArrayList<>();
 		for (int i = 0; i < rSize; i++) {
 			for (int j = 0; j < cSize; j++) {
 				l.add(getI(i, j));
@@ -323,7 +322,7 @@ public class Matrix {
 	public static Matrix transpose(Matrix matrixIn) { return matrixIn != null ? matrixIn.transpose() : null; }
 	
 	public static List<Number> toList(Matrix matrixIn) {
-		EList<Number> l = new EArrayList<>();
+		EArrayList<Number> l = new EArrayList<>();
 		for (int i = 0; i < matrixIn.numRows(); i++) {
 			for (int j = 0; j < matrixIn.numCols(); j++) {
 				l.add(matrixIn.getI(i, j));

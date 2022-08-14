@@ -26,7 +26,6 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import eutil.datatypes.EArrayList;
-import eutil.datatypes.EList;
 import eutil.file.FileUtil;
 import eutil.strings.StringUtil;
 
@@ -318,7 +317,7 @@ public class EUtil {
 	 * @param in  The given Stack
 	 * @return A list containing the items in the given Stack
 	 */
-	public static <E> EList<E> toList(Stack<E> in) {
+	public static <E> EArrayList<E> toList(Stack<E> in) {
 		var list = new EArrayList<E>();
 		if (in != null) {
 			var it = in.iterator();
@@ -457,7 +456,7 @@ public class EUtil {
 	public static <E> E[] asArray(E... vals) { return asList(vals).toArray(vals); }
 	
 	/** Converts a generic varargs of typed-objects into a typed-EArrayList. */
-	public static <E> EList<E> asList(E... vals) { return new EArrayList<E>(vals); }
+	public static <E> EArrayList<E> asList(E... vals) { return new EArrayList<E>(vals); }
 	
 	public static <E> E[] toArray(Collection<? extends E> list) {
 		E[] arr = (E[]) new Object[list.size()];
@@ -465,7 +464,7 @@ public class EUtil {
 		return arr;
 	}
 	
-	public static <E> EList<E> toList(E[] arr) { return new EArrayList<E>(arr); }
+	public static <E> EArrayList<E> toList(E[] arr) { return new EArrayList<E>(arr); }
 	
 	/** Converts a typed-array to a Stream. */
 	public static <E> Stream<E> stream(E... vals) { return Arrays.stream(vals); }
@@ -515,7 +514,7 @@ public class EUtil {
 	/** Converts a typed-Collection to a Stream that filters out null objects then performs the given filter then finally performs a forEach loop on each remaining element. Then returns the specified value. */
 	public static <E, R> R filterNullForEachR(Collection<E> list, Predicate<? super E> filter, Consumer<? super E> action, R retVal) { filterNull(list).filter(filter).forEach(action); return retVal; }
 	
-	public static <E, R> EList<R> mapList(Collection<E> list, Function<? super E, ? extends R> mapper) { return list.stream().map(mapper).collect(EArrayList.toEArrayList()); }
+	public static <E, R> EArrayList<R> mapList(Collection<E> list, Function<? super E, ? extends R> mapper) { return list.stream().map(mapper).collect(EArrayList.toEArrayList()); }
 	
 	/** Converts a typed-Array to a Stream then performs the given filter. */
 	public static <E> Stream<E> filter(E[] arr, Predicate<? super E> filter) { return stream(arr).filter(filter); }
@@ -538,7 +537,7 @@ public class EUtil {
 	/** Converts a typed-Array to a Stream that filters out null objects then performs the given filter then finally performs a forEach loop on each remaining element. Then returns the specified value. */
 	public static <E, R> R filterNullForEachR(E[] arr, Predicate<? super E> filter, Consumer<? super E> action, R retVal) { filterNull(arr).filter(filter).forEach(action); return retVal; }
 	
-	public static <E, R> EList<R> mapList(E[] arr, Function<? super E, ? extends R> mapper) { return map(arr, mapper).collect(EArrayList.toEArrayList()); }
+	public static <E, R> EArrayList<R> mapList(E[] arr, Function<? super E, ? extends R> mapper) { return map(arr, mapper).collect(EArrayList.toEArrayList()); }
 	
 	/** Converts an array of a specified type into a Stream and performs the given filter across each element then 
 	 *  finally collects the filtered data into the specified Collector. */
@@ -547,8 +546,8 @@ public class EUtil {
 	 *  finally collects the filtered data into the specified Collector. */
 	public static <E, R, A> R filterInto(Collection<E> listIn, Predicate<? super E> filter, Collector<? super E, A, R> collector) { return filter(listIn, filter).collect(collector); }
 	
-	public static <E, A> EList<E> filterAsList(E[] arrIn, Predicate<? super E> filter) { return filterA(filter, arrIn).collect(EArrayList.toEArrayList()); }
-	public static <E, A> EList<E> filterAsList(Collection<E> listIn, Predicate<? super E> filter) { return filter(listIn, filter).collect(EArrayList.toEArrayList()); }
+	public static <E, A> EArrayList<E> filterAsList(E[] arrIn, Predicate<? super E> filter) { return filterA(filter, arrIn).collect(EArrayList.toEArrayList()); }
+	public static <E, A> EArrayList<E> filterAsList(Collection<E> listIn, Predicate<? super E> filter) { return filter(listIn, filter).collect(EArrayList.toEArrayList()); }
 	
 	//-----------------------
 	// Map Stream Operations
