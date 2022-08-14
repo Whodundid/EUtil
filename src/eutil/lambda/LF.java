@@ -2,9 +2,6 @@ package eutil.lambda;
 
 import static eutil.lambda.Predicates.*;
 
-import eutil.EUtil;
-import eutil.datatypes.EArrayList;
-
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -13,6 +10,10 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import eutil.EUtil;
+import eutil.datatypes.EArrayList;
+import eutil.datatypes.EList;
 
 /**
  * A Java implementation of a sudo-Lambda-For loop structure.
@@ -68,7 +69,7 @@ public class LF<E> implements Iterable<LF.P<E>> {
 
 	private int curIndex = 0;
 	private int start = 0, by = 0, size = 0;
-	private final EArrayList<P<E>> productions = new EArrayList();
+	private final EList<P<E>> productions = new EArrayList<>();
 	
 	//---------------------------------------------------------------------------------------
 	

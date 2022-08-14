@@ -108,6 +108,11 @@ public enum EColors {
 	/** Returns the color's name. */
 	public String n() { return name; }
 	
+	/** Returns the EColor's integer color with modified opacity. (long version) */
+	public int opacity(long val) {
+		return opacity((int) val);
+	}
+	
 	/** Returns the EColor's integer color with modified opacity. */
 	public int opacity(int val) {
 		return (intVal & 0x00ffffff) | val << 24;

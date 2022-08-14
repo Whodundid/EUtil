@@ -1,10 +1,11 @@
 package eutil.random;
 
-import eutil.math.NumberUtil;
-import eutil.misc.Direction;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
+
+import eutil.math.NumberUtil;
+import eutil.misc.Direction;
 
 /**
  * A collection of helper methods which aid with generating random numbers, chars, strings, and names.
@@ -51,7 +52,7 @@ public final class RandomUtil {
 	/** Returns a random element from the given iterable object. */
 	public static <E> E getRandVal(Iterable<E> in) {
 		Iterator<E> it = in.iterator();
-		ArrayList<E> a = new ArrayList();
+		ArrayList<E> a = new ArrayList<>();
 		while (it.hasNext()) a.add(it.next());
 		return a.get(getRoll(0, NumberUtil.clamp(a.size() - 1, 0, a.size() - 1)));
 	}

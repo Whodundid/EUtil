@@ -6,8 +6,12 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Stack;
@@ -22,6 +26,7 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import eutil.datatypes.EArrayList;
+import eutil.datatypes.EList;
 import eutil.file.FileUtil;
 import eutil.strings.StringUtil;
 
@@ -40,7 +45,7 @@ import eutil.strings.StringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.4.1
+ *  @version 1.4.2
  */
 public class EUtil {
 	
@@ -59,7 +64,7 @@ public class EUtil {
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "1.4.1";
+	public static final String version = "1.4.2";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -313,7 +318,7 @@ public class EUtil {
 	 * @param in  The given Stack
 	 * @return A list containing the items in the given Stack
 	 */
-	public static <E> EArrayList<E> toList(Stack<E> in) {
+	public static <E> EList<E> toList(Stack<E> in) {
 		var list = new EArrayList<E>();
 		if (in != null) {
 			var it = in.iterator();
@@ -349,6 +354,9 @@ public class EUtil {
 	public static String toString(double[] e) { return StringUtil.toString(e); }
 	public static <E> String toString(E[] e) { return StringUtil.toString(e); }
 	public static String toString(List<?> e) { return StringUtil.toString(e); }
+	public static String toString(Iterator<?> e) { return StringUtil.toString(e); }
+	public static String toString(Enumeration<?> e) { return StringUtil.toString(e); }
+	public static String toString(Map<?, ?> e) { return StringUtil.toString(e); }
 	
 	//convenience mappings to StringUtil
 	public static String toString(boolean[] e, String separator) { return StringUtil.toString(e, separator); }
@@ -361,6 +369,9 @@ public class EUtil {
 	public static String toString(double[] e, String separator) { return StringUtil.toString(e, separator); }
 	public static <E> String toString(E[] e, String separator) { return StringUtil.toString(e, separator); }
 	public static String toString(List<?> e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(Iterator<?> e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(Enumeration<?> e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(Map<?, ?> e, String separator) { return StringUtil.toString(e, separator); }
 	
 	public static Object[] toObjArr(boolean[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
 	public static Object[] toObjArr(byte[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
@@ -372,16 +383,15 @@ public class EUtil {
 	public static Object[] toObjArr(double[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
 	public static <E> Object[] toObjArr(E[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
 	
-	public static void printArray(boolean[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(byte[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(char[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(int[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(short[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(long[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(float[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(double[] arr) { printArray(toObjArr(arr)); }
-	
-	public static void printArray(Object[] arr) { forEach(arr, System.out::println); }
+	public static void printArray(boolean[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(byte[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(char[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(int[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(short[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(long[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(float[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(double[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(Object[] arr) { System.out.println(toString(arr)); }
 	public static void printList(Iterable arr) { forEach(arr, System.out::println); }
 	
 	public static <E, T> void printArray(E[] arr, Function<? super E, ? super T> type) {
@@ -439,13 +449,15 @@ public class EUtil {
 	
 	public static long length(Iterable itr) { return itr.spliterator().getExactSizeIfKnown(); }
 	
-	// array conversions
+	//-------------------------
+	// Array Stream Operations
+	//-------------------------
 	
 	/** Boxes a generic varargs of typed-objects into a typed-array. */
 	public static <E> E[] asArray(E... vals) { return asList(vals).toArray(vals); }
 	
 	/** Converts a generic varargs of typed-objects into a typed-EArrayList. */
-	public static <E> EArrayList<E> asList(E... vals) { return new EArrayList<E>(vals); }
+	public static <E> EList<E> asList(E... vals) { return new EArrayList<E>(vals); }
 	
 	public static <E> E[] toArray(Collection<? extends E> list) {
 		E[] arr = (E[]) new Object[list.size()];
@@ -453,7 +465,7 @@ public class EUtil {
 		return arr;
 	}
 	
-	public static <E> EArrayList<E> toList(E[] arr) { return new EArrayList<E>(arr); }
+	public static <E> EList<E> toList(E[] arr) { return new EArrayList<E>(arr); }
 	
 	/** Converts a typed-array to a Stream. */
 	public static <E> Stream<E> stream(E... vals) { return Arrays.stream(vals); }
@@ -475,9 +487,10 @@ public class EUtil {
 	/** Converts a typed-array to a Stream that filters out null objects then performs the given filter and finally performs a forEach loop on each remaining element. */
 	public static <E> void filterNullForEachA(Predicate<? super E> filter, Consumer<? super E> action, E... vals) { filterNull(vals).filter(filter).forEach(action); }
 	
-	public static <E, T> EArrayList<T> mapListA(Function<? super E, ? extends T> mapper, E... vals) { return stream(vals).map(mapper).collect(EArrayList.toEArrayList()); }
-	
-	//list conversions
+
+	//------------------------
+	// List Stream Operations
+	//------------------------
 	
 	/** Converts a typed-Collection to a Stream then performs the given filter. */
 	public static <E> Stream<E> filter(Collection<E> list, Predicate<? super E> filter) { return list.stream().filter(filter); }
@@ -502,7 +515,7 @@ public class EUtil {
 	/** Converts a typed-Collection to a Stream that filters out null objects then performs the given filter then finally performs a forEach loop on each remaining element. Then returns the specified value. */
 	public static <E, R> R filterNullForEachR(Collection<E> list, Predicate<? super E> filter, Consumer<? super E> action, R retVal) { filterNull(list).filter(filter).forEach(action); return retVal; }
 	
-	public static <E, R> EArrayList<R> mapList(Collection<E> list, Function<? super E, ? extends R> mapper) { return list.stream().map(mapper).collect(EArrayList.toEArrayList()); }
+	public static <E, R> EList<R> mapList(Collection<E> list, Function<? super E, ? extends R> mapper) { return list.stream().map(mapper).collect(EArrayList.toEArrayList()); }
 	
 	/** Converts a typed-Array to a Stream then performs the given filter. */
 	public static <E> Stream<E> filter(E[] arr, Predicate<? super E> filter) { return stream(arr).filter(filter); }
@@ -525,7 +538,7 @@ public class EUtil {
 	/** Converts a typed-Array to a Stream that filters out null objects then performs the given filter then finally performs a forEach loop on each remaining element. Then returns the specified value. */
 	public static <E, R> R filterNullForEachR(E[] arr, Predicate<? super E> filter, Consumer<? super E> action, R retVal) { filterNull(arr).filter(filter).forEach(action); return retVal; }
 	
-	public static <E, R> EArrayList<R> mapList(E[] arr, Function<? super E, ? extends R> mapper) { return map(arr, mapper).collect(EArrayList.toEArrayList()); }
+	public static <E, R> EList<R> mapList(E[] arr, Function<? super E, ? extends R> mapper) { return map(arr, mapper).collect(EArrayList.toEArrayList()); }
 	
 	/** Converts an array of a specified type into a Stream and performs the given filter across each element then 
 	 *  finally collects the filtered data into the specified Collector. */
@@ -534,10 +547,81 @@ public class EUtil {
 	 *  finally collects the filtered data into the specified Collector. */
 	public static <E, R, A> R filterInto(Collection<E> listIn, Predicate<? super E> filter, Collector<? super E, A, R> collector) { return filter(listIn, filter).collect(collector); }
 	
-	public static <E, A> EArrayList<E> filterAsList(E[] arrIn, Predicate<? super E> filter) { return filterA(filter, arrIn).collect(EArrayList.toEArrayList()); }
-	public static <E, A> EArrayList<E> filterAsList(Collection<E> listIn, Predicate<? super E> filter) { return filter(listIn, filter).collect(EArrayList.toEArrayList()); }
+	public static <E, A> EList<E> filterAsList(E[] arrIn, Predicate<? super E> filter) { return filterA(filter, arrIn).collect(EArrayList.toEArrayList()); }
+	public static <E, A> EList<E> filterAsList(Collection<E> listIn, Predicate<? super E> filter) { return filter(listIn, filter).collect(EArrayList.toEArrayList()); }
 	
-	//array forEach
+	//-----------------------
+	// Map Stream Operations
+	//-----------------------
+	
+	/** Converts the entries of the given map into a stream of Entry<K, V>. */
+	public static <K, V> Stream<Entry<K, V>> stream(Map<K, V> map) { return map.entrySet().stream(); }
+	/** Reduces the entries in a given map's entry stream using the given filter. */
+	public static <K, V> Stream<Entry<K, V>> filter(Map<K, V> map, Predicate<? super Entry<K, V>> filter) { return stream(map).filter(filter); }
+	/** Translates the entries in a given map to the specified datatype 'T' using the given Function mapper. */
+	public static <K, V, T> Stream<T> map(Map<K, V> map, Function<? super Entry<K, V>, ? extends T> mapper) { return stream(map).map(mapper); }
+	/** Converts the entries of the given map into a stream of Entry<K, V> and performs the given action for each entry. */
+	public static <K, V> void forEach(Map<K, V> map, Consumer<? super Entry<K, V>> action) { stream(map).forEach(action); }
+	
+	/**
+	 * Translates the entries in a given map to the specified datatype 'T'
+	 * using the given Function mapper. Next, each newly mapped entry is
+	 * stored inside of a list and returned.
+	 * 
+	 * @param <K>    Map entry key type
+	 * @param <V>    Map entry value type
+	 * @param <T>    The type to map each entry to
+	 * @param map    The incoming map
+	 * @param mapper The function used to map entries of <K, V> into the
+	 *               given 'T' type
+	 * 				
+	 * @return A List of type 'T' consisting of each mapped entry from the
+	 *         given map
+	 * 
+	 * @since 1.4.2
+	 */
+	public static <K, V, T> List<T> mapList(Map<K, V> map, Function<? super Entry<K, V>, ? extends T> mapper) {
+		return map(map, mapper).collect(EArrayList.toEArrayList());
+	}
+	
+	/**
+	 * Converts a map of given <Key, Value> entries into a Stream and performs
+	 * the given filter across each Entry<Key, Value> then finally collects the
+	 * filtered data into the specified Collector.
+	 */
+	public static <K, V, A, T> T filterInto(Map<K, V> map, Predicate<? super Entry<K, V>> filter, Collector<? super Entry<K, V>, A, T> collector) {
+		return filter(map, filter).collect(collector);
+	}
+	
+	/**
+	 * Reduces the given map's entries down by the given filter, then
+	 * constructs and stores the remaining entries within a new Map<K, V>
+	 * which is then returned.
+	 * 
+	 * @param <K>    Key type
+	 * @param <V>    Value type
+	 * @param map    The incoming map
+	 * @param filter The filter to reduce the map by
+	 * 
+	 * @return A new Map with elements that have been filtered by the
+	 *         given filter
+	 * 
+	 * @since 1.4.2
+	 */
+	public static <K, V> Map<K, V> filterInto(Map<K, V> map, Predicate<? super Entry<K, V>> filter) {
+		Map<K, V> r = new HashMap<>();
+		var filtered = filter(map, filter);
+		var it = filtered.iterator();
+		while (it.hasNext()) {
+			var e = it.next();
+			r.put(e.getKey(), e.getValue());
+		}
+		return r;
+	};
+	
+	//---------------
+	// Array forEach
+	//---------------
 	
 	public static void forEach(boolean[] arr, Consumer<? super Boolean> action) { for (boolean e : arr) action.accept(e); }
 	public static void forEach(byte[] arr, Consumer<? super Byte> action) { for (byte e : arr) action.accept(e); }
@@ -548,7 +632,9 @@ public class EUtil {
 	public static void forEach(float[] arr, Consumer<? super Float> action) { for (float e : arr) action.accept(e); }
 	public static void forEach(double[] arr, Consumer<? super Double> action) { for (double e : arr) action.accept(e); }
 	
-	//array forEach Returns
+	//-----------------------
+	// Array forEach Returns
+	//-----------------------
 	
 	public static <R> R forEachR(boolean[] arr, Consumer<? super Boolean> action, R returnVal) { for (boolean e : arr) { action.accept(e); } return returnVal; }
 	public static <R> R forEachR(byte[] arr, Consumer<? super Byte> action, R returnVal) { for (byte e : arr) { action.accept(e); } return returnVal; }
@@ -811,6 +897,17 @@ public class EUtil {
 	public static <E> E tryGet(Optional<E> optional) {
 		try { return optional.get(); }
 		catch (Throwable e) { return null; }
+	}
+	
+	public static void tryDo(Runnable code, Class<? extends Throwable> type, Consumer<? super Throwable> ifFail) {
+		Objects.requireNonNull(code);
+		Objects.requireNonNull(type);
+		Objects.requireNonNull(ifFail);
+		
+		try { code.run(); }
+		catch (Throwable e) {
+			if (e.getClass().isAssignableFrom(type)) ifFail.accept(e);
+		}
 	}
 	
 }

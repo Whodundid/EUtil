@@ -7,6 +7,7 @@ package eutil.sys;
  * @since 1.0.1
  */
 public enum OSType {
+	
 	WINDOWS,
 	MAC,
 	SOLARIS,

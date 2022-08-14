@@ -1,11 +1,13 @@
 package eutil.strings;
 
-import static eutil.EUtil.filterNull;
-import static eutil.EUtil.tryGet;
-import static eutil.lambda.Comparisons.strlen;
+import static eutil.EUtil.*;
+import static eutil.lambda.Comparisons.*;
 
 import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import eutil.EUtil;
@@ -20,10 +22,27 @@ import eutil.debug.Experimental;
  */
 public final class StringUtil {
 	
-	/** Returns the string version of the object. This function also accounts for null values. */
-	public static String toString(Object o) { return toString(o, "null"); }
-	/** Returns the string version of the object. This function also accounts for null values. If the value is null, "null" is returned. */
-	public static String toString(Object o, String defaultVal) { return (o != null) ? o.toString() : defaultVal; }
+	private StringUtil() {}
+	
+	/**
+	 * Returns the string version of the object. This function also
+	 * accounts for null values.
+	 */
+	public static String toString(Object o) {
+		return toString(o, "null");
+	}
+	
+	/**
+	 * Returns the string version of the object. This function also
+	 * accounts for null values. If the value is null, "null" is returned.
+	 */
+	public static String toString(Object o, String defaultVal) {
+		return (o != null) ? o.toString() : defaultVal;
+	}
+	
+	//-----------------------------
+	// Array-To-String conversions
+	//-----------------------------
 	
 	public static String toString(boolean[] e) { return toString(e, ", "); }
 	public static String toString(byte[] e) { return toString(e, ", "); }
@@ -35,39 +54,55 @@ public final class StringUtil {
 	public static String toString(double[] e) { return toString(e, ", "); }
 	public static <E> String toString(E[] e) { return toString(e, ", "); }
 	public static String toString(List<?> e) { return toString(e, ", "); }
+	public static String toString(Iterator<?> e) { return toString(e, ", "); }
+	public static String toString(Enumeration<?> e) { return toString(e, ", "); }
+	public static String toString(Map<?, ?> e) { return toString(e, ", "); }
 	
-	public static String toString(boolean[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(byte[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(char[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(int[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(short[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(long[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(float[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(double[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static <E> String toString(E[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(List<?> e, String separator) { String s = ""; for (int i = 0; i < e.size(); i++) { s += e.get(i) + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
+	public static String toString(boolean[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r(); }
+	public static String toString(byte[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(char[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(int[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(short[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(long[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(float[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(double[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static <E> String toString(E[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(List<?> e, String separator) { var s=sb(separator);for(int i=0;i<e.size();i++)s.a(e.get(i),separator);return s.r();}
+	public static String toString(Iterator<?> e, String separator) { var s=sb(separator);while(e.hasNext())s.a(e.next(),separator);return s.r(); }
+	public static String toString(Enumeration<?> e, String separator) { var s=sb(separator);while(e.hasMoreElements())s.a(e.nextElement(),separator);return s.r(); }
+	public static String toString(Map<?, ?> e, String separator) {
+		var s = sb(separator);
+		var it = e.entrySet().iterator();
+		while (it.hasNext()) {
+			var o = it.next();
+			//handle self-contains condition
+			if (o == e) s.a("Itself!", separator);
+			else s.a(toString(o), separator);
+		}
+		return s.r();
+	}
 	
 	public static <E, T> String toString(E[] e, Function<? super E, ? extends T> mapper) {
 		return toString(e, mapper, " ");
 	}
 	
 	public static <E, T> String toString(E[] e, Function<? super E, ? extends T> mapper, String separator) {
-		var out = new StringBuilder();
+		var out = sb();
 		for (int i = 0; i < e.length; i++) {
-			out.append(mapper.apply(e[i]));
-			out.append(separator);
+			out.a(mapper.apply(e[i]));
+			out.a(separator);
 		}
-		return (out.toString().isEmpty()) ? out.toString() : out.substring(0, out.length() - separator.length());
+		return (out.toString().isEmpty()) ? out.toString() : out.sub(0, out.l() - separator.length());
 	}
 	
 	public static <E, T> String toString(Collection<E> e, Function<? super E, ? extends T> mapper) { return toString(EUtil.mapList(e, mapper), " "); }
 	public static <E, T> String toString(Collection<E> e, Function<? super E, ? extends T> mapper, String separator) {
-		var s = new StringBuilder();
+		var s = sb();
 		for (var val : e) {
-			s.append(mapper.apply(val));
-			s.append(separator);
+			s.a(mapper.apply(val));
+			s.a(separator);
 		}
-		return (s.toString().isEmpty()) ? s.toString() : s.substring(0, s.length() - separator.length());
+		return (s.toString().isEmpty()) ? s.toString() : s.sub(0, s.l() - separator.length());
 	}
 	
 	
@@ -117,7 +152,9 @@ public final class StringUtil {
 	public static int countChar(String in, char test) {
 		if (in == null) return -1;
 		int num = 0;
-		for (int i = 0; i < in.length(); i++) { if (in.charAt(i) == test) num++; }
+		for (int i = 0; i < in.length(); i++)
+			if (in.charAt(i) == test)
+				num++;
 		return num;
 	}
 	
@@ -133,21 +170,21 @@ public final class StringUtil {
 	 * with an optional spacer String in between each object.
 	 */
 	public static String combineAll(Object[] in, String spacer) {
-		String r = "";
-		if (in == null || in.length == 0) return r;
-		if (in.length == 1) return r += in[0];
+		var r = sb();
+		if (in == null || in.length == 0) return r.toString();
+		if (in.length == 1) return r.append(in[0]).toString();
 		for (int i = 0; i < in.length; i++) {
 			Object s = in[i];
-			r += s + ((i + 1 < in.length) ? String.valueOf(spacer) : "");
+			r.append(s, ((i + 1 < in.length) ? spacer : ""));
 		}
-		return r;
+		return r.ts();
 	}
 	
 	/**
 	 * Returns a string made from the combination of each string in a list
 	 * concatenated together.
 	 */
-	public static String combineAll(List in) {
+	public static String combineAll(List<?> in) {
 		return combineAll(in, "");
 	}
 	
@@ -156,13 +193,13 @@ public final class StringUtil {
 	 * concatenated together with an optional spacer String in between
 	 * each object.
 	 */
-	public static String combineAll(List in, String spacer) {
-		String r = "";
+	public static String combineAll(List<?> in, String spacer) {
+		var r = sb();
 		if (in == null || in.isEmpty()) return r.trim();
-		if (in.size() == 1) return r += in.get(0);
+		if (in.size() == 1) return r.append(in.get(0)).toString();
 		for (int i = 0; i < in.size(); i++) {
 			Object s = in.get(i);
-			r += s + ((i + 1 < in.size()) ? String.valueOf(spacer) : "");
+			r.append(s, ((i + 1 < in.size()) ? spacer : ""));
 		}
 		return r.trim();
 	}
@@ -253,8 +290,8 @@ public final class StringUtil {
 	 */
 	public static int findStartingIndex(String toSearch, String toFind, boolean fromBack) {
 		if (fromBack) {
-			var s = new StringBuilder(toSearch).reverse();
-			var f = new StringBuilder(toFind).reverse().toString();
+			var s = sb(toSearch).reverse();
+			var f = sb(toFind).reverse().toString();
 			return toSearch.length() - toFind.length() - s.indexOf(f);
 		}
 		return toSearch.indexOf(toFind);
@@ -307,5 +344,63 @@ public final class StringUtil {
 		}
 		return null;
 	}
+	
+	//--------------------------------------------------
+	// StringUtil Helper Class - CondensedStringBuilder
+	//--------------------------------------------------
+	
+	/**
+	 * As so many operations within StringUtil make use of the
+	 * StringBuilder class for optimizations, ShortSB is intended to
+	 * provide an internal shorthand interface to wrap the functionality
+	 * of a StringBuilder using extremely short method names in order to
+	 * minimize code footprint.
+	 * <p>
+	 * This class is not intended to used outside of the StringUtil
+	 * context. Furthermore, even within StringUtil this class is written
+	 * to maximize functionality, not readability!
+	 * 
+	 * @author Hunter Bragg
+	 */
+	private static final class ShortSB {
+		private StringBuilder b;
+		private String s; //separator
+		
+		private ShortSB() { b = new StringBuilder(); }
+		private ShortSB(String in) { b = new StringBuilder(in); }
+		private static ShortSB sep(String in) { var s=new ShortSB();s.s=in;return s; }
+		private static ShortSB sep(String in, String sep) { var s=new ShortSB(in);s.s=sep;return s; }
+		
+		@Override public String toString() { return b.toString(); }
+		
+		String r() { return(e())?b.toString():(s!=null)?sub(0,l()-l(s)):b.toString(); }
+		String r(String sep) { return(e())?b.toString():sub(0,l()-l(sep)); }
+		
+		private static int l(String in) { return in.length(); }
+		
+		ShortSB c() { b = new StringBuilder(); return this; }
+		ShortSB clear() { return c(); }
+		ShortSB a(Object o) { b.append(o); return this; }
+		ShortSB a(Object... a) { for(var o:a)b.append(o);return this; }
+		ShortSB append(Object o) { b.append(o); return this; }
+		ShortSB append(Object... a) { for(var o:a)b.append(o);return this; }
+		ShortSB rev() { b.reverse(); return this; }
+		ShortSB reverse() { b.reverse(); return this; }
+		int indexOf(String in) { return b.indexOf(in); }
+		int l() { return b.length(); }
+		int length() { return b.length(); }
+		boolean e() { return b.isEmpty(); }
+		boolean isEmpty() { return b.isEmpty(); }
+		String sub(int index) { return b.substring(index); }
+		String sub(int start, int end) { return b.substring(start, end); }
+		String ts() { return b.toString(); }
+		String trim() { return b.toString().trim(); }
+		StringBuilder getSB() { return b; }
+	}
+	
+	private static ShortSB sb() { return new ShortSB(); }
+	private static ShortSB sb(String in) { return new ShortSB(in); }
+	private static ShortSB sbs(String sep) { return ShortSB.sep(sep); }
+	private static ShortSB sbss(String in, String sep) { return ShortSB.sep(in, sep); }
 	
 }

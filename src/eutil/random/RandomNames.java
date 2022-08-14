@@ -1,6 +1,7 @@
 package eutil.random;
 
 import eutil.datatypes.EArrayList;
+import eutil.datatypes.EList;
 
 /**
  * A collection of 250 unique, randomly generated names.
@@ -17,7 +18,7 @@ public final class RandomNames {
 	
 	//----------------------------
 	
-	private static EArrayList<String> names = new EArrayList();
+	private static EList<String> names = new EArrayList<>();
 	
 	public static String get() { return names.get(RandomUtil.getRoll(0, names.size() - 1)); }
 	

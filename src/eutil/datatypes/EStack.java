@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 public class EStack<E> {
 
-	private EArrayList<E> elements = new EArrayList();
+	private EList<E> elements = new EArrayList<>();
 	private int maxSize;
 	
 	//--------------

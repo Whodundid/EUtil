@@ -1,6 +1,7 @@
 package eutil.random;
 
 import eutil.datatypes.EArrayList;
+import eutil.datatypes.EList;
 
 /**
  * A collection of unique randomly generated words.
@@ -17,7 +18,7 @@ public final class RandomWords {
 	
 	//----------------------------
 	
-	private static EArrayList<String> words = new EArrayList();
+	private static EList<String> words = new EArrayList<>();
 	
 	public static String get() { return words.get(RandomUtil.getRoll(0, words.size() - 1)); }
 	

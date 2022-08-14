@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class HexMath {
 	
 	/** Contains a direct mapping of hex to binary conversions for each 0-f hex character. */
-	static HashMap<String, String> hexVals = new HashMap();
+	static HashMap<String, String> hexVals = new HashMap<>();
 	
 	static {
 		hexVals.put("0", "0000");
