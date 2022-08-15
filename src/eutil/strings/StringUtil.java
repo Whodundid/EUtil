@@ -292,7 +292,8 @@ public final class StringUtil {
 		if (fromBack) {
 			var s = sb(toSearch).reverse();
 			var f = sb(toFind).reverse().toString();
-			return toSearch.length() - toFind.length() - s.indexOf(f);
+			var index = s.indexOf(f);
+			return (index > 0) ? toSearch.length() - toFind.length() - s.indexOf(f) : -1;
 		}
 		return toSearch.indexOf(toFind);
 	}
