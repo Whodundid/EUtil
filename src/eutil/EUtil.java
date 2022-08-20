@@ -41,6 +41,9 @@ import eutil.strings.StringUtil;
  * 		<li> Array and List conversions
  * 		<li> String operations
  * 		<li> System Info
+ * 		<li> File operations
+ * 		<li> Swing utilities
+ * 		<li> General debugging assists
  * </ul>
  *  
  *  @author Hunter Bragg
