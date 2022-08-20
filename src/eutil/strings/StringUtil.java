@@ -58,18 +58,18 @@ public final class StringUtil {
 	public static String toString(Enumeration<?> e) { return toString(e, ", "); }
 	public static String toString(Map<?, ?> e) { return toString(e, ", "); }
 	
-	public static String toString(boolean[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r(); }
-	public static String toString(byte[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
-	public static String toString(char[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
-	public static String toString(int[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
-	public static String toString(short[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
-	public static String toString(long[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
-	public static String toString(float[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
-	public static String toString(double[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
-	public static <E> String toString(E[] e, String separator) { var s=sb(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
-	public static String toString(List<?> e, String separator) { var s=sb(separator);for(int i=0;i<e.size();i++)s.a(e.get(i),separator);return s.r();}
-	public static String toString(Iterator<?> e, String separator) { var s=sb(separator);while(e.hasNext())s.a(e.next(),separator);return s.r(); }
-	public static String toString(Enumeration<?> e, String separator) { var s=sb(separator);while(e.hasMoreElements())s.a(e.nextElement(),separator);return s.r(); }
+	public static String toString(boolean[] e, String separator) { var s=sbs(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r(); }
+	public static String toString(byte[] e, String separator) { var s=sbs(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(char[] e, String separator) { var s=sbs(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(int[] e, String separator) { var s=sbs(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(short[] e, String separator) { var s=sbs(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(long[] e, String separator) { var s=sbs(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(float[] e, String separator) { var s=sbs(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(double[] e, String separator) { var s=sbs(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static <E> String toString(E[] e, String separator) { var s=sbs(separator);for(int i=0;i<e.length;i++)s.a(e[i],separator);return s.r();}
+	public static String toString(List<?> e, String separator) { var s=sbs(separator);for(int i=0;i<e.size();i++)s.a(e.get(i),separator);return s.r();}
+	public static String toString(Iterator<?> e, String separator) { var s=sbs(separator);while(e.hasNext())s.a(e.next(),separator);return s.r(); }
+	public static String toString(Enumeration<?> e, String separator) { var s=sbs(separator);while(e.hasMoreElements())s.a(e.nextElement(),separator);return s.r(); }
 	public static String toString(Map<?, ?> e, String separator) {
 		var s = sb(separator);
 		var it = e.entrySet().iterator();
