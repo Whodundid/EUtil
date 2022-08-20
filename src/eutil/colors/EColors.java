@@ -54,6 +54,7 @@ public enum EColors {
 	mgray(0xff636363, "Medium Gray"),
 	dgray(0xff474747, "Dark Gray"),
 	pdgray(0xff303030, "Pretty Dark Gray"),
+	lsteel(0xff242424, "Light Steel"),
 	steel(0xff1f1f1f, "Steel"),
 	dsteel(0xff191919, "Dark Steel"),
 	vdgray(0xff111111, "Very Dark Gray"),

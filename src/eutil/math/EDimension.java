@@ -78,6 +78,32 @@ public class EDimension {
 		midY = getMidY();
 	}
 	
+	/**
+	 * Expands this dimension outward in all directions by the given
+	 * amount.
+	 * 
+	 * @param amount The amount to expand outwards by
+	 * @return A modified dimension using this one as a starting point
+	 * @since 1.5.1
+	 */
+	public EDimension add(Number amount) {
+		double d = amount.doubleValue();
+		return new EDimension(startX - d, startY - d, endX + d, endY + d);
+	}
+	
+	/**
+	 * Contracts this dimension inward by in all directions by the given
+	 * amount.
+	 * 
+	 * @param amount The amount to contract inwards by
+	 * @return A modified dimension using this one as a starting point
+	 * @since 1.5.1
+	 */
+	public EDimension sub(Number amount) {
+		double d = amount.doubleValue();
+		return new EDimension(startX + d, startY + d, endX - d, endY - d);
+	}
+	
 	public EDimensionI toLong() { return new EDimensionI((long) startX, (long) startY, (long) endX, (long) endY); }
 	
 	public boolean contains(Number xIn, Number yIn) {

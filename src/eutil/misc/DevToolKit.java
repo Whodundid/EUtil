@@ -16,13 +16,13 @@ public class DevToolKit {
 	/**
 	 * Introduces support for {x} argument insertion in print statements.
 	 * <p>
-	 * EX: print("Hello {0}!", "World");
+	 * EX: printf("Hello {0}!", "World");
 	 * 
 	 * @param toPrint The base string with argument insertions nested
 	 * @param args    The list of object arguments to be used for
 	 *                insertions
 	 */
-	public static void print(String toPrint, Object... args) {
+	public static void printf(String toPrint, Object... args) {
 		performPrintln(false, toPrint, args);
 	}
 	
@@ -30,13 +30,13 @@ public class DevToolKit {
 	 * Introduces support for {x} argument insertion in println
 	 * statements.
 	 * <p>
-	 * EX: println("Hello {0}!", "World");
+	 * EX: printlnf("Hello {0}!", "World");
 	 * 
 	 * @param toPrint The base string with argument insertions nested
 	 * @param args    The list of object arguments to be used for
 	 *                insertions
 	 */
-	public static void println(String toPrint, Object... args) {
+	public static void printlnf(String toPrint, Object... args) {
 		performPrintln(true, toPrint, args);
 	}
 	

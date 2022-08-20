@@ -104,6 +104,32 @@ public class EDimensionI {
 		return this;
 	}
 	
+	/**
+	 * Expands this dimension outward in all directions by the given
+	 * amount.
+	 * 
+	 * @param amount The amount to expand outwards by
+	 * @return A modified dimension using this one as a starting point
+	 * @since 1.5.1
+	 */
+	public EDimensionI add(Number amount) {
+		long l = amount.longValue();
+		return new EDimensionI(startX - l, startY - l, endX + l, endY + l);
+	}
+	
+	/**
+	 * Contracts this dimension inward by in all directions by the given
+	 * amount.
+	 * 
+	 * @param amount The amount to contract inwards by
+	 * @return A modified dimension using this one as a starting point
+	 * @since 1.5.1
+	 */
+	public EDimensionI sub(Number amount) {
+		long l = amount.longValue();
+		return new EDimensionI(startX + l, startY + l, endX - l, endY - l);
+	}
+	
 	public EDimension toDouble() { return new EDimension(startX, startY, endX, endY); }
 	
 	public boolean contains(long xIn, long yIn) { return xIn >= startX && xIn <= endX && yIn >= startY && yIn <= endY;}
