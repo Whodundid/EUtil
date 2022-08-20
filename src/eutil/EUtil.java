@@ -44,7 +44,7 @@ import eutil.strings.StringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.4.2
+ *  @version 1.5
  */
 public class EUtil {
 	
@@ -63,7 +63,7 @@ public class EUtil {
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "1.4.2";
+	public static final String version = "1.5";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
