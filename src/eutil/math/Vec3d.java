@@ -110,7 +110,7 @@ public class Vec3d {
 		return v.x*v.x + v.y*v.y + v.z*v.z;
 	}
 	
-	/** Returns the magnitdue of the given Vector3D. */
+	/** Returns the magnitude of the given Vector3D. */
 	public static double mag(Vec3d vecIn) {
 		return Math.sqrt(multAdd(vecIn));
 	}
@@ -139,7 +139,7 @@ public class Vec3d {
 		return new Vec3d(v.x * s, v.y * s, v.z * s);
 	}
 	
-	/** Returns a new Vector3D containg the cross product of the two given Vector3 objects. */
+	/** Returns a new Vector3D containing the cross product of the two given Vector3 objects. */
 	public static Vec3d cross(Vec3d vec1, Vec3d vec2) {
 		Vec3d a = vec1, b = vec2;
 		return new Vec3d((a.y*b.z - a.z*b.y), (a.z*b.x - a.x*b.z), (a.x*b.y - a.y*b.x));

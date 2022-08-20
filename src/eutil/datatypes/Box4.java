@@ -32,11 +32,24 @@ public class Box4<A, B, C, D> {
 	// Overrides
 	//-----------
 	
-	@Override public String toString() { return "[" + a + ", " + b + ", " + c + ", " + d + "]"; }
+	@Override
+	public String toString() {
+		return "[" + a + ", " + b + ", " + c + ", " + d + "]";
+	}
 	
 	//---------
 	// Methods
 	//---------
+	
+	public boolean contains(Object obj) {
+		if (obj == null) return a == null || b == null || c == null || d == null;
+		return isAnyEqual(obj, a, b, c, d);
+	}
+	
+	public boolean containsA(A obj) { return isEqual(a, obj); }
+	public boolean containsB(B obj) { return isEqual(b, obj); }
+	public boolean containsC(C obj) { return isEqual(c, obj); }
+	public boolean containsD(D obj) { return isEqual(d, obj); }
 	
 	public boolean compare(Box4<?, ?, ?, ?> box) { return nullDoR(box, o -> compareInOrder(a, o.a, b, o.b, c, o.c, d, o.d), false); }
 	public boolean compare(A aIn, B bIn, C cIn, D dIn) { return compareInOrder(a, aIn, b, bIn, c, cIn, d, dIn); }

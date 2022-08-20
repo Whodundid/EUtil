@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
  * @author Hunter Bragg
  * @since 1.3
  */
-@Target({ TYPE, FIELD, METHOD, LOCAL_VARIABLE, PACKAGE })
+@Target({TYPE, FIELD, METHOD, LOCAL_VARIABLE, PACKAGE})
 public @interface InDevelopment {}

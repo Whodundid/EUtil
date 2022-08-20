@@ -8,7 +8,7 @@ package eutil.datatypes.util;
  * @author Hunter
  * @since 1.0.0
  */
-public enum NumType {
+public enum ENumType {
 	
 	// Standard Java number datatypes
 	BYTE,

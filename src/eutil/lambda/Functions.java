@@ -1,6 +1,5 @@
 package eutil.lambda;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
@@ -8,7 +7,7 @@ import eutil.EUtil;
 import eutil.debug.Experimental;
 
 /**
- * A collection of various comparison logic structures.
+ * A collection of lambda functions.
  * 
  * @author Hunter Bragg
  * @since 1.1.1
@@ -16,9 +15,6 @@ import eutil.debug.Experimental;
 public final class Functions {
 	
 	private Functions() {}
-	
-	/** A general string length comparison. */
-	public static final Comparator<String> strlen = Comparator.comparingInt(String::length);
 	
 	@Experimental
 	public static final Function<List<?>, List<?>> reverse = (a) -> EUtil.reverseList(a);

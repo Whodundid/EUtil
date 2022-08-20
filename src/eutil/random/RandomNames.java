@@ -12,12 +12,12 @@ public final class RandomNames {
 
 	//----------------------------
 	
-	// prevent instaniation
+	// prevent instantiation
 	private RandomNames() {}
 	
 	//----------------------------
 	
-	private static EArrayList<String> names = new EArrayList();
+	private static EArrayList<String> names = new EArrayList<>();
 	
 	public static String get() { return names.get(RandomUtil.getRoll(0, names.size() - 1)); }
 	

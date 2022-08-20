@@ -10,9 +10,17 @@ import java.lang.reflect.Array;
  */
 public class Grid<E> {
 	
-	int width, height;
-	E[][] data;
-	Class<E> type;
+	//--------
+	// Fields
+	//--------
+	
+	private int width, height;
+	private E[][] data;
+	private Class<E> type;
+	
+	//--------------
+	// Constructors
+	//--------------
 	
 	public Grid() {}
 	public Grid(Class<E> typeIn) { type = typeIn; }
@@ -32,48 +40,9 @@ public class Grid<E> {
 	}
 	
 	/** Clears existing value data and sets each value to null. */
-	public Grid<E> clear() { data = (E[][]) Array.newInstance(type, width, height); return this; }
-	
-	//---------
-	// Setters
-	//---------
-	
-	public void setWidth(int widthIn) { width = widthIn; }
-	public void setHeight(int heightIn) { height = heightIn; }
-	public void setType(Class<E> typeIn) { type = typeIn; }
-	
-	/** Sets the value at given x and y coords of array. */
-	public void set(E value, int xIn, int yIn) {
-		if (inRange(this, xIn, yIn)) { data[xIn][yIn] = value; }
-	}
-	/** Sets the value at given x and y coords of array. Ignores range checking. */
-	public void setFast(E value, int xIn, int yIn) { data[xIn][yIn] = value; }
-	
-	/** Sets an entire row of values in this chunk. */
-	public void setRow(E[] in, int rowNum) {
-		if (rowNum >= 0 && rowNum < height) { data[rowNum] = in; }
-	}
-	/** Sets an entire row of values in this chunk. Ignores range checking. */
-	public void setRowFast(E[] in, int rowNum) { data[rowNum] = in; }
-	
-	/** Sets an entire column of values in this chunk. */
-	public void setCol(E[] in, int colNum) {
-		if (colNum >= 0 && colNum < width) { setColFast(in, colNum); }
-	}
-	/** Sets an entire column of values in this chunk. Ignores range checking. */
-	public void setColFast(E[] in, int colNum) {
-		for (int i = 0; i < height; i++) { data[i][colNum] = in[i]; }
-	}
-	
-	public void setRegion(E[][] in, int sX, int sY, int eX, int eY) {
-		if (inRange(this, sX, sY, eX, eY)) { setRegionFast(in, sX, sY, eX, eY); }
-	}
-	public void setRegionFast(E[][] in, int sX, int sY, int eX, int eY) {
-		for (int i = sX, x = 0; i < eX; i++, x++) {
-			for (int j = sY, y = 0; j < eY; j++, y++) {
-				data[i][j] = in[x][y];
-			}
-		}
+	public Grid<E> clear() {
+		data = (E[][]) Array.newInstance(type, width, height);
+		return this;
 	}
 	
 	//---------
@@ -122,6 +91,48 @@ public class Grid<E> {
 	public int getHeight() { return height; }
 	
 	public E[][] getData() { return data; }
+	
+	//---------
+	// Setters
+	//---------
+	
+	public void setWidth(int widthIn) { width = widthIn; }
+	public void setHeight(int heightIn) { height = heightIn; }
+	public void setType(Class<E> typeIn) { type = typeIn; }
+	
+	/** Sets the value at given x and y coords of array. */
+	public void set(E value, int xIn, int yIn) {
+		if (inRange(this, xIn, yIn)) data[xIn][yIn] = value;
+	}
+	/** Sets the value at given x and y coords of array. Ignores range checking. */
+	public void setFast(E value, int xIn, int yIn) { data[xIn][yIn] = value; }
+	
+	/** Sets an entire row of values in this chunk. */
+	public void setRow(E[] in, int rowNum) {
+		if (rowNum >= 0 && rowNum < height) data[rowNum] = in;
+	}
+	/** Sets an entire row of values in this chunk. Ignores range checking. */
+	public void setRowFast(E[] in, int rowNum) { data[rowNum] = in; }
+	
+	/** Sets an entire column of values in this chunk. */
+	public void setCol(E[] in, int colNum) {
+		if (colNum >= 0 && colNum < width) setColFast(in, colNum);
+	}
+	/** Sets an entire column of values in this chunk. Ignores range checking. */
+	public void setColFast(E[] in, int colNum) {
+		for (int i = 0; i < height; i++) data[i][colNum] = in[i];
+	}
+	
+	public void setRegion(E[][] in, int sX, int sY, int eX, int eY) {
+		if (inRange(this, sX, sY, eX, eY)) setRegionFast(in, sX, sY, eX, eY);
+	}
+	public void setRegionFast(E[][] in, int sX, int sY, int eX, int eY) {
+		for (int i = sX, x = 0; i < eX; i++, x++) {
+			for (int j = sY, y = 0; j < eY; j++, y++) {
+				data[i][j] = in[x][y];
+			}
+		}
+	}
 	
 	//----------------
 	// Static Methods

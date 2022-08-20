@@ -1,4 +1,4 @@
-package eutil.sys;
+package eutil.file;
 
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -69,7 +69,7 @@ public class LineReader implements Closeable {
 	 * @throws IOException if any error occurs within the underlying BufferedReader
 	 */
 	public String nextLine() throws IOException {
-		hasNext();
+		if (hasNext()) grabbed = false;
 		return grabbedLine;
 	}
 	

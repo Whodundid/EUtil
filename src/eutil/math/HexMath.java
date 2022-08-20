@@ -3,7 +3,6 @@ package eutil.math;
 import java.awt.Color;
 import java.util.HashMap;
 
-
 /**
  * A static library containing various helper functions related to
  * conversions and operations on binary and hexadecimal values.
@@ -14,7 +13,7 @@ import java.util.HashMap;
 public class HexMath {
 	
 	/** Contains a direct mapping of hex to binary conversions for each 0-f hex character. */
-	static HashMap<String, String> hexVals = new HashMap();
+	static HashMap<String, String> hexVals = new HashMap<>();
 	
 	static {
 		hexVals.put("0", "0000");
@@ -37,17 +36,16 @@ public class HexMath {
 	
 	/** If the input value is between [0,15] (inclusively) the resulting output is the corresponding hexadecimal character value. */
 	public static String getHexChar(int in) {
-		if (in >= 0) {
-			if (in <= 9) { return String.valueOf(in); }
-			else if (in <= 15) {
-				switch (in) {
-				case 10: return "a";
-				case 11: return "b";
-				case 12: return "c";
-				case 13: return "d";
-				case 14: return "e";
-				case 15: return "f";
-				}
+		if (in < 0) return null;
+		if (in <= 9) return String.valueOf(in);
+		else if (in <= 15) {
+			switch (in) {
+			case 10: return "a";
+			case 11: return "b";
+			case 12: return "c";
+			case 13: return "d";
+			case 14: return "e";
+			case 15: return "f";
 			}
 		}
 		return null;
@@ -113,7 +111,7 @@ public class HexMath {
 				break; 
 			}
 		}
-		if (i == -1) { twos = '1' + twos; }
+		if (i == -1) twos = '1' + twos;
 		
 		return twos;
 	}
@@ -134,9 +132,9 @@ public class HexMath {
 	public static int RGBtoHEX(Color color) {
         String hex = Integer.toHexString(color.getRGB() & 0xffffff);
         if (hex.length() < 6) {
-            if (hex.length() == 5) { hex = "0" + hex; }
-            if (hex.length() == 4) { hex = "00" + hex; }
-            if (hex.length() == 3) { hex = "000" + hex; }
+            if (hex.length() == 5) hex = "0" + hex;
+            if (hex.length() == 4) hex = "00" + hex;
+            if (hex.length() == 3) hex = "000" + hex;
         }
         hex = "#" + hex;
         return Integer.decode(hex);

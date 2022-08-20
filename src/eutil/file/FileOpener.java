@@ -1,6 +1,7 @@
-package eutil.sys;
+package eutil.file;
 
 import eutil.EUtil;
+import eutil.sys.OSType;
 
 import java.awt.Desktop;
 import java.io.File;

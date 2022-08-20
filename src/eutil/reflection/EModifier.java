@@ -18,22 +18,22 @@ public class EModifier {
 	
 	@Override
 	public String toString() {
-		String r = "";
+		var r = new StringBuilder("");
 		
-		r += (isPublic()) ? "public " : "";
-		r += (isPrivate()) ? "private " : "";
-		r += (isProtected()) ? "protected " : "";
-		r += (isStatic()) ? "static " : "";
-		r += (isFinal()) ? "final " : "";
-		r += (isSynchronized()) ? "synchronized " : "";
-		r += (isVolatile()) ? "volatile " : "";
-		r += (isTransient()) ? "transient " : "";
-		r += (isNative()) ? "native " : "";
-		r += (isInterface()) ? "interface " : "";
-		r += (isAbstract()) ? "abstract " : "";
-		r += (isStrict()) ? "strict " : "";
+		r.append((isPublic()) ? "public " : "");
+		r.append((isPrivate()) ? "private " : "");
+		r.append((isProtected()) ? "protected " : "");
+		r.append((isStatic()) ? "static " : "");
+		r.append((isFinal()) ? "final " : "");
+		r.append((isSynchronized()) ? "synchronized " : "");
+		r.append((isVolatile()) ? "volatile " : "");
+		r.append((isTransient()) ? "transient " : "");
+		r.append((isNative()) ? "native " : "");
+		r.append((isInterface()) ? "interface " : "");
+		r.append((isAbstract()) ? "abstract " : "");
+		r.append((isStrict()) ? "strict " : "");
 		
-		return r.trim();
+		return r.toString().trim();
 	}
 	
 	public boolean isPublic() { return Modifier.isPublic(m); }

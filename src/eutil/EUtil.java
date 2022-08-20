@@ -1,14 +1,17 @@
 package eutil;
 
-import static eutil.lambda.Predicates.fileExists;
-import static eutil.lambda.Predicates.notNull;
+import static eutil.lambda.Predicates.*;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Stack;
@@ -23,6 +26,8 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import eutil.datatypes.EArrayList;
+import eutil.file.FileUtil;
+import eutil.strings.StringUtil;
 
 /** 
  * A static helper library containing a number of useful functions including, but not limited to:
@@ -39,7 +44,7 @@ import eutil.datatypes.EArrayList;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.4.0
+ *  @version 1.5.1
  */
 public class EUtil {
 	
@@ -58,7 +63,7 @@ public class EUtil {
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "1.4.0";
+	public static final String version = "1.5.1";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -118,6 +123,24 @@ public class EUtil {
 	 */
 	public static boolean isNotEqual(Object a, Object b) {
 		return (a != null) ? !a.equals(b) : b != null;
+	}
+	
+	/**
+	 * Returns true if any of the given 'toCheck' values match the given
+	 * 'obj'.
+	 * 
+	 * @param obj     The base object
+	 * @param toCheck A list of objects to compare against the base object
+	 * 
+	 * @return True if any of the 'toCheck' objects match the base object
+	 * 
+	 * @since 1.4.1
+	 */
+	public static boolean isAnyEqual(Object obj, Object... toCheck) {
+		if (toCheck.length == 0) return false;
+		for (var o : toCheck)
+			if (isEqual(obj, o)) return true;
+		return false;
 	}
 	
 	/**
@@ -309,36 +332,45 @@ public class EUtil {
 	
 	/**
 	 * Returns true if the given file is not null and actually exists on the system.
+	 * @see FileUtil
 	 */
 	public static boolean fileExists(File f) {
-		return fileExists.test(f);
+		return FileUtil.fileExists(f);
 	}
 	
 	//---------------
 	// Array Helpers
 	//---------------
 	
-	public static String toString(boolean[] e) { return toString(e, " "); }
-	public static String toString(byte[] e) { return toString(e, " "); }
-	public static String toString(char[] e) { return toString(e, " "); }
-	public static String toString(int[] e) { return toString(e, " "); }
-	public static String toString(short[] e) { return toString(e, " "); }
-	public static String toString(long[] e) { return toString(e, " "); }
-	public static String toString(float[] e) { return toString(e, " "); }
-	public static String toString(double[] e) { return toString(e, " "); }
-	public static <E> String toString(E[] e) { return toString(e, " "); }
-	public static String toString(List<?> e) { return toString(e, " "); }
+	//convenience mappings to StringUtil
+	public static String toString(boolean[] e) { return StringUtil.toString(e); }
+	public static String toString(byte[] e) { return StringUtil.toString(e); }
+	public static String toString(char[] e) { return StringUtil.toString(e); }
+	public static String toString(int[] e) { return StringUtil.toString(e); }
+	public static String toString(short[] e) { return StringUtil.toString(e); }
+	public static String toString(long[] e) { return StringUtil.toString(e); }
+	public static String toString(float[] e) { return StringUtil.toString(e); }
+	public static String toString(double[] e) { return StringUtil.toString(e); }
+	public static <E> String toString(E[] e) { return StringUtil.toString(e); }
+	public static String toString(List<?> e) { return StringUtil.toString(e); }
+	public static String toString(Iterator<?> e) { return StringUtil.toString(e); }
+	public static String toString(Enumeration<?> e) { return StringUtil.toString(e); }
+	public static String toString(Map<?, ?> e) { return StringUtil.toString(e); }
 	
-	public static String toString(boolean[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(byte[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(char[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(int[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(short[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(long[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(float[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(double[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static <E> String toString(E[] e, String separator) { String s = ""; for (int i = 0; i < e.length; i++) { s += e[i] + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
-	public static String toString(List<?> e, String separator) { String s = ""; for (int i = 0; i < e.size(); i++) { s += e.get(i) + separator; } return (s.isEmpty()) ? s : s.substring(0, s.length() - separator.length()); }
+	//convenience mappings to StringUtil
+	public static String toString(boolean[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(byte[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(char[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(int[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(short[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(long[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(float[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(double[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static <E> String toString(E[] e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(List<?> e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(Iterator<?> e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(Enumeration<?> e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(Map<?, ?> e, String separator) { return StringUtil.toString(e, separator); }
 	
 	public static Object[] toObjArr(boolean[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
 	public static Object[] toObjArr(byte[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
@@ -350,16 +382,15 @@ public class EUtil {
 	public static Object[] toObjArr(double[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
 	public static <E> Object[] toObjArr(E[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
 	
-	public static void printArray(boolean[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(byte[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(char[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(int[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(short[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(long[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(float[] arr) { printArray(toObjArr(arr)); }
-	public static void printArray(double[] arr) { printArray(toObjArr(arr)); }
-	
-	public static void printArray(Object[] arr) { forEach(arr, System.out::println); }
+	public static void printArray(boolean[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(byte[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(char[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(int[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(short[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(long[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(float[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(double[] arr) { System.out.println(toString(arr)); }
+	public static void printArray(Object[] arr) { System.out.println(toString(arr)); }
 	public static void printList(Iterable arr) { forEach(arr, System.out::println); }
 	
 	public static <E, T> void printArray(E[] arr, Function<? super E, ? super T> type) {
@@ -417,7 +448,9 @@ public class EUtil {
 	
 	public static long length(Iterable itr) { return itr.spliterator().getExactSizeIfKnown(); }
 	
-	// array conversions
+	//-------------------------
+	// Array Stream Operations
+	//-------------------------
 	
 	/** Boxes a generic varargs of typed-objects into a typed-array. */
 	public static <E> E[] asArray(E... vals) { return asList(vals).toArray(vals); }
@@ -453,9 +486,10 @@ public class EUtil {
 	/** Converts a typed-array to a Stream that filters out null objects then performs the given filter and finally performs a forEach loop on each remaining element. */
 	public static <E> void filterNullForEachA(Predicate<? super E> filter, Consumer<? super E> action, E... vals) { filterNull(vals).filter(filter).forEach(action); }
 	
-	public static <E, T> EArrayList<T> mapListA(Function<? super E, ? extends T> mapper, E... vals) { return stream(vals).map(mapper).collect(EArrayList.toEArrayList()); }
-	
-	//list conversions
+
+	//------------------------
+	// List Stream Operations
+	//------------------------
 	
 	/** Converts a typed-Collection to a Stream then performs the given filter. */
 	public static <E> Stream<E> filter(Collection<E> list, Predicate<? super E> filter) { return list.stream().filter(filter); }
@@ -515,7 +549,78 @@ public class EUtil {
 	public static <E, A> EArrayList<E> filterAsList(E[] arrIn, Predicate<? super E> filter) { return filterA(filter, arrIn).collect(EArrayList.toEArrayList()); }
 	public static <E, A> EArrayList<E> filterAsList(Collection<E> listIn, Predicate<? super E> filter) { return filter(listIn, filter).collect(EArrayList.toEArrayList()); }
 	
-	//array forEach
+	//-----------------------
+	// Map Stream Operations
+	//-----------------------
+	
+	/** Converts the entries of the given map into a stream of Entry<K, V>. */
+	public static <K, V> Stream<Entry<K, V>> stream(Map<K, V> map) { return map.entrySet().stream(); }
+	/** Reduces the entries in a given map's entry stream using the given filter. */
+	public static <K, V> Stream<Entry<K, V>> filter(Map<K, V> map, Predicate<? super Entry<K, V>> filter) { return stream(map).filter(filter); }
+	/** Translates the entries in a given map to the specified datatype 'T' using the given Function mapper. */
+	public static <K, V, T> Stream<T> map(Map<K, V> map, Function<? super Entry<K, V>, ? extends T> mapper) { return stream(map).map(mapper); }
+	/** Converts the entries of the given map into a stream of Entry<K, V> and performs the given action for each entry. */
+	public static <K, V> void forEach(Map<K, V> map, Consumer<? super Entry<K, V>> action) { stream(map).forEach(action); }
+	
+	/**
+	 * Translates the entries in a given map to the specified datatype 'T'
+	 * using the given Function mapper. Next, each newly mapped entry is
+	 * stored inside of a list and returned.
+	 * 
+	 * @param <K>    Map entry key type
+	 * @param <V>    Map entry value type
+	 * @param <T>    The type to map each entry to
+	 * @param map    The incoming map
+	 * @param mapper The function used to map entries of <K, V> into the
+	 *               given 'T' type
+	 * 				
+	 * @return A List of type 'T' consisting of each mapped entry from the
+	 *         given map
+	 * 
+	 * @since 1.4.2
+	 */
+	public static <K, V, T> List<T> mapList(Map<K, V> map, Function<? super Entry<K, V>, ? extends T> mapper) {
+		return map(map, mapper).collect(EArrayList.toEArrayList());
+	}
+	
+	/**
+	 * Converts a map of given <Key, Value> entries into a Stream and performs
+	 * the given filter across each Entry<Key, Value> then finally collects the
+	 * filtered data into the specified Collector.
+	 */
+	public static <K, V, A, T> T filterInto(Map<K, V> map, Predicate<? super Entry<K, V>> filter, Collector<? super Entry<K, V>, A, T> collector) {
+		return filter(map, filter).collect(collector);
+	}
+	
+	/**
+	 * Reduces the given map's entries down by the given filter, then
+	 * constructs and stores the remaining entries within a new Map<K, V>
+	 * which is then returned.
+	 * 
+	 * @param <K>    Key type
+	 * @param <V>    Value type
+	 * @param map    The incoming map
+	 * @param filter The filter to reduce the map by
+	 * 
+	 * @return A new Map with elements that have been filtered by the
+	 *         given filter
+	 * 
+	 * @since 1.4.2
+	 */
+	public static <K, V> Map<K, V> filterInto(Map<K, V> map, Predicate<? super Entry<K, V>> filter) {
+		Map<K, V> r = new HashMap<>();
+		var filtered = filter(map, filter);
+		var it = filtered.iterator();
+		while (it.hasNext()) {
+			var e = it.next();
+			r.put(e.getKey(), e.getValue());
+		}
+		return r;
+	};
+	
+	//---------------
+	// Array forEach
+	//---------------
 	
 	public static void forEach(boolean[] arr, Consumer<? super Boolean> action) { for (boolean e : arr) action.accept(e); }
 	public static void forEach(byte[] arr, Consumer<? super Byte> action) { for (byte e : arr) action.accept(e); }
@@ -526,7 +631,9 @@ public class EUtil {
 	public static void forEach(float[] arr, Consumer<? super Float> action) { for (float e : arr) action.accept(e); }
 	public static void forEach(double[] arr, Consumer<? super Double> action) { for (double e : arr) action.accept(e); }
 	
-	//array forEach Returns
+	//-----------------------
+	// Array forEach Returns
+	//-----------------------
 	
 	public static <R> R forEachR(boolean[] arr, Consumer<? super Boolean> action, R returnVal) { for (boolean e : arr) { action.accept(e); } return returnVal; }
 	public static <R> R forEachR(byte[] arr, Consumer<? super Byte> action, R returnVal) { for (byte e : arr) { action.accept(e); } return returnVal; }
@@ -791,9 +898,15 @@ public class EUtil {
 		catch (Throwable e) { return null; }
 	}
 	
-	public static boolean tryFileCode(File fileIn, Runnable func) { return (fileExists(fileIn)) ? tryCode(func) : false; }
-	public static <R> R tryFileCodeR(File fileIn, Runnable func, R returnVal) { tryFileCode(fileIn, func); return returnVal; }
-	public static <R> R tryFileCodeR(File fileIn, Runnable func, R ifPass, R ifFail) { return (tryFileCode(fileIn, func)) ? ifPass : ifFail; }
-	public static <R> boolean tryFileCodeR(File fileIn, Function<Object, Boolean> func) { return (fileExists(fileIn)) ? func.apply(null) : false; }
+	public static void tryDo(Runnable code, Class<? extends Throwable> type, Consumer<? super Throwable> ifFail) {
+		Objects.requireNonNull(code);
+		Objects.requireNonNull(type);
+		Objects.requireNonNull(ifFail);
+		
+		try { code.run(); }
+		catch (Throwable e) {
+			if (e.getClass().isAssignableFrom(type)) ifFail.accept(e);
+		}
+	}
 	
 }

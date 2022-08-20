@@ -48,7 +48,7 @@ public final class ReflectionHelper {
 	}
 	
 	//--------
-	// Feilds
+	// Fields
 	//--------
 	
 	/** Attempts to set the value of a field of the given name from the given object's class hierarchy. */
@@ -175,7 +175,7 @@ public final class ReflectionHelper {
 		}
 		
 		//If the field does not actually exist anywhere, throw a NoSuchFieldException
-		if (f == null) { throw new NoSuchFieldException(fieldName); }
+		if (f == null) throw new NoSuchFieldException(fieldName);
 		
 		//Otherwise return the field
 		return f;
@@ -197,7 +197,7 @@ public final class ReflectionHelper {
 		}
 		
 		//If the field does not actually exist anywhere, throw a NoSuchFieldException
-		if (m == null) { throw new NoSuchMethodException(methodName); }
+		if (m == null) throw new NoSuchMethodException(methodName);
 		
 		//Otherwise return the field
 		return m;
@@ -220,8 +220,7 @@ public final class ReflectionHelper {
 		
 		if (f == null) {
 			if (c != null) throw new NoSuchMethodException(c.getSimpleName());
-			else
-				throw new NullPointerException("The class '" + original + "' does " +
+			else throw new NullPointerException("The class '" + original + "' does " +
 											   "not have a constructor with the given parameters: [" +
 											   EUtil.asList(parameters) + "]!");
 		}

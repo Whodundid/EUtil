@@ -54,6 +54,7 @@ public enum EColors {
 	mgray(0xff636363, "Medium Gray"),
 	dgray(0xff474747, "Dark Gray"),
 	pdgray(0xff303030, "Pretty Dark Gray"),
+	lsteel(0xff242424, "Light Steel"),
 	steel(0xff1f1f1f, "Steel"),
 	dsteel(0xff191919, "Dark Steel"),
 	vdgray(0xff111111, "Very Dark Gray"),
@@ -107,6 +108,11 @@ public enum EColors {
 	
 	/** Returns the color's name. */
 	public String n() { return name; }
+	
+	/** Returns the EColor's integer color with modified opacity. (long version) */
+	public int opacity(long val) {
+		return opacity((int) val);
+	}
 	
 	/** Returns the EColor's integer color with modified opacity. */
 	public int opacity(int val) {

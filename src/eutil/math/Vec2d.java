@@ -93,7 +93,7 @@ public class Vec2d {
 	// Static Vector Math
 	//--------------------
 	
-	/** Returns the magnitdue of the given Vector3. */
+	/** Returns the magnitude of the given Vector3. */
 	public static double magnitude(Vec2d vecIn) {
 		return nullApplyR(vecIn, v -> Math.sqrt(v.x * v.x + v.y * v.y), null);
 	}
@@ -113,7 +113,7 @@ public class Vec2d {
 		return nullApplyR(vecIn, v -> new Vec2d(v.x * val, v.y * val));
 	}
 	
-	/** Returns a new Vector3 containg the cross product of the two given Vector3 objects. */
+	/** Returns a new Vector3 containing the cross product of the two given Vector3 objects. */
 	//public static Vector2D crossProduct(Vector2D vec1, Vector2D vec2) {
 	//	return nullDoR(vec1, vec2, (a, b) -> new Vector2D(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x), null);
 	//}

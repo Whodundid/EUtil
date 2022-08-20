@@ -38,6 +38,15 @@ public class Box3<A, B, C> {
 	
 	public Box3<A, B, C> clear() { return set(null, null, null); }
 	
+	public boolean contains(Object obj) {
+		if (obj == null) return a == null || b == null || c == null;
+		return isAnyEqual(obj, a, b, c);
+	}
+	
+	public boolean containsA(A obj) { return isEqual(a, obj); }
+	public boolean containsB(B obj) { return isEqual(b, obj); }
+	public boolean containsC(C obj) { return isEqual(c, obj); }
+	
 	public boolean compare(Box3<?, ?, ?> box) { return nullDoR(box, o -> compareInOrder(a, o.a, b, o.b, c, o.c), false); }
 	public boolean compare(A aIn, B bIn, C cIn) { return compareInOrder(a, aIn, b, bIn, c, cIn); }
 	

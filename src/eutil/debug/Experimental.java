@@ -16,7 +16,7 @@ import eutil.EUtil;
  * @author Hunter Bragg
  * @since 1.1.1
  */
-@Target({ TYPE, METHOD, PACKAGE, FIELD })
+@Target({TYPE, METHOD, PACKAGE, FIELD})
 public @interface Experimental {
 
 	/**
