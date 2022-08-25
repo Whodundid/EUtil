@@ -203,7 +203,11 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	}
 	
 	@Override public void addFirst(E e) { add(0, e); }
-	@Override public void addLast(E e) { add(size() - 1, e); }
+	@Override
+	public void addLast(E e) {
+		if (isEmpty()) add(e);
+		else add(size() - 1, e);
+	}
 	
 	@Override public boolean offerFirst(E e) { addFirst(e); return true; }
 	@Override public boolean offerLast(E e) { addLast(e); return false; }
