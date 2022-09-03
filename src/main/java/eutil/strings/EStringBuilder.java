@@ -99,6 +99,24 @@ public class EStringBuilder implements Appendable, CharSequence {
 	// Methods
 	//---------
 	
+	/** Shorthand 'substring' method. */
+	public String sub(int index) { return internalString.substring(index); }
+	/** Shorthand 'substring' method. */
+	public String sub(int start, int end) { return internalString.substring(start, end); }
+	
+	/** Shorthand 'reverse' method. */
+	public EStringBuilder rev() { internalString.reverse(); return this; }
+	
+	/** Shorthand 'length' method. */
+	public int l() { return internalString.length(); }
+	
+	/** Shorthand 'append' method. */
+	public EStringBuilder a(Object o) { internalString.append(o); return this; }
+	/** Shorthand batch 'append' method. */
+	public EStringBuilder a(Object... a) { for (var o : a) internalString.append(o); return this; }
+	
+	/** Shorthand 'clear' method. */
+	public EStringBuilder c() { return clear(); }
 	public EStringBuilder clear() { internalString = new StringBuilder(); return this; }
 	public EStringBuilder clear(char c) { internalString = new StringBuilder(String.valueOf(c)); return this; }
 	public EStringBuilder clear(String in) { internalString = new StringBuilder(in); return this; }
@@ -112,9 +130,14 @@ public class EStringBuilder implements Appendable, CharSequence {
 	public String tempAdd(CharSequence cs) { return new StringBuilder(toString()).append(cs).toString(); }
 	public String tempAdd(String s) { return new StringBuilder(toString()).append(s).toString(); }
 	
+	public EStringBuilder print(Object... values) { for (var v : values) append(v); return this; }
+	public EStringBuilder println(Object... values) { print(values); append("\n"); return this; }
+	
 	public EStringBuilder setSubstringRT(int start) { internalString = new StringBuilder(internalString.substring(start)); return this; }
 	public EStringBuilder setSubstringRT(int start, int end) { internalString = new StringBuilder(internalString.substring(start, end)); return this; }
 	public String setSubstring(int start) { return setSubstringRT(start).toString(); }
 	public String setSubstring(int start, int end) { return setSubstringRT(start, end).toString(); }
 	
+	/** Returns the internally wrapped StringBuilder. */
+	public StringBuilder getSB() { return internalString; }
 }
