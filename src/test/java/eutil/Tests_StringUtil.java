@@ -13,9 +13,16 @@ import eutil.strings.StringUtil;
  * A series of unit tests for the StringUtil library.
  * 
  * @author Hunter Bragg
+ * @since 1.5.2
  */
 public class Tests_StringUtil {
 	
+	/**
+	 * Tests 'getLongestLength' by passing either an object array or a generic
+	 * collection and verifies that the method returns the expected length.
+	 * 
+	 * @since 1.5.2
+	 */
 	@Test
 	public void test_getLongestLength() {
 		//test class to check 'toString' on custom objects

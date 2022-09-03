@@ -43,6 +43,57 @@ public final class RandomUtil {
 		return ThreadLocalRandom.current().nextDouble(min, NumberUtil.clamp(max, max, Double.MAX_VALUE));
 	}
 	
+	/**
+	 * Returns 'n' number of randomly generated numbers between the given range.
+	 * 
+	 * @param nTimes The number of random values to produce
+	 * @param min The lower bound
+	 * @param max The upper bound
+	 * @return An array consisting of an amount of 'n' randomly generated values
+	 * @since 1.5.3
+	 */
+	public static int[] getNRolls(int nTimes, int min, int max) {
+		int[] arr = new int[nTimes];
+		for (int i = 0; i < nTimes; i++) {
+			arr[i] = getRoll(min, max);
+		}
+		return arr;
+	}
+	
+	/**
+	 * Returns 'n' number of randomly generated numbers between the given range.
+	 * 
+	 * @param nTimes The number of random values to produce
+	 * @param min The lower bound
+	 * @param max The upper bound
+	 * @return An array consisting of an amount of 'n' randomly generated values
+	 * @since 1.5.3
+	 */
+	public static long[] getNRolls(int nTimes, long min, long max) {
+		long[] arr = new long[nTimes];
+		for (int i = 0; i < nTimes; i++) {
+			arr[i] = getRoll(min, max);
+		}
+		return arr;
+	}
+	
+	/**
+	 * Returns 'n' number of randomly generated numbers between the given range.
+	 * 
+	 * @param nTimes The number of random values to produce
+	 * @param min The lower bound
+	 * @param max The upper bound
+	 * @return An array consisting of an amount of 'n' randomly generated values
+	 * @since 1.5.3
+	 */
+	public static double[] getNRolls(int nTimes, double min, double max) {
+		double[] arr = new double[nTimes];
+		for (int i = 0; i < nTimes; i++) {
+			arr[i] = getRoll(min, max);
+		}
+		return arr;
+	}
+	
 	/** Returns a random element from the given array. */
 	public static <E> E getRandVal(E... in) {
 		int len = in.length;
