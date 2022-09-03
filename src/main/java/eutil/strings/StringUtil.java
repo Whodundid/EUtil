@@ -2,6 +2,7 @@ package eutil.strings;
 
 import static eutil.EUtil.*;
 import static eutil.lambda.Comparisons.*;
+import static eutil.lambda.Functions.*;
 
 import java.util.Collection;
 import java.util.Enumeration;
@@ -105,16 +106,37 @@ public final class StringUtil {
 		return (s.toString().isEmpty()) ? s.toString() : s.sub(0, s.l() - separator.length());
 	}
 	
+	/**
+	 * Returns the length of the 'toString' String for each given object.
+	 * 
+	 * @param objects The length of the longest 'toString' String
+	 * @return The length of the string with the longest toString value
+	 * @since 1.5.2
+	 */
+	public static int getLongestLength(Collection<?> objects) {
+		return tryGet(map(objects, toStringLen).max(compareInts), -1);
+	}
 	
 	/**
-	 * Returns the longest String out of all in the given collection.
+	 * Returns the length of the 'toString' String for each given object.
 	 * 
-	 * @param strings a collection of strings
-	 * @return String The longest String
+	 * @param objects The length of the longest 'toString' String
+	 * @return The length of the string with the longest toString value
+	 * @since 1.5.2
+	 */
+	public static int getLongestLength(Object... objects) {
+		return tryGet(map(objects, toStringLen).max(compareInts), -1);
+	}
+	
+	/**
+	 * Returns the longest toString String value out of all Objects in the given collection.
+	 * 
+	 * @param objects a collection of objects
+	 * @return String The longest 'toString' String
 	 * @since 1.1.1
 	 */
-	public static String getLongest(Collection<String> strings) {
-		return tryGet(filterNull(strings).max(strlen));
+	public static String getLongest(Collection<?> objects) {
+		return tryGet(map(objects, toString).max(strlen), null);
 	}
 	
 	/**
@@ -125,7 +147,7 @@ public final class StringUtil {
 	 * @since 1.0.0
 	 */
 	public static String getLongest(String... strings) {
-		return tryGet(filterNull(strings).max(strlen));
+		return tryGet(map(strings, toString).max(strlen), null);
 	}
 	
 	/** Capitalizes the first letter in the given string. */

@@ -618,6 +618,20 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 		retainAll(l);
 		return this;
 	}
+
+	//----------------
+	// Remove Methods
+	//----------------
+	
+	/**
+	 * Removes all of the given object(s) from this list.
+	 * 
+	 * @param objects The object(s) to remove
+	 * @since 1.5.2
+	 */
+	public void remove(E... objects) {
+		for (E o : objects) remove(o);
+	}
 	
 	//--------------------
 	// EArrayList Getters
