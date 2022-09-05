@@ -41,10 +41,13 @@ import eutil.strings.StringUtil;
  * 		<li> Array and List conversions
  * 		<li> String operations
  * 		<li> System Info
+ * 		<li> File operations
+ * 		<li> Swing utilities
+ * 		<li> General debugging assists
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.5.1
+ *  @version 1.5.5
  */
 public class EUtil {
 	
@@ -63,7 +66,7 @@ public class EUtil {
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "1.5.1";
+	public static final String version = "1.5.5";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -896,6 +899,11 @@ public class EUtil {
 	public static <E> E tryGet(Optional<E> optional) {
 		try { return optional.get(); }
 		catch (Throwable e) { return null; }
+	}
+	
+	public static <E> E tryGet(Optional<E> optional, E defaultVal) {
+		try { return optional.get(); }
+		catch (Throwable e) { return defaultVal; }
 	}
 	
 	public static void tryDo(Runnable code, Class<? extends Throwable> type, Consumer<? super Throwable> ifFail) {

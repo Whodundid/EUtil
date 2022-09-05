@@ -203,7 +203,11 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	}
 	
 	@Override public void addFirst(E e) { add(0, e); }
-	@Override public void addLast(E e) { add(size() - 1, e); }
+	@Override
+	public void addLast(E e) {
+		if (isEmpty()) add(e);
+		else add(size() - 1, e);
+	}
 	
 	@Override public boolean offerFirst(E e) { addFirst(e); return true; }
 	@Override public boolean offerLast(E e) { addLast(e); return false; }
@@ -613,6 +617,20 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 		List<E> l = s.collect(Collectors.toList());
 		retainAll(l);
 		return this;
+	}
+
+	//----------------
+	// Remove Methods
+	//----------------
+	
+	/**
+	 * Removes all of the given object(s) from this list.
+	 * 
+	 * @param objects The object(s) to remove
+	 * @since 1.5.2
+	 */
+	public void remove(E... objects) {
+		for (E o : objects) remove(o);
 	}
 	
 	//--------------------

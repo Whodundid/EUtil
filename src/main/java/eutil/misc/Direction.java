@@ -21,6 +21,18 @@ public enum Direction {
 	W("W", "West", true, 270.0),
 	NW("NW", "North West", false, 315.0),
 	
+	/**
+	 * Directions that pertain to the lines of longitude (N/S).
+	 * @since 1.5.4
+	 */
+	LONGITUDE("LONGITUDE", "N/S", false, Double.NaN),
+	
+	/**
+	 * Directions that pertain to the lines of latitude (E/W).
+	 * @since 1.5.4
+	 */
+	LATITUDE("LATITUDE", "E/W", false, Double.NaN),
+	
 	/** Used to represent an invalid or non-existent direction. */
 	OUT("Unknown", "Unknown", false, Double.NaN);
 	
@@ -87,5 +99,17 @@ public enum Direction {
 	public static List<Direction> ordinals() { return new EArrayList<>(NE, NW, SE, SW); }
 	/** Returns a list containing all real directions. */
 	public static List<Direction> directions() { return new EArrayList<>(N, NE, E, NW, S, SE, W, SW); }
+	
+	/**
+	 * Returns a list containing the directions that correspond to the lines of longitude (N/S).
+	 * @since 1.5.4
+	 */
+	public static List<Direction> longitudes() { return new EArrayList<>(N, S); }
+	
+	/**
+	 * Returns a list containing the directions that correspond to the lines of latitude (E/W).
+	 * @since 1.5.4
+	 */
+	public static List<Direction> latitudes() { return new EArrayList<>(E, W); }
 	
 }
