@@ -30,6 +30,24 @@ public class EStringBuilder implements Appendable, CharSequence {
 		this(seq.length() + 16);
 	}
 	
+	/**
+	 * Creates an EStringBuilder and appends each of the given arguments
+	 * 'toString' variants.
+	 * 
+	 * @param arguments
+	 * @return EStringBuilder
+	 */
+	public static EStringBuilder of(Object... arguments) {
+		//assuming each argument 'could' be 20 characters long
+		var esb = new EStringBuilder(arguments.length * 20);
+		esb.print(arguments);
+		return esb;
+	}
+	
+	public static String ofR(Object... arguments) {
+		return of(arguments).toString();
+	}
+	
 	//-----------
 	// Overrides
 	//-----------

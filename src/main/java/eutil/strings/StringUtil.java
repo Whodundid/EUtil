@@ -107,6 +107,66 @@ public final class StringUtil {
 	}
 	
 	/**
+	 * Returns true if the given string matches any of the 'toCheck' strings.
+	 * 
+	 * @param in The string to compare against
+	 * @param toCheck The string(s) to check against
+	 * @return True if any match
+	 * @since 1.5.5
+	 */
+	public static boolean equalsAny(String in, String... toCheck) {
+		for (var s : toCheck)
+			if (isEqual(in, s)) return true;
+		return false;
+	}
+	
+	/**
+	 * Returns the 'toCheck' string that matches the given string.
+	 * 
+	 * @param in The string to compare against
+	 * @param toCheck The string(s) to check against
+	 * @return The 'toCheck' string string that matches
+	 * @since 1.5.5
+	 */
+	public static String equalsAnyR(String in, String... toCheck) {
+		for (var s : toCheck)
+			if (isEqual(in, s)) return s;
+		return null;
+	}
+	
+	/**
+	 * Returns the 'toCheck' object's 'toString' that matches the given string.
+	 * 
+	 * @param in The string to compare against
+	 * @param toCheck The objects(s) to check against
+	 * @return True if any 'toCheck' object's 'toString' matches
+	 * @since 1.5.5
+	 */
+	public static boolean equalsAny(String in, Object... toCheck) {
+		for (var s : toCheck) {
+			var toString = toString(s);
+			if (isEqual(in, toString)) return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns the 'toCheck' object's 'toString' that matches the given string.
+	 * 
+	 * @param in The string to compare against
+	 * @param toCheck The objects(s) to check against
+	 * @return The 'toCheck' object that matches
+	 * @since 1.5.5
+	 */
+	public static <E> E equalsAnyR(String in, E... toCheck) {
+		for (var s : toCheck) {
+			var toString = toString(s);
+			if (isEqual(in, toString)) return s;
+		}
+		return null;
+	}
+	
+	/**
 	 * Returns the length of the 'toString' String for each given object.
 	 * 
 	 * @param objects The length of the longest 'toString' String

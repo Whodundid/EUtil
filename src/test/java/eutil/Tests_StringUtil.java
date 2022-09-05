@@ -43,4 +43,31 @@ public class Tests_StringUtil {
 		assertEquals(6, col_longestLen);
 	}
 	
+	@Test
+	public void test_equalsAny() {
+		class Match_Class { public String toString() { return "BASE"; } }
+		class Not_Match_Class { public String toString() { return "NOT_MATCH"; } }
+		
+		String base = "BASE";
+		
+		assertFalse(StringUtil.equalsAny(base));
+		assertFalse(StringUtil.equalsAny(base, "a", "b", "c"));
+		assertFalse(StringUtil.equalsAny(base, new Not_Match_Class()));
+		assertFalse(StringUtil.equalsAny(base, "a", "b", "c", new Not_Match_Class()));
+		
+		assertTrue(StringUtil.equalsAny(base, base));
+		assertTrue(StringUtil.equalsAny(base, "BASE"));
+		assertTrue(StringUtil.equalsAny(base, new Match_Class()));
+		assertTrue(StringUtil.equalsAny(base, "a", "b", "c", new Match_Class()));
+		assertTrue(StringUtil.equalsAny(base, "a", "b", "c", "BASE", new Not_Match_Class()));
+		
+		var match = new Match_Class();
+		var not_match = new Not_Match_Class();
+		
+		assertNull(StringUtil.equalsAnyR(base, "a", "b", "c"));
+		assertEquals("BASE", StringUtil.equalsAnyR(base, base));
+		assertEquals(match, StringUtil.equalsAnyR(base, "a", 'b', "c", match, "d", "e"));
+		assertEquals(null, StringUtil.equalsAnyR(base, "a", 'b', "c", not_match, "d", "e"));
+	}
+	
 }
