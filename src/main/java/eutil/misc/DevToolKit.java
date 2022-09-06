@@ -1,6 +1,6 @@
 package eutil.misc;
 
-import eutil.strings.StringUtil;
+import eutil.strings.EStringUtil;
 
 /**
  * A slew of functions that are intended to aid in overall development
@@ -11,7 +11,30 @@ import eutil.strings.StringUtil;
  */
 public class DevToolKit {
 	
-	public static String printSpacer = " : ";
+	public static final String NONE = "";
+	public static final String SPACE = " ";
+	public static final String COLON = ":";
+	public static final String SPACED_COLON = " : ";
+	public static final String COMMA = ", ";
+	public static final String PERIOD = ".";
+	
+	public static String printSpacer = SPACED_COLON;
+	
+	/**
+	 * Introduces support for {x} argument formatting in Strings.
+	 * <p>
+	 * EX: format("Hello {0}!", "World"); -> "Hello World!"
+	 * 
+	 * @param format The format string with argument nested insertions
+	 * @param args 	 The list of object arguments to be used for
+	 *             	 insertions
+	 *             
+	 * @return A string with nested arguments included
+	 * @since 1.6.0
+	 */
+	public static String format(String format, Object... args) {
+		return performFormat(format, args);
+	}
 	
 	/**
 	 * Introduces support for {x} argument insertion in print statements.
@@ -61,19 +84,13 @@ public class DevToolKit {
 	
 	//------------------------------------------------------------------------------
 	
-	private static void performPrintln(boolean nl, String toPrint, Object[] args) {
-		if (args.length == 0) {
-			if (nl) System.out.println(toPrint);
-			else System.out.print(toPrint);
-			return;
-		}
-		
+	private static String performFormat(String format, Object[] args) {
 		StringBuilder out = new StringBuilder();
 		StringBuilder argNumString = null;
 		boolean inNum = false;
 		
-		for (int i = 0; i < toPrint.length(); i++) {
-			char c = toPrint.charAt(i);
+		for (int i = 0; i < format.length(); i++) {
+			char c = format.charAt(i);
 			
 			if (inNum) {
 				//if digit, continue to add to argNumString
@@ -85,26 +102,47 @@ public class DevToolKit {
 					if (argNum >= args.length) {
 						throw new IndexOutOfBoundsException("Bad arg index! {"+argNum+"} is out of range: [0,"+(args.length-1)+"]");
 					}
-					out.append(StringUtil.toString(args[argNum]));
+					out.append(EStringUtil.toString(args[argNum]));
 					argNumString = null;
 					inNum = false;
 				}
 				//if the character wasn't a digit or a '}' then cancel argument insertion
 				else {
+					out.append('{');
 					out.append(argNumString.toString());
-					argNumString = null;
-					inNum = false;
+					
+					if (c == '{') {
+						//check if at end
+						if (i == format.length() - 1) {
+							out.append(c);
+							break;
+						}
+						//check if empty argument
+						if ((format.length() - 1 == i) || format.length() > i && format.charAt(i + 1) == '}') {
+							out.append("{}");
+							i++;
+							continue;
+						}
+						
+						argNumString = new StringBuilder();
+						inNum = true;
+					}
+					else {
+						out.append(c);
+						argNumString = null;
+						inNum = false;
+					}
 				}
 			}
 			//if '{' start trying to read an argument index number for insertion
 			else if (c == '{') {
 				//check if at end
-				if (i == toPrint.length() - 1) {
+				if (i == format.length() - 1) {
 					out.append(c);
 					break;
 				}
 				//check if empty argument
-				if ((toPrint.length() - 1 == i) || toPrint.length() > i && toPrint.charAt(i + 1) == '}') {
+				if ((format.length() - 1 == i) || format.length() > i && format.charAt(i + 1) == '}') {
 					out.append("{}");
 					i++;
 					continue;
@@ -113,7 +151,23 @@ public class DevToolKit {
 				argNumString = new StringBuilder();
 				inNum = true;
 			}
+			//otherwise, just append the character onto the output
+			else {
+				out.append(c);
+			}
 		}
+		
+		return out.toString();
+	}
+	
+	private static void performPrintln(boolean nl, String toPrint, Object[] args) {
+		if (args.length == 0) {
+			if (nl) System.out.println(toPrint);
+			else System.out.print(toPrint);
+			return;
+		}
+		
+		String out = performFormat(toPrint, args);
 		
 		if (nl) System.out.println(out);
 		else System.out.print(out);
@@ -127,7 +181,7 @@ public class DevToolKit {
 		
 		StringBuilder out = new StringBuilder();
 		for (int i = 0; i < toPrint.length; i++) {
-			out.append(StringUtil.toString(toPrint[i]));
+			out.append(EStringUtil.toString(toPrint[i]));
 			if (i < toPrint.length - 1) out.append(printSpacer);
 		}
 		

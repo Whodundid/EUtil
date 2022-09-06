@@ -18,12 +18,14 @@ import eutil.debug.Experimental;
  * A collection of utility functions for string manipulation and
  * toString helpers.
  * 
+ * @apiNote Previous name: 'StringUtil'
+ * 
  * @author Hunter Bragg
  * @since 1.2.0
  */
-public final class StringUtil {
+public final class EStringUtil {
 	
-	private StringUtil() {}
+	private EStringUtil() {}
 	
 	/**
 	 * Returns the string version of the object. This function also

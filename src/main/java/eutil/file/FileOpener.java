@@ -12,7 +12,7 @@ public class FileOpener {
 	
 	public static void openFile(File file) {
 		String s = file.getAbsolutePath();
-		if (OSType.getOS() == OSType.MAC) {
+		if (OSType.getSystemOS() == OSType.MAC) {
 			try {
 				Runtime.getRuntime().exec(new String[] {"/usr/bin/open", s});
 				return;
@@ -21,7 +21,7 @@ public class FileOpener {
 				EUtil.error("Couldn\'t open file", e);
 			}
 		}
-		else if (OSType.getOS() == OSType.WINDOWS) {
+		else if (OSType.getSystemOS() == OSType.WINDOWS) {
 			String s1 = String.format("cmd.exe /C start \"Open file\" \"%s\"", new Object[] {s});
 			String[] args = new String[] { s1 };
 

@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import eutil.EUtil;
-import eutil.random.RandomUtil;
+import eutil.random.ERandomUtil;
 
 /**
  * A customized wrapper implementation of a normal ArrayList.
@@ -304,8 +304,8 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 		return this;
 	}
 	
-	public E getRandom() { return (isEmpty()) ? null : get(RandomUtil.getRoll(0, size() - 1)); }
-	public E removeRandom() { return (isEmpty()) ? null : remove(RandomUtil.getRoll(0, size() - 1)); }
+	public E getRandom() { return (isEmpty()) ? null : get(ERandomUtil.getRoll(0, size() - 1)); }
+	public E removeRandom() { return (isEmpty()) ? null : remove(ERandomUtil.getRoll(0, size() - 1)); }
 	public E removeIfContains(E object) {
 		int index = indexOf(object);
 		if (index >= 0) return remove(index);
@@ -546,6 +546,19 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 			if (cIn.isInstance(e)) return false;
 		}
 		return true;
+	}
+	
+	/**
+	 * Returns an EArrayList with reversed elements from this one.
+	 * 
+	 * @since 1.6.0
+	 */
+	public EArrayList<E> reverse() {
+		EArrayList<E> r = new EArrayList<>(size());
+		for (int i = size() - 1; i >= 0; i--) {
+			r.add(get(i));
+		}
+		return r;
 	}
 
 	//-------------

@@ -1,6 +1,6 @@
 package eutil.datatypes.util;
 
-import eutil.math.NumberUtil;
+import eutil.math.ENumUtil;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 
@@ -116,7 +116,7 @@ public enum EDataType {
 		if (in == null || in.equals("null")) return NULL;
 		if (in.equals("true") || in.equals("false")) return BOOLEAN;
 		if (in.isEmpty() || in.trim().isEmpty()) return STRING;
-		if (NumberUtil.isNumber(in)) return (NumberUtil.isInteger(in)) ? LONG : DOUBLE;
+		if (ENumUtil.isNumber(in)) return (ENumUtil.isInteger(in)) ? LONG : DOUBLE;
 		if (in.length() == 1) return CHAR;
 		return STRING;
 	}
@@ -125,7 +125,7 @@ public enum EDataType {
 	 *  If the input is found to not be a number, null is returned instead.
 	 *  If the input is null, null is returned instead. */
 	public static EDataType getNumberType(String in) {
-		return getNumberType(NumberUtil.parseNumber(in));
+		return getNumberType(ENumUtil.parseNumber(in));
 	}
 	
 	public static Object castTo(Number in, EDataType typeOut) {
@@ -147,7 +147,7 @@ public enum EDataType {
 		if (in == null) return null;
 		if (in instanceof Number n) return castTo(n, typeOut);
 		if (in instanceof String s) {
-			if (typeOut.isNumber()) return castTo(NumberUtil.parseNumber(s), typeOut);
+			if (typeOut.isNumber()) return castTo(ENumUtil.parseNumber(s), typeOut);
 			if (typeOut == EDataType.CHAR) return (s.isEmpty()) ? '\u0000' : s.charAt(0);
 		}
 		return in;

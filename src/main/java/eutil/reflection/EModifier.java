@@ -3,6 +3,8 @@ package eutil.reflection;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import eutil.strings.EStringBuilder;
+
 /**
  * A quicker way of dealing with Java Field Modifier properties.
  * 
@@ -12,29 +14,41 @@ import java.lang.reflect.Modifier;
 public class EModifier {
 	
 	private final int m;
+	private final String toString;
 	
 	public EModifier(Field f) { this(f.getModifiers()); }
-	public EModifier(int mods) { m = mods; }
-	
-	@Override
-	public String toString() {
-		var r = new StringBuilder("");
+	public EModifier(int mods) {
+		m = mods;
 		
-		r.append((isPublic()) ? "public " : "");
-		r.append((isPrivate()) ? "private " : "");
-		r.append((isProtected()) ? "protected " : "");
-		r.append((isStatic()) ? "static " : "");
-		r.append((isFinal()) ? "final " : "");
-		r.append((isSynchronized()) ? "synchronized " : "");
-		r.append((isVolatile()) ? "volatile " : "");
-		r.append((isTransient()) ? "transient " : "");
-		r.append((isNative()) ? "native " : "");
-		r.append((isInterface()) ? "interface " : "");
-		r.append((isAbstract()) ? "abstract " : "");
-		r.append((isStrict()) ? "strict " : "");
+		//Realistically, the modifiers of a field shouldn't change,
+		//nor should the 'toString' representation of them.
+		var sb = new EStringBuilder();
 		
-		return r.toString().trim();
+		sb.a((isPublic()) ? "public " : "");
+		sb.a((isPrivate()) ? "private " : "");
+		sb.a((isProtected()) ? "protected " : "");
+		sb.a((isStatic()) ? "static " : "");
+		sb.a((isFinal()) ? "final " : "");
+		sb.a((isSynchronized()) ? "synchronized " : "");
+		sb.a((isVolatile()) ? "volatile " : "");
+		sb.a((isTransient()) ? "transient " : "");
+		sb.a((isNative()) ? "native " : "");
+		sb.a((isInterface()) ? "interface " : "");
+		sb.a((isAbstract()) ? "abstract " : "");
+		sb.a((isStrict()) ? "strict " : "");
+		
+		toString = sb.trim();
 	}
+	
+	//-----------
+	// Overrides
+	//-----------
+	
+	@Override public String toString() { return toString; }
+	
+	//---------
+	// Methods
+	//---------
 	
 	public boolean isPublic() { return Modifier.isPublic(m); }
 	public boolean isPrivate() { return Modifier.isPrivate(m); }
@@ -52,10 +66,31 @@ public class EModifier {
 	public boolean publicFinal() { return isPublic() && isFinal(); }
 	public boolean publicStatic() { return isPublic() && isStatic(); }
 	
-	public static boolean publicFinal(Field f) { return new EModifier(f).publicFinal(); }
-	public static boolean publicStatic(Field f) { return new EModifier(f).publicStatic(); }
+	//----------------
+	// Static Methods
+	//----------------
 	
 	public static EModifier of(Field f) { return new EModifier(f); }
 	public static EModifier of(int mods) { return new EModifier(mods); }
+	
+	//-------------------------------
+	// Static Helper Methods - 1.6.0
+	//-------------------------------
+	
+	public static boolean isPublic(Field f) { return (f.getModifiers() & Modifier.PUBLIC) != 0; }
+	public static boolean isPrivate(Field f) { return (f.getModifiers() & Modifier.PRIVATE) != 0; }
+	public static boolean isProtected(Field f) { return (f.getModifiers() & Modifier.PROTECTED) != 0; }
+	public static boolean isStatic(Field f) { return (f.getModifiers() & Modifier.STATIC) != 0; }
+	public static boolean isFinal(Field f) { return (f.getModifiers() & Modifier.FINAL) != 0; }
+	public static boolean isSynchronized(Field f) { return (f.getModifiers() & Modifier.SYNCHRONIZED) != 0; }
+	public static boolean isVolatile(Field f) { return (f.getModifiers() & Modifier.VOLATILE) != 0; }
+	public static boolean isTransient(Field f) { return (f.getModifiers() & Modifier.TRANSIENT) != 0; }
+	public static boolean isNative(Field f) { return (f.getModifiers() & Modifier.NATIVE) != 0; }
+	public static boolean isInterface(Field f) { return (f.getModifiers() & Modifier.INTERFACE) != 0; }
+	public static boolean isAbstract(Field f) { return (f.getModifiers() & Modifier.ABSTRACT) != 0; }
+	public static boolean isStrict(Field f) { return (f.getModifiers() & Modifier.STRICT) != 0; }
+	
+	public static boolean publicFinal(Field f) { return isPublic(f) && isFinal(f); }
+	public static boolean publicStatic(Field f) { return isPublic(f) && isStatic(f); }
 	
 }

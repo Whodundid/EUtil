@@ -4,19 +4,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ThreadLocalRandom;
 
-import eutil.math.NumberUtil;
+import eutil.math.ENumUtil;
 import eutil.misc.Direction;
 
 /**
  * A collection of helper methods which aid with generating random numbers, chars, strings, and names.
  * 
+ * @apiNote Previous name: 'RandomUtil'
+ * 
  * @author Hunter Bragg
  * @since 1.0.0
  */
-public final class RandomUtil {
+public final class ERandomUtil {
 	
 	// prevent instantiation
-	private RandomUtil() {}
+	private ERandomUtil() {}
 	
 	/** Returns true if the check value matches the produced random number within range. */
 	public static boolean roll(int check, int min, int max) {
@@ -25,12 +27,12 @@ public final class RandomUtil {
 	
 	/** Returns the number from a roll within a specified range. (ints) */
 	public static int getRoll(int min, int max) {
-		return ThreadLocalRandom.current().nextInt(min, NumberUtil.clamp(max + 1, max, Integer.MAX_VALUE));
+		return ThreadLocalRandom.current().nextInt(min, ENumUtil.clamp(max + 1, max, Integer.MAX_VALUE));
 	}
 	
 	/** Returns the number from a roll within a specified range. (longs) */
 	public static long getRoll(long min, long max) {
-		return ThreadLocalRandom.current().nextLong(min, NumberUtil.clamp(max + 1, max, Long.MAX_VALUE));
+		return ThreadLocalRandom.current().nextLong(min, ENumUtil.clamp(max + 1, max, Long.MAX_VALUE));
 	}
 	
 	/** Returns the number from a roll within a specified range. (floats) */
@@ -40,7 +42,7 @@ public final class RandomUtil {
 	
 	/** Returns the number from a roll within a specified range. (doubles) */
 	public static double getRoll(double min, double max) {
-		return ThreadLocalRandom.current().nextDouble(min, NumberUtil.clamp(max, max, Double.MAX_VALUE));
+		return ThreadLocalRandom.current().nextDouble(min, ENumUtil.clamp(max, max, Double.MAX_VALUE));
 	}
 	
 	/**
@@ -97,7 +99,7 @@ public final class RandomUtil {
 	/** Returns a random element from the given array. */
 	public static <E> E getRandVal(E... in) {
 		int len = in.length;
-		return in[getRoll(0, NumberUtil.clamp(len - 1, 0, len - 1))];
+		return in[getRoll(0, ENumUtil.clamp(len - 1, 0, len - 1))];
 	}
 	
 	/** Returns a random element from the given iterable object. */
@@ -105,7 +107,7 @@ public final class RandomUtil {
 		Iterator<E> it = in.iterator();
 		ArrayList<E> a = new ArrayList<>();
 		while (it.hasNext()) a.add(it.next());
-		return a.get(getRoll(0, NumberUtil.clamp(a.size() - 1, 0, a.size() - 1)));
+		return a.get(getRoll(0, ENumUtil.clamp(a.size() - 1, 0, a.size() - 1)));
 	}
 	
 	/** Returns a random boolean value. */

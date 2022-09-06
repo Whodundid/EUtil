@@ -26,8 +26,8 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import eutil.datatypes.EArrayList;
-import eutil.file.FileUtil;
-import eutil.strings.StringUtil;
+import eutil.file.EFileUtil;
+import eutil.strings.EStringUtil;
 
 /** 
  * A static helper library containing a number of useful functions including, but not limited to:
@@ -47,9 +47,18 @@ import eutil.strings.StringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.5.5
+ *  @version 1.6.0
  */
 public class EUtil {
+	
+	//------------------
+	
+	/** The EUtil library version. */
+	public static final String version = "1.6.0";
+	/** The EUtil library version date String. */
+	public static final String versionDate = "9/4/2022";
+	/** EUtil static logger. */
+	public static final Logger logger = Logger.getLogger("EUtil");
 	
 	//------------------
 	// Hide Constructor
@@ -62,13 +71,6 @@ public class EUtil {
 	 * @since 1.3.1
 	 */
 	private EUtil() {}
-	
-	//------------------
-	
-	/** The EUtil library version. */
-	public static final String version = "1.5.5";
-	/** EUtil static logger. */
-	public static final Logger logger = Logger.getLogger("EUtil");
 	
 	//----------------
 	// Static Loggers
@@ -210,7 +212,6 @@ public class EUtil {
 	 * @param predicate The comparison statement to be performed on each value
 	 * @param ifTrue    Returned if any element matches the given comparison
 	 * @param ifFalse   Returned if no element matches the given comparison
-	 * 
 	 */
 	public static <A, R> R anyMatch(Iterable<A> list, Predicate<? super A> predicate, R ifTrue, R ifFalse) {
 		Objects.requireNonNull(list);
@@ -335,10 +336,10 @@ public class EUtil {
 	
 	/**
 	 * Returns true if the given file is not null and actually exists on the system.
-	 * @see FileUtil
+	 * @see EFileUtil
 	 */
 	public static boolean fileExists(File f) {
-		return FileUtil.fileExists(f);
+		return EFileUtil.fileExists(f);
 	}
 	
 	//---------------
@@ -346,34 +347,34 @@ public class EUtil {
 	//---------------
 	
 	//convenience mappings to StringUtil
-	public static String toString(boolean[] e) { return StringUtil.toString(e); }
-	public static String toString(byte[] e) { return StringUtil.toString(e); }
-	public static String toString(char[] e) { return StringUtil.toString(e); }
-	public static String toString(int[] e) { return StringUtil.toString(e); }
-	public static String toString(short[] e) { return StringUtil.toString(e); }
-	public static String toString(long[] e) { return StringUtil.toString(e); }
-	public static String toString(float[] e) { return StringUtil.toString(e); }
-	public static String toString(double[] e) { return StringUtil.toString(e); }
-	public static <E> String toString(E[] e) { return StringUtil.toString(e); }
-	public static String toString(List<?> e) { return StringUtil.toString(e); }
-	public static String toString(Iterator<?> e) { return StringUtil.toString(e); }
-	public static String toString(Enumeration<?> e) { return StringUtil.toString(e); }
-	public static String toString(Map<?, ?> e) { return StringUtil.toString(e); }
+	public static String toString(boolean[] e) { return EStringUtil.toString(e); }
+	public static String toString(byte[] e) { return EStringUtil.toString(e); }
+	public static String toString(char[] e) { return EStringUtil.toString(e); }
+	public static String toString(int[] e) { return EStringUtil.toString(e); }
+	public static String toString(short[] e) { return EStringUtil.toString(e); }
+	public static String toString(long[] e) { return EStringUtil.toString(e); }
+	public static String toString(float[] e) { return EStringUtil.toString(e); }
+	public static String toString(double[] e) { return EStringUtil.toString(e); }
+	public static <E> String toString(E[] e) { return EStringUtil.toString(e); }
+	public static String toString(List<?> e) { return EStringUtil.toString(e); }
+	public static String toString(Iterator<?> e) { return EStringUtil.toString(e); }
+	public static String toString(Enumeration<?> e) { return EStringUtil.toString(e); }
+	public static String toString(Map<?, ?> e) { return EStringUtil.toString(e); }
 	
 	//convenience mappings to StringUtil
-	public static String toString(boolean[] e, String separator) { return StringUtil.toString(e, separator); }
-	public static String toString(byte[] e, String separator) { return StringUtil.toString(e, separator); }
-	public static String toString(char[] e, String separator) { return StringUtil.toString(e, separator); }
-	public static String toString(int[] e, String separator) { return StringUtil.toString(e, separator); }
-	public static String toString(short[] e, String separator) { return StringUtil.toString(e, separator); }
-	public static String toString(long[] e, String separator) { return StringUtil.toString(e, separator); }
-	public static String toString(float[] e, String separator) { return StringUtil.toString(e, separator); }
-	public static String toString(double[] e, String separator) { return StringUtil.toString(e, separator); }
-	public static <E> String toString(E[] e, String separator) { return StringUtil.toString(e, separator); }
-	public static String toString(List<?> e, String separator) { return StringUtil.toString(e, separator); }
-	public static String toString(Iterator<?> e, String separator) { return StringUtil.toString(e, separator); }
-	public static String toString(Enumeration<?> e, String separator) { return StringUtil.toString(e, separator); }
-	public static String toString(Map<?, ?> e, String separator) { return StringUtil.toString(e, separator); }
+	public static String toString(boolean[] e, String separator) { return EStringUtil.toString(e, separator); }
+	public static String toString(byte[] e, String separator) { return EStringUtil.toString(e, separator); }
+	public static String toString(char[] e, String separator) { return EStringUtil.toString(e, separator); }
+	public static String toString(int[] e, String separator) { return EStringUtil.toString(e, separator); }
+	public static String toString(short[] e, String separator) { return EStringUtil.toString(e, separator); }
+	public static String toString(long[] e, String separator) { return EStringUtil.toString(e, separator); }
+	public static String toString(float[] e, String separator) { return EStringUtil.toString(e, separator); }
+	public static String toString(double[] e, String separator) { return EStringUtil.toString(e, separator); }
+	public static <E> String toString(E[] e, String separator) { return EStringUtil.toString(e, separator); }
+	public static String toString(List<?> e, String separator) { return EStringUtil.toString(e, separator); }
+	public static String toString(Iterator<?> e, String separator) { return EStringUtil.toString(e, separator); }
+	public static String toString(Enumeration<?> e, String separator) { return EStringUtil.toString(e, separator); }
+	public static String toString(Map<?, ?> e, String separator) { return EStringUtil.toString(e, separator); }
 	
 	public static Object[] toObjArr(boolean[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
 	public static Object[] toObjArr(byte[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
@@ -394,11 +395,13 @@ public class EUtil {
 	public static void printArray(float[] arr) { System.out.println(toString(arr)); }
 	public static void printArray(double[] arr) { System.out.println(toString(arr)); }
 	public static void printArray(Object[] arr) { System.out.println(toString(arr)); }
-	public static void printList(Iterable arr) { forEach(arr, System.out::println); }
 	
 	public static <E, T> void printArray(E[] arr, Function<? super E, ? super T> type) {
 		nullDo(arr, a -> asList(a).map(type).forEach(System.out::println));
 	}
+	
+	public static void printList(Iterable<?> list) { forEach(list, System.out::println); }
+	public static void printList(Enumeration<?> list) { forEach(list, System.out::println); }
 	
 	public static <E> E[] add(E obj, E[] array) {
 		var list = new EArrayList<E>(obj).addA(array);
@@ -419,9 +422,12 @@ public class EUtil {
 		return list.toArray(array);
 	}
 	
-	/** Checks if the values in one array match the values from another. */
+	/** Checks if the values in one array match the values from another (index-by-index). */
 	public static boolean compareLists(List<?> list1, List<?> list2) {
+		if (list1 == null) return list2 == null;
+		if (list2 == null) return list1 == null;
 		if (list1.size() != list2.size()) return false; //if the sizes differ, they're not the same.
+		
 		for (int i = 0; i < list1.size(); i++) {
 			var a = list1.get(i);
 			var b = list2.get(i);
@@ -502,6 +508,8 @@ public class EUtil {
 	public static <E> Stream<E> filterNull(Collection<E> list, Predicate<? super E> filter) { return filterNull(list).filter(filter); }
 	/** Converts a typed-Collection to a Stream that maps each object to the specified type. */
 	public static <E, T> Stream<T> map(Collection<E> list, Function<? super E, ? extends T> mapper) { return list.stream().map(mapper); }
+	/** Performs a forEach loop on each element. Directly mapped from 'Java.util.List' */
+	public static <E> void forEach(Enumeration<E> list, Consumer<? super E> action) { list.asIterator().forEachRemaining(action); }
 	/** Performs a forEach loop on each element. Directly mapped from 'Java.util.List' */
 	public static <E> void forEach(Iterable<E> list, Consumer<? super E> action) { list.forEach(action); }
 	/** Performs a forEach loop on each element. Then returns the specified 'returnVal' argument. */

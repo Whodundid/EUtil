@@ -19,7 +19,7 @@ public final class RandomNames {
 	
 	private static EArrayList<String> names = new EArrayList<>();
 	
-	public static String get() { return names.get(RandomUtil.getRoll(0, names.size() - 1)); }
+	public static String get() { return names.get(ERandomUtil.getRoll(0, names.size() - 1)); }
 	
 	//----------------------------
 	
