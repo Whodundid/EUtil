@@ -140,8 +140,40 @@ public class EDimensionI {
 	public EDimensionI translateHorizontal(long amount) { startX += amount; return this; }
 	public EDimensionI translateVertical(long amount) { startY += amount; return this; }
 	
-	public boolean contains(EDimensionI dimIn) { return startX <= dimIn.endX && startY <= dimIn.endY && endX >= dimIn.startX && endY >= dimIn.startY; }
+	/**
+	 * Returns the 2D area that this dimension occupies.
+	 * @since 1.6.1
+	 */
+	public long getArea() {
+		return ((endX - startX) * (endY - startY));
+	}
+	
+	/**
+	 * Returns true if this dimension's bounds at least partially contains the
+	 * given dimension's bounds.
+	 * @since 1.6.1
+	 */
+	public boolean partiallyContains(EDimension dimIn) {
+		return startX <= dimIn.endX &&
+			   startY <= dimIn.endY &&
+			   endX >= dimIn.startX &&
+			   endY >= dimIn.startY;
+	}
+	/**
+	 * Returns true if this dimension's bounds at least partially contains the
+	 * given dimension's bounds.
+	 * @since 1.6.1
+	 */
+	public boolean partiallyContains(EDimensionI dimIn) {
+		return startX <= dimIn.endX &&
+			   startY <= dimIn.endY &&
+			   endX >= dimIn.startX &&
+			   endY >= dimIn.startY;
+	}
+	
+	/** Returns true if the given dimension is completely inside of this dimension. As in, not just partially inside. */
 	public boolean fullyContains(EDimensionI dimIn) { return startX < dimIn.startX && startY < dimIn.startY && endX > dimIn.endX && endY > dimIn.endY; }
+	
 	public boolean isGreaterThan(EDimensionI dimIn) { return startX > dimIn.startX && startY > dimIn.startY && width > dimIn.width && height > dimIn.height; }
 	public boolean isLessThan(EDimensionI dimIn) { return startX < dimIn.startX && startY < dimIn.startY && width < dimIn.width && height < dimIn.height; }
 	public boolean isEqualTo(EDimensionI dimIn) { return startX == dimIn.startX && startY == dimIn.startY && width == dimIn.width && height == dimIn.height; }
