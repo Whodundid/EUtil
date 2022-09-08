@@ -1,4 +1,4 @@
-package eutil.misc;
+package eutil.debug;
 
 import eutil.strings.EStringUtil;
 
@@ -9,7 +9,7 @@ import eutil.strings.EStringUtil;
  * @author Hunter Bragg
  * @since 1.5
  */
-public class DevToolKit {
+public class DebugToolKit {
 	
 	public static final String NONE = "";
 	public static final String SPACE = " ";
