@@ -40,6 +40,17 @@ public class EDimension {
 		midY = getMidY();
 	}
 	
+	public EDimension(EDimensionI dimIn) {
+		startX = dimIn.startX;
+		startY = dimIn.startY;
+		endX = dimIn.endX;
+		endY = dimIn.endY;
+		width = endX - startX;
+		height = endY - startY;
+		midX = getMidX();
+		midY = getMidY();
+	}
+	
 	@Override
 	public String toString() {
 		return "[startX/Y: " + startX + ", " + startY + "; endX/Y: " + endX + ", " + endY + "; width/Height: " + width + ", " + height + "]";
@@ -112,6 +123,23 @@ public class EDimension {
 		return x >= startX && x <= endX && y >= startY && y <= endY;
 	}
 	
+	public boolean contains(Number left, Number top, Number right, Number bot) {
+		if (left.doubleValue() < right.doubleValue()) {
+			Number t = left;
+			left = right;
+			right = t;
+		}
+		
+		if (top.doubleValue() < bot.doubleValue()) {
+			Number t = top;
+			top = bot;
+			bot = t;
+		}
+		
+		return startX < left.doubleValue() && startY < top.doubleValue() &&
+			   endX > right.doubleValue() && endY > bot.doubleValue();
+	}
+	
 	public double getMidX() { return startX + (width / 2); }
 	public double getMidY() { return startY + (height / 2); }
 	
@@ -151,13 +179,22 @@ public class EDimension {
 	
 	/** Returns true if the given dimension is completely inside of this dimension. As in, not just partially inside. */
 	public boolean fullyContains(EDimension dimIn) { return startX < dimIn.startX && startY < dimIn.startY && endX > dimIn.endX && endY > dimIn.endY; }
+	/** Returns true if the given dimension is completely inside of this dimension. As in, not just partially inside. */
+	public boolean fullyContains(EDimensionI dimIn) { return startX < dimIn.startX && startY < dimIn.startY && endX > dimIn.endX && endY > dimIn.endY; }
 	
 	public boolean isGreaterThan(EDimension dimIn) { return startX > dimIn.startX && startY > dimIn.startY && width > dimIn.width && height > dimIn.height; }
 	public boolean isLessThan(EDimension dimIn) { return startX < dimIn.startX && startY < dimIn.startY && width < dimIn.width && height < dimIn.height; }
 	public boolean isEqualTo(EDimension dimIn) { return startX == dimIn.startX && startY == dimIn.startY && width == dimIn.width && height == dimIn.height; }
 	
+	public boolean isGreaterThan(EDimensionI dimIn) { return startX > dimIn.startX && startY > dimIn.startY && width > dimIn.width && height > dimIn.height; }
+	public boolean isLessThan(EDimensionI dimIn) { return startX < dimIn.startX && startY < dimIn.startY && width < dimIn.width && height < dimIn.height; }
+	public boolean isEqualTo(EDimensionI dimIn) { return startX == dimIn.startX && startY == dimIn.startY && width == dimIn.width && height == dimIn.height; }
+	
 	public static EDimension of(Number startXIn, Number startYIn, Number endXIn, Number endYIn) {
 		return new EDimension(startXIn, startYIn, endXIn, endYIn);
 	}
+	
+	public static EDimension of(EDimensionI in) { return new EDimension(in); }
+	public static EDimension of(EDimension in) { return new EDimension(in.startX, in.startY, in.endX, in.endY); }
 	
 }

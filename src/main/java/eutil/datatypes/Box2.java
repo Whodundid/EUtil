@@ -24,6 +24,8 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
 	public Box2() { this(null, null); }
 	/** Creates a new Box2 comprised from given A and B values. */
 	public Box2(A aIn, B bIn) { a = aIn; b = bIn; }
+	/** Creates a new Box2 from a given Box2's values. */
+	public Box2(Box2<A, B> boxIn) { a = boxIn.a; b = boxIn.b; }
 	
 	//-----------
 	// Overrides

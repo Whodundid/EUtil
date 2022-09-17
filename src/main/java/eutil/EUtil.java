@@ -47,16 +47,16 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.6.2
+ *  @version 1.6.3
  */
 public class EUtil {
 	
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "1.6.2";
+	public static final String version = "1.6.3";
 	/** The EUtil library version date String. */
-	public static final String versionDate = "9/7/2022";
+	public static final String versionDate = "9/13/2022";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -747,6 +747,57 @@ public class EUtil {
 	
 	public static boolean tryCode(Runnable func) { try { func.run(); return true; } catch (Throwable e) { e.printStackTrace(); } return false; }
 	public static <R> R tryCodeR(Runnable func, R returnVal) { try { func.run(); } catch (Throwable e) { e.printStackTrace(); } return returnVal; }
+	public static boolean tryCodeSilent(Runnable func) { try { func.run(); return true; } catch (Throwable e) {} return false; };
+	public static <R> R tryCodeSilentR(Runnable func, R returnVal) { try { func.run(); } catch (Throwable e) {} return returnVal; };
+	
+	/**
+	 * Tries to run the given function on the specified object and return its
+	 * result.
+	 * <p>
+	 * If the operation throws an error during execution, the error's
+	 * stackTrace is printed and the given 'defaultValue' is returned instead.
+	 * 
+	 * @param <E> The type of object to run the given function on
+	 * @param <R> The expected return type of the given function
+	 * @param obj The Object to run the given function on
+	 * @param func The Function to run on the given object
+	 * @param defaultValue A value returned if any error occurs in execution
+	 * @return The result of the executed function on the given object
+	 * @since 1.6.3
+	 */
+	public static <E, R> R tryApply(E obj, Function<E, R> func, R defaultValue) {
+		try {
+			return func.apply(obj);
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+			return defaultValue;
+		}
+	}
+	
+	/**
+	 * Tries to run the given function on the specified object and return its
+	 * result.
+	 * <p>
+	 * If the operation throws an error during execution, no stackTrace will be
+	 * printed but the given 'defaultValue' will still be returned.
+	 * 
+	 * @param <E> The type of object to run the given function on
+	 * @param <R> The expected return type of the given function
+	 * @param obj The Object to run the given function on
+	 * @param func The Function to run on the given object
+	 * @param defaultValue A value returned if any error occurs in execution
+	 * @return The result of the executed function on the given object
+	 * @since 1.6.3
+	 */
+	public static <E, R> R tryApplySilent(E obj, Function<E, R> func, R defaultValue) {
+		try {
+			return func.apply(obj);
+		}
+		catch (Throwable t) {
+			return defaultValue;
+		}
+	}
 	
 	public static boolean tryIfCode(boolean check, Runnable func) {
 		try {

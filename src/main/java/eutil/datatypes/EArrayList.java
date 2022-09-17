@@ -100,7 +100,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	// AbstractList Overrides
 	//------------------------
 	
-	@Override public boolean add(E e) { return list.add(e); }
+	@Override public boolean add(E object) { return list.add(object); }
 	@Override public E get(int index) { return list.get(index); }
 	@Override public E set(int index, E element) { return list.set(index, element); }
 	@Override public void add(int index, E element) { list.add(index, element); }
@@ -181,9 +181,33 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 		add(0, value);
 	}
 	
+	/**
+	 * Pushes and then returns the given value.
+	 * 
+	 * @param value The value to add
+	 * @return The value added
+	 * @since 1.6.3
+	 */
+	public E pushR(E value) {
+		add(0, value);
+		return value;
+	}
+	
 	public EArrayList<E> pushRT(E value) {
 		push(value);
 		return this;
+	}
+	
+	/**
+	 * Similar to 'pop' where the first element is removed and then returned
+	 * but no 'EmptyStackException' is thrown if the list is empty.
+	 * 
+	 * @return The 'next' element at the beginning of the list
+	 * @since 1.6.3
+	 */
+	public E next() {
+		if (isEmpty()) return null;
+		return pop();
 	}
 	
 	/** Removes the first value from this list then shifts each of the remaining values to the
@@ -504,7 +528,7 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 	public boolean isNotEmpty() { return size() > 0; }
 	/** Returns true if this list does not contain the given object. */
 	public boolean notContains(Object o) { return !contains(o); }
-
+	
 	/** Returns the first element in this list that is an instance of the given class. */
 	public E getFirstInstanceOf(Class<?> cIn) {
 		for (Object e : list) {
@@ -581,37 +605,104 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 		return addA(e);
 	}
 	
-	/** Adds each of the elements in the given array to this list. */
+	/**
+	 * Adds each of the elements in the given array to this list.
+	 */
 	public EArrayList<E> addA(E[] e) {
 		for (E val : e) add(val);
 		return this;
 	}
 	
-	/** Adds the given object to this list then returns it. */
-	public E addR(E e) { add(e); return e; }
+	/**
+	 * Adds the given object to this list then returns it.
+	 */
+	public E addR(E e) {
+		add(e);
+		return e;
+	}
 	
-	/** Adds the given object to this list then returns the given returnVal. */
-	public <R> R addR(E e, R returnVal) { add(e); return returnVal; }
+	/**
+	 * Adds the given object to this list then returns the given returnVal.
+	 */
+	public <R> R addR(E e, R returnVal) {
+		add(e);
+		return returnVal;
+	}
 	
-	/** Adds the given object to this list and then returns this list itself. */
-	public EArrayList<E> addRT(E e) { add(e); return this; }
+	/**
+	 * Adds the given object at the specified index and then returns the
+	 * object.
+	 * 
+	 * @param index The index to add the object to
+	 * @param value The object to add
+	 * @return The object being added
+	 * @since 1.6.3
+	 */
+	public E addR(int index, E value) {
+		add(value);
+		return value;
+	}
+	
+	/**
+	 * Adds the given object at the specified index and then returns the given
+	 * 'returnVal'.
+	 * 
+	 * @param <R> The type of object being returned
+	 * @param index The index to add the object to
+	 * @param value The object to add
+	 * @param returnVal The object to return
+	 * @return The given 'returnVal'
+	 * @since 1.6.3
+	 */
+	public <R> R addR(int index, E value, R returnVal) {
+		add(index, value);
+		return returnVal;
+	}
+	
+	/**
+	 * Adds the given object to this list and then returns this list itself.
+	 */
+	public EArrayList<E> addRT(E e) {
+		add(e);
+		return this;
+	}
+	
+	/**
+	 * Adds the given object at the specified index and then returns this
+	 * EArrayList.
+	 * 
+	 * @param index The index to add the object to
+	 * @param value The object to add
+	 * @return This EArrayList
+	 * @since 1.6.3
+	 */
+	public EArrayList<E> addRT(int index, E value) {
+		add(index, value);
+		return this;
+	}
 
-	/** Adds the given value if and only if the given condition is true,
-	 *  then the result of the given condition is returned. */
+	/**
+	 * Adds the given value if and only if the given condition is true, then
+	 * the result of the given condition is returned.
+	 */
 	public boolean addIf(boolean condition, E e) {
 		if (condition) add(e);
 		return condition;
 	}
 	
-	/** Adds the given value if and only if the given condition is true,
-	 *  then the returnVal is returned. */
+	/**
+	 * Adds the given value if and only if the given condition is true, then
+	 * the returnVal is returned.
+	 */
 	public <R> R addIfR(boolean condition, E e, R returnVal) {
 		addIf(condition, e);
 		return returnVal;
 	}
 
-	/** Adds each of the given values to this list if and only if the
-	 *  current value is not null. */
+	/**
+	 * Adds each of the given values to this list if and only if the current
+	 * value is not null.
+	 */
 	public void addIfNotNull(E... e) {
 		for (E entry : e) {
 			if (entry != null) add(entry);

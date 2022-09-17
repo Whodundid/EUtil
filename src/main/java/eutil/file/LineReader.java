@@ -9,8 +9,11 @@ import java.nio.charset.Charset;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import eutil.datatypes.EArrayList;
+
 /**
- * Creates an auto-closable stream that reads a specified file line-by-line.
+ * Creates an auto-closable stream that reads a specified file
+ * line-by-line.
  * 
  * @author Hunter Bragg
  */
@@ -52,7 +55,7 @@ public class LineReader implements Closeable {
 	 * @return true if and only if this LineReader has another line to read
 	 * @throws IOException if any error occurs within the underlying BufferedReader
 	 */
-	public boolean hasNext() throws IOException {
+	public boolean hasNextLine() throws IOException {
 		if (grabbed) return true;
 		grabbedLine = reader.readLine();
 		grabbed = grabbedLine != null;
@@ -69,7 +72,8 @@ public class LineReader implements Closeable {
 	 * @throws IOException if any error occurs within the underlying BufferedReader
 	 */
 	public String nextLine() throws IOException {
-		if (hasNext()) grabbed = false;
+		// get the next line and increment line number
+		if (hasNextLine()) grabbed = false;
 		return grabbedLine;
 	}
 	
@@ -78,6 +82,8 @@ public class LineReader implements Closeable {
 	
 	public Stream<String> lines() { return reader.lines(); }
 	public void forEach(Consumer<? super String> action) { reader.lines().forEach(action); }
+	
+	public EArrayList<String> getAllLines() { return lines().collect(EArrayList.toEArrayList()); }
 	
 	//---------
 	// Getters
@@ -99,6 +105,31 @@ public class LineReader implements Closeable {
 	 */
 	public long getTotalLineNum() {
 		return reader.lines().count();
+	}
+	
+	//----------------
+	// Static Methods
+	//----------------
+	
+	/**
+	 * Extracts the contents of the given file line-by-line and stores them
+	 * within a single list.
+	 * 
+	 * @param fileIn The file to read from
+	 * @return A list containing all of the lines from the given file
+	 * @since 1.6.3
+	 */
+	public static EArrayList<String> readAllLines(File fileIn) {
+		try {
+			var lr = new LineReader(fileIn);
+			EArrayList<String> lines = lr.getAllLines();
+			lr.close();
+			return lines;
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }

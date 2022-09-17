@@ -284,6 +284,14 @@ public class ExpandableGrid<E> {
 		}
 	}
 	
+	public void clear() {
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				set(null, j, i);
+			}
+		}
+	}
+	
 	//---------
 	// Getters
 	//---------

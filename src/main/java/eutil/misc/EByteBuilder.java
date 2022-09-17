@@ -1,9 +1,17 @@
 package eutil.misc;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import eutil.datatypes.EArrayList;
 
+/**
+ * Similar to a StringBuilder but for bytes.
+ * 
+ * @author Hunter Bragg
+ * @since 1.6.3
+ */
 public class EByteBuilder {
 	
 	private EArrayList<Byte> bytes;
@@ -43,10 +51,12 @@ public class EByteBuilder {
 	public EByteBuilder a(Byte b) { return append(b.byteValue()); }
 	public EByteBuilder a(byte b) { return append(b); }
 	public EByteBuilder append(Byte b) { return append(b.byteValue()); }
-	public EByteBuilder append(byte b) {
-		bytes.add(b);
-		return this;
-	}
+	public EByteBuilder append(byte b) { bytes.add(b); return this; }
+	
+	public EByteBuilder a(Byte[] bytes) { for (byte b : bytes) append(b); return this; }
+	public EByteBuilder a(byte[] bytes) { for (byte b : bytes) append(b); return this; }
+	public EByteBuilder append(Byte[] bytes) { for (byte b : bytes) append(b); return this; }
+	public EByteBuilder append(byte[] bytes) { for (byte b : bytes) append(b); return this; }
 	
 	public void clear() {
 		bytes.clear();
@@ -66,6 +76,21 @@ public class EByteBuilder {
 	
 	public List<Byte> toByteList() {
 		return new EArrayList<Byte>(bytes);
+	}
+	
+	public void write(OutputStream stream) {
+		try {
+			stream.write(toByteArray());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void writeln(OutputStream stream) {
+		write(stream);
+		try { stream.write('\n'); }
+		catch (IOException e) { e.printStackTrace(); }
 	}
 	
 }
