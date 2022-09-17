@@ -59,6 +59,16 @@ public class EFileUtil {
 	//--------------
 	
 	/**
+	 * Returns the JVM working directory File.
+	 * 
+	 * @return A File pointing to the JVM's working directory
+	 * @since 1.6.5
+	 */
+	public static File userDir() {
+		return new File(System.getProperty("user.dir"));
+	}
+	
+	/**
 	 * Returns a list of all of the non-directory files within the given
 	 * directory. Note: This method does not extract files from internal
 	 * directories it finds. Instead, it simply extracts the top-level
