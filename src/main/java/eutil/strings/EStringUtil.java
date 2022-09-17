@@ -3,6 +3,7 @@ package eutil.strings;
 import static eutil.EUtil.*;
 import static eutil.lambda.Comparisons.*;
 import static eutil.lambda.Functions.*;
+import static eutil.lambda.Functions.toString;
 
 import java.util.Collection;
 import java.util.Enumeration;
@@ -25,22 +26,31 @@ import eutil.debug.Experimental;
  */
 public final class EStringUtil {
 	
+	//-----------------------
+	
+	/** Hide Constructor */
 	private EStringUtil() {}
+	
+	//-----------------------
 	
 	/**
 	 * Returns the string version of the object. This function also
 	 * accounts for null values.
+	 * 
+	 * @apiNote 1.6.4: Now uses 'String.valueOf' for the defaultVal
 	 */
 	public static String toString(Object o) {
-		return toString(o, "null");
+		return toString(o, String.valueOf(o));
 	}
 	
 	/**
 	 * Returns the string version of the object. This function also
 	 * accounts for null values. If the value is null, "null" is returned.
+	 * 
+	 * @apiNote 1.6.4: Now returns the 'String.valueOf' as the result
 	 */
 	public static String toString(Object o, String defaultVal) {
-		return (o != null) ? o.toString() : defaultVal;
+		return (o != null) ? String.valueOf(o) : defaultVal;
 	}
 	
 	//-----------------------------
@@ -109,6 +119,41 @@ public final class EStringUtil {
 	}
 	
 	/**
+	 * Performs 'String.compare' from the given 'a' String against the given
+	 * 'b' String.
+	 * <p>
+	 * Note: Both a and b must not be null.
+	 * 
+	 * @param a First String
+	 * @param b Second String
+	 * @return The 'String.compare' value from 'a' against 'b'
+	 * @since 1.6.4
+	 */
+	public static int compare(String a, String b) {
+		EUtil.requireNonNull(a, b);
+		return a.compareTo(b);
+	}
+	
+	/**
+	 * Converts to objects to their 'toString' equivalents and then performs
+	 * 'String.compare' from the a's toString value against the b's toString
+	 * value.
+	 * <p>
+	 * Note: Both a and b must not be null.
+	 * 
+	 * @param a First String
+	 * @param b Second String
+	 * @return The 'String.compare' value from 'a' against 'b'
+	 * @since 1.6.4
+	 */
+	public static int compare(Object a, Object b) {
+		EUtil.requireNonNull(a, b);
+		String aStr = toString(a);
+		String bStr = toString(b);
+		return aStr.compareTo(bStr);
+	}
+	
+	/**
 	 * Returns true if the given string matches any of the 'toCheck' strings.
 	 * 
 	 * @param in The string to compare against
@@ -118,7 +163,8 @@ public final class EStringUtil {
 	 */
 	public static boolean equalsAny(String in, String... toCheck) {
 		for (var s : toCheck)
-			if (isEqual(in, s)) return true;
+			if (isEqual(in, s))
+				return true;
 		return false;
 	}
 	
@@ -132,7 +178,8 @@ public final class EStringUtil {
 	 */
 	public static String equalsAnyR(String in, String... toCheck) {
 		for (var s : toCheck)
-			if (isEqual(in, s)) return s;
+			if (isEqual(in, s))
+				return s;
 		return null;
 	}
 	
@@ -146,8 +193,8 @@ public final class EStringUtil {
 	 */
 	public static boolean equalsAny(String in, Object... toCheck) {
 		for (var s : toCheck) {
-			var toString = toString(s);
-			if (isEqual(in, toString)) return true;
+			if (isEqual(in, toString(s)))
+				return true;
 		}
 		return false;
 	}
@@ -162,8 +209,8 @@ public final class EStringUtil {
 	 */
 	public static <E> E equalsAnyR(String in, E... toCheck) {
 		for (var s : toCheck) {
-			var toString = toString(s);
-			if (isEqual(in, toString)) return s;
+			if (isEqual(in, toString(s)))
+				return s;
 		}
 		return null;
 	}

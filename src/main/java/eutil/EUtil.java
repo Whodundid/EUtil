@@ -47,16 +47,16 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.6.3
+ *  @version 1.6.4
  */
 public class EUtil {
 	
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "1.6.3";
+	public static final String version = "1.6.4";
 	/** The EUtil library version date String. */
-	public static final String versionDate = "9/13/2022";
+	public static final String versionDate = "9/17/2022";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -112,6 +112,19 @@ public class EUtil {
 			if (o == null)
 				return false;
 		return true;
+	}
+	
+	/**
+	 * Performs 'Objects.requireNonNull' across each of the given objects. If
+	 * any of the given objects are null, a NullPointerException is thrown. If
+	 * no objects are given, this method exits quietly.
+	 * 
+	 * @param objsIn The series of objects to check through
+	 * @throws NullPointerException if any given object is {@code null}
+	 * @since 1.6.4
+	 */
+	public static void requireNonNull(Object... objsIn) {
+		for (var o : objsIn) Objects.requireNonNull(o);
 	}
 
 	/**
