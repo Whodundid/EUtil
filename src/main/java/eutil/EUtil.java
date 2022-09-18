@@ -47,16 +47,16 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.6.5
+ *  @version 1.6.6
  */
 public class EUtil {
 	
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "1.6.5";
+	public static final String version = "1.6.6";
 	/** The EUtil library version date String. */
-	public static final String versionDate = "9/17/2022";
+	public static final String versionDate = "9/18/2022";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -99,6 +99,22 @@ public class EUtil {
 		return false;
 	}
 
+	/**
+	 * Returns true if all of the given objects are null.
+	 * In the event that nothing is passed to this method, false is returned by default.
+	 * 
+	 * @param objsIn the series of objects to check through
+	 * @return True if all of the given objects are null
+	 * @since 1.6.6
+	 */
+	public static boolean allNull(Object... objsIn) {
+		if (objsIn.length == 0) return false;
+		for (Object o : objsIn)
+			if (o != null)
+				return false;
+		return true;
+	}
+	
 	/**
 	 * Returns true if any of the given objects are not null.
 	 * In the event that nothing is passed to this method, false is returned by default.
