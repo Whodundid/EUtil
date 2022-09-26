@@ -83,13 +83,15 @@ class ETimerInternalManager {
 	protected static void onTaskEnd(ETimer timer, boolean stopRecurring) {
 		//remove non-recurring timers
 		if (stopRecurring || !(timer instanceof ERecurringTimer)) {
-			Integer num = activeTimers.get(timer);
-			if (num == null) {
-				/** IDK ??? */
-				activeTimers.remove(timer);
+			synchronized (activeTimers) {
+				Integer num = activeTimers.get(timer);
+				if (num == null) {
+					/** IDK ??? */
+					activeTimers.remove(timer);
+				}
+				if (num == 1) activeTimers.remove(timer);
+				else activeTimers.put(timer, num - 1);
 			}
-			if (num == 1) activeTimers.remove(timer);
-			else activeTimers.put(timer, num - 1);
 		}
 		
 		//check if there are any actively running 

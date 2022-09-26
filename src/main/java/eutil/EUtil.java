@@ -47,14 +47,14 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.7.3
+ *  @version 1.8.0
  */
 public class EUtil {
 	
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "1.7.3";
+	public static final String version = "1.8.0";
 	/** The EUtil library version date String. */
 	public static final String versionDate = "9/25/2022";
 	/** EUtil static logger. */

@@ -11,14 +11,14 @@ import eutil.strings.EStringUtil;
  */
 public class DebugToolKit {
 	
-	public static final String NONE = "";
-	public static final String SPACE = " ";
-	public static final String COLON = ":";
-	public static final String SPACED_COLON = " : ";
-	public static final String COMMA = ", ";
-	public static final String PERIOD = ".";
+	public static final String SPACER_NONE = "";
+	public static final String SPACER_SPACE = " ";
+	public static final String SPACER_COLON = ":";
+	public static final String SPACER_SPACED_COLON = " : ";
+	public static final String SPACER_COMMA = ", ";
+	public static final String SPACER_PERIOD = ".";
 	
-	public static String printSpacer = SPACED_COLON;
+	public static String printSpacer = SPACER_SPACED_COLON;
 	
 	/**
 	 * Introduces support for {x} argument formatting in Strings.

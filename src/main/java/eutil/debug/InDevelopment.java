@@ -2,6 +2,8 @@ package eutil.debug;
 
 import static java.lang.annotation.ElementType.*;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
@@ -12,4 +14,16 @@ import java.lang.annotation.Target;
  * @since 1.3
  */
 @Target({TYPE, FIELD, METHOD, LOCAL_VARIABLE, PACKAGE})
-public @interface InDevelopment {}
+@Retention(RetentionPolicy.CLASS)
+public @interface InDevelopment {
+	
+	/**
+	 * Used to specify the date of which this code segment was last worked on.
+	 * 
+	 * @return The date last worked on
+	 * 
+	 * @since 1.8.0
+	 */
+	String since() default "";
+	
+}
