@@ -105,8 +105,10 @@ public class ETimer {
 		finished = true;
 		
 		//notify listeners
-		for (var l : listeners)
-			l.onTimerEnd(this, finishTime, !interrupted);
+		synchronized (listeners) {
+			for (var l : listeners)
+				l.onTimerEnd(this, finishTime, !interrupted);
+		}
 	}
 	
 	/**
@@ -129,8 +131,34 @@ public class ETimer {
 	 * @since 1.7.1
 	 */
 	public void addListeners(ETimerListener... listenersIn) {
-		listeners.ensureCapacity(listeners.size() + listenersIn.length);
-		for (var l : listenersIn) listeners.add(l);
+		synchronized (listeners) {
+			listeners.ensureCapacity(listeners.size() + listenersIn.length);
+			for (var l : listenersIn)
+				listeners.add(l);
+		}
+	}
+	
+	/**
+	 * Removes each of the listener objects from this timer.
+	 * 
+	 * @param listenersIn The listeners to be removed
+	 * @since 1.7.3
+	 */
+	public void removeListeners(ETimerListener... listenersIn) {
+		synchronized (listeners) {
+			listeners.remove(listenersIn);
+		}
+	}
+	
+	/**
+	 * Removes all listeners from this timer.
+	 * 
+	 * @since 1.7.3
+	 */
+	public void clearListeners() {
+		synchronized (listeners) {
+			listeners.clear();
+		}
 	}
 	
 	/**
@@ -200,10 +228,10 @@ public class ETimer {
 	//---------
 	
 	/**
-	 * Returns the list of objects that will receive a notification when this
-	 * timer either finishes counting or is interrupted.
+	 * Returns a copy of the current list of objects that will receive a
+	 * notification when this timer either finishes counting or is interrupted.
 	 */
-	public List<ETimerListener> getListeners() { return listeners; }
+	public List<ETimerListener> getListeners() { return new EArrayList<>(listeners); }
 	
 	/** Returns the time (in ms) that this timer will count down for. */
 	public long getDuration() { return duration; }
