@@ -166,7 +166,7 @@ public class ETimer {
 			
 			//notify listeners
 			for (var l : listeners)
-				l.onTimerEnd(this, finishTime, interrupted);
+				l.onTimerEnd(this, finishTime, !interrupted);
 		}
 	}
 	
