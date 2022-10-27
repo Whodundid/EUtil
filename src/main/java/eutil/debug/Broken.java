@@ -30,4 +30,12 @@ public @interface Broken {
 	 */
 	String since() default "";
 	
+	/**
+	 * The underlying reason for why the specified code segment is broken.
+	 * 
+	 * @return The reason for being broken
+	 * @since 1.8.1
+	 */
+	String value() default "";
+	
 }

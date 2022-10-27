@@ -1,8 +1,9 @@
 package eutil.datatypes.util;
 
-import eutil.math.ENumUtil;
-import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+
+import eutil.math.ENumUtil;
 
 /**
  * An enum to keep track of java datatypes. Useful for tracking generic datatypes at runtime.
@@ -27,8 +28,12 @@ public enum EDataType {
 	OBJECT,
 	NUMBER,
 	ARRAY,
+	INTERFACE,
 	
 	// Special types
+	RECORD,
+	MODULE,
+	ANNOTATION,
 	CONSTRUCTOR,
 	METHOD,
 	CLASS,
@@ -95,8 +100,10 @@ public enum EDataType {
 		return NULL;
 	}
 	
+	/** Returns the datatype of the given object. */
 	public static EDataType getDataType(Object in) {
 		if (in == null) return NULL;
+		
 		if (in instanceof Boolean) return BOOLEAN;
 		if (in instanceof Character) return CHAR;
 		if (in instanceof Byte) return BYTE;
@@ -106,9 +113,58 @@ public enum EDataType {
 		if (in instanceof Float) return FLOAT;
 		if (in instanceof Double) return DOUBLE;
 		if (in instanceof String) return STRING;
+		if (in instanceof Constructor) return CONSTRUCTOR;
 		if (in instanceof Method) return METHOD;
-		if (in instanceof Array) return ARRAY;
-		if (in instanceof Enum) return ENUM;
+		if (in instanceof Module) return MODULE;
+		if (in instanceof Number) return NUMBER;
+		if (in instanceof Class) return CLASS;
+		
+		Class<?> c = in.getClass();
+		if (c.isRecord()) return RECORD;
+		if (c.isAnnotation()) return ANNOTATION;
+		if (c.isArray()) return ARRAY;
+		if (c.isInterface()) return INTERFACE;
+		if (c.isEnum()) return ENUM;
+		
+		return OBJECT;
+	}
+	
+	/**
+	 * Returns the datatype that the given class represents.
+	 * 
+	 * @param in The class of an object
+	 * @return The parsed datatype or 'NULL' if null
+	 * 
+	 * @since 1.8.1
+	 */
+	public static EDataType getDataType(Class<?> in) {
+		if (in == null) return NULL;
+		
+		if (in.isRecord()) return RECORD;
+		if (in.isArray()) return ARRAY;
+		if (in.isEnum()) return ENUM;
+		if (in.isInterface()) return INTERFACE;
+		if (in.isAnnotation()) return ANNOTATION;
+		if (in.isAssignableFrom(Module.class)) return MODULE;
+		
+		if (in.isAssignableFrom(Method.class)) {
+			Class<? extends Method> m = (Class<? extends Method>) in;
+			if (m.isAssignableFrom(Constructor.class)) return CONSTRUCTOR;
+			return METHOD;
+		}
+		
+		if (in.isAssignableFrom(Boolean.class) || in.isAssignableFrom(boolean.class)) return BOOLEAN;
+		if (in.isAssignableFrom(Byte.class) || in.isAssignableFrom(byte.class)) return BYTE;
+		if (in.isAssignableFrom(Character.class) || in.isAssignableFrom(char.class)) return CHAR;
+		if (in.isAssignableFrom(Short.class) || in.isAssignableFrom(short.class)) return SHORT;
+		if (in.isAssignableFrom(Integer.class) || in.isAssignableFrom(int.class)) return INT;
+		if (in.isAssignableFrom(Long.class) || in.isAssignableFrom(long.class)) return LONG;
+		if (in.isAssignableFrom(Float.class) || in.isAssignableFrom(float.class)) return FLOAT;
+		if (in.isAssignableFrom(Double.class) || in.isAssignableFrom(double.class)) return DOUBLE;
+		
+		if (in.isAssignableFrom(String.class)) return STRING;
+		if (in.isAssignableFrom(Number.class)) return NUMBER;
+		
 		return OBJECT;
 	}
 	
@@ -152,5 +208,29 @@ public enum EDataType {
 		}
 		return in;
 	}
+	
+	//-------------------
+	// Static Converters
+	//-------------------
+	
+	/**
+	 * Returns the datatype of the given object.
+	 * 
+	 * @param objectIn The object to parse a datatype from
+	 * @return The datatype of the given object
+	 * 
+	 * @since 1.8.1
+	 */
+	public static EDataType of(Object objectIn) { return EDataType.getDataType(objectIn); }
+	
+	/**
+	 * Returns the datatype that the given class represents.
+	 * 
+	 * @param in The class of an object
+	 * @return The parsed datatype or 'NULL' if null
+	 * 
+	 * @since 1.8.1
+	 */
+	public static EDataType of(Class<?> classIn) { return EDataType.getDataType(classIn); }
 	
 }

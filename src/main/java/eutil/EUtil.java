@@ -47,16 +47,16 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 1.8.0
+ *  @version 1.8.1
  */
 public class EUtil {
 	
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "1.8.0";
+	public static final String version = "1.8.1";
 	/** The EUtil library version date String. */
-	public static final String versionDate = "9/25/2022";
+	public static final String versionDate = "9/29/2022";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -992,17 +992,6 @@ public class EUtil {
 	public static <E> E tryGet(Optional<E> optional, E defaultVal) {
 		try { return optional.get(); }
 		catch (Throwable e) { return defaultVal; }
-	}
-	
-	public static void tryDo(Runnable code, Class<? extends Throwable> type, Consumer<? super Throwable> ifFail) {
-		Objects.requireNonNull(code);
-		Objects.requireNonNull(type);
-		Objects.requireNonNull(ifFail);
-		
-		try { code.run(); }
-		catch (Throwable e) {
-			if (e.getClass().isAssignableFrom(type)) ifFail.accept(e);
-		}
 	}
 	
 }

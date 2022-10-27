@@ -1,6 +1,7 @@
 package eutil.reflection;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
 
 import eutil.strings.EStringBuilder;
@@ -16,7 +17,7 @@ public class EModifier {
 	private final int m;
 	private final String toString;
 	
-	public EModifier(Field f) { this(f.getModifiers()); }
+	public EModifier(Member m) { this(m.getModifiers()); }
 	public EModifier(int mods) {
 		m = mods;
 		
@@ -24,18 +25,18 @@ public class EModifier {
 		//nor should the 'toString' representation of them.
 		var sb = new EStringBuilder();
 		
-		sb.a((isPublic()) ? "public " : "");
-		sb.a((isPrivate()) ? "private " : "");
-		sb.a((isProtected()) ? "protected " : "");
-		sb.a((isStatic()) ? "static " : "");
-		sb.a((isFinal()) ? "final " : "");
-		sb.a((isSynchronized()) ? "synchronized " : "");
-		sb.a((isVolatile()) ? "volatile " : "");
-		sb.a((isTransient()) ? "transient " : "");
-		sb.a((isNative()) ? "native " : "");
-		sb.a((isInterface()) ? "interface " : "");
-		sb.a((isAbstract()) ? "abstract " : "");
-		sb.a((isStrict()) ? "strict " : "");
+		sb.println((isPublic()) ? "public " : "");
+		sb.println((isPrivate()) ? "private " : "");
+		sb.println((isProtected()) ? "protected " : "");
+		sb.println((isStatic()) ? "static " : "");
+		sb.println((isFinal()) ? "final " : "");
+		sb.println((isSynchronized()) ? "synchronized " : "");
+		sb.println((isVolatile()) ? "volatile " : "");
+		sb.println((isTransient()) ? "transient " : "");
+		sb.println((isNative()) ? "native " : "");
+		sb.println((isInterface()) ? "interface " : "");
+		sb.println((isAbstract()) ? "abstract " : "");
+		sb.println((isStrict()) ? "strict " : "");
 		
 		toString = sb.trim();
 	}
@@ -70,7 +71,15 @@ public class EModifier {
 	// Static Methods
 	//----------------
 	
-	public static EModifier of(Field f) { return new EModifier(f); }
+	public static EModifier of(Object o) {
+		if (o == null) return null;
+		if (o instanceof Member m) return of(m);
+		if (o instanceof Class<?> c) return of(c.getModifiers());
+		if (o instanceof Integer i) return of(i.intValue());
+		return of(o.getClass().getModifiers());
+	}
+	
+	public static EModifier of(Member m) { return new EModifier(m); }
 	public static EModifier of(int mods) { return new EModifier(mods); }
 	
 	//-------------------------------

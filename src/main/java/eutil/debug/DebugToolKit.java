@@ -11,6 +11,8 @@ import eutil.strings.EStringUtil;
  */
 public class DebugToolKit {
 	
+	private DebugToolKit() {}
+	
 	public static final String SPACER_NONE = "";
 	public static final String SPACER_SPACE = " ";
 	public static final String SPACER_COLON = ":";
