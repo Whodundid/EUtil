@@ -63,6 +63,15 @@ public class EDimension {
 		return this;
 	}
 	
+	public EDimension set(double newX, double newY, double newWidth, double newHeight) {
+		startX = newX;
+		startY = newY;
+		width = newWidth;
+		height = newHeight;
+		reDimension();
+		return this;
+	}
+	
 	public EDimension setPosition(double newX, double newY) {
 		startX = newX;
 		startY = newY;
@@ -116,6 +125,7 @@ public class EDimension {
 	}
 	
 	public EDimensionI toLong() { return new EDimensionI((long) startX, (long) startY, (long) endX, (long) endY); }
+	public EDimensionf toFloat() { return new EDimensionf((float) startX, (float) startY, (float) endX, (float) endY); }
 	
 	public boolean contains(Number xIn, Number yIn) {
 		double x = xIn.doubleValue();

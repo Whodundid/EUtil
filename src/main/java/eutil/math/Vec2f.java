@@ -15,16 +15,48 @@ import static eutil.EUtil.*;
  */
 public class Vec2f {
 
-	public float x = 0, y = 0;
+	/** 2D float vector of {0.0x, 0.0y}. */
+	public static final Vec2f ZERO = new Vec2f(0.0f, 0.0f);
+	/** 2D float vector of {Float.NaNx, Float.NaNy}. */ 
+	public static final Vec2f NaN = new Vec2f(Float.NaN, Float.NaN);
+	/** 2D float vector of {Float.POSITIVE_INFINITYx, FLOAT.POSITIVE_INFINITYy}. */
+	public static final Vec2f POSITIVE_INFINITY = new Vec2f(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
+	/** 2D float vector of {Float.NEGATIVE_INFINITYx, FLOAT.NEGATIVE_INFINITYy}. */
+	public static final Vec2f NEGATIVE_INFINITY = new Vec2f(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY);
+	
+	public float x = 0.0f, y = 0.0f;
 	
 	//--------------
 	// Constructors
 	//--------------
 	
-	public Vec2f() { set(0, 0); }
-	public Vec2f(Vec2f vecIn) { nullDo(vecIn, v -> set(v.x, v.y)); }
-	public Vec2f(Number n) { set(n, n); }
-	public Vec2f(Number x, Number y) { set(x, y); }
+	/** Creates a new Vec2f with 0.0f for x and 0.0f for y. */
+	public Vec2f() { this(0.0f, 0.0f); }
+	/** Creates a new Vec2f using the given float 'n' for this Vec2f's x and y coordinate values. */
+	public Vec2f(float n) { this(n, n); }
+	/** Creates a new Vec2f using the given floats 'x' and 'y' for this Vec2f's x and y coordinate values. */
+	public Vec2f(float x, float y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	/** Creates a new Vec2f using the given NUMBER 'n' for this Vec2f's x and y coordinate values. */
+	public Vec2f(Number n) { this(n, n); }
+	/** Creates a new Vec2f using the given NUMBERS 'x' and 'y' for this Vec2f's x and y coordinate values. */
+	public Vec2f(Number x, Number y) {
+		this.x = x.floatValue();
+		this.y = y.floatValue();
+	}
+	
+	/**
+	 * Creates a new Vec2f from an existing Vec2f's coordinates.
+	 * Note: If the given Vec2f 'vecIn' is null, then this Vec2f's coordinates will be set to {0.0f, 0.0f}.
+	 */
+	public Vec2f(Vec2f vecIn) {
+		if (vecIn == null) return;
+		this.x = vecIn.x;
+		this.y = vecIn.y;
+	}
 	
 	//-----------
 	// Overrides
@@ -57,6 +89,11 @@ public class Vec2f {
 	/** Returns true if this Vector3Ds y is equal to the given value. */
 	public boolean compareY(float yIn) { return y == yIn; }
 	
+	/** Returns this vector's coordinates in the form of an array. */
+	public float[] toArray() {
+		return new float[] { x, y };
+	}
+	
 	//-------------
 	// Vector Math
 	//-------------
@@ -84,6 +121,7 @@ public class Vec2f {
 	
 	public Vec2f set(Vec2f vecIn) { return nullDoR(vecIn, v -> set(v.x, v.y), this); }
 	public Vec2f set(Vec3i vecIn) { return nullDoR(vecIn, v -> set(v.x, v.y), this); }
+	public Vec2f set(float xIn, float yIn) { x = xIn; y = yIn; return this; }
 	public Vec2f set(Number xIn, Number yIn) { x = xIn.floatValue(); y = yIn.floatValue(); return this; }
 	
 	public Vec2f setX(float xIn) { x = xIn; return this; }
