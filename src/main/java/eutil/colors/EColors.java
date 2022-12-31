@@ -6,7 +6,7 @@ import eutil.math.Vec3f;
 import eutil.math.Vec3i;
 import eutil.math.Vec4f;
 import eutil.math.Vec4i;
-import eutil.random.RandomUtil;
+import eutil.random.ERandomUtil;
 
 //Author: Hunter Bragg
 
@@ -266,7 +266,7 @@ public enum EColors {
 	
 	/** Returns a random EColors color. */
 	public static EColors random() {
-		return values()[RandomUtil.getRoll(0, values().length - 1)];
+		return values()[ERandomUtil.getRoll(0, values().length - 1)];
 	}
 	
 	/** Needs to be consistently called in order for any color change to occur. */

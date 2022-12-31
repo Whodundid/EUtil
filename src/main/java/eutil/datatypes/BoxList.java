@@ -1,10 +1,14 @@
 package eutil.datatypes;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
+
+import eutil.datatypes.util.EList;
 
 /**
  * An ArrayList wrapper which manages standard two item Boxes.
@@ -18,7 +22,7 @@ import java.util.stream.Stream;
  * @author Hunter Bragg
  * @since 1.0.0
  */
-public class BoxList<A, B> implements Iterable<Box2<A, B>> {
+public class BoxList<A, B> implements EList<Box2<A, B>> {
 	
 	private final EArrayList<Box2<A, B>> createdList = new EArrayList<>();
 	public boolean allowDuplicates = false;
@@ -77,7 +81,7 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	
 	public BoxList<A, B> sort() { return stream().sorted().collect(toBoxHolder()); }
 	
-	public <T> BoxList<A, B> sort(Comparator<? super Box2<A, B>> comparator) {
+	public <T> BoxList<A, B> sortAll(Comparator<? super Box2<A, B>> comparator) {
 		return stream().sorted(comparator).collect(toBoxHolder());
 	}
 	
@@ -107,9 +111,17 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	}
 	
 	/** Returns true if this holder has any box with the specified A value. */
-	public boolean contains(A a) {
+	public boolean containsA(A a) {
 		for (Box2<A, B> getBox : createdList) {
 			if (getBox.containsA(a)) return true;
+		}
+		return false;
+	}
+	
+	/** Returns true if this holder has any box with the specified B value. */
+	public boolean containsB(B b) {
+		for (Box2<A, B> getBox : createdList) {
+			if (getBox.containsB(b)) return true;
 		}
 		return false;
 	}
@@ -208,7 +220,7 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 	//--------------------
 	
 	/** Removes the box at the specified point number. */
-	public boolean remove(int index) { return createdList.remove(index) != null; }
+	public Box2<A, B> remove(int index) { return createdList.remove(index); }
 	
 	/** Removes every box that contains the given A value. */
 	public List<Box2<A, B>> removeBoxesContainingA(A a) {
@@ -405,6 +417,98 @@ public class BoxList<A, B> implements Iterable<Box2<A, B>> {
 		}
 		
 		holderIn.addAll(noDups);
+	}
+	
+	@Override
+	public boolean contains(Object o) {
+		return createdList.contains(o);
+	}
+
+	@Override
+	public Object[] toArray() {
+		Object[] arr = new Object[createdList.size()];
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = createdList.get(i);
+		}
+		return arr;
+	}
+
+	@Override
+	public <T> T[] toArray(T[] a) {
+		return null;
+	}
+
+	@Override
+	public boolean remove(Object o) {
+		if (o instanceof Box2<?, ?> box) {
+			return createdList.remove(box);
+		}
+		return false;
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		return createdList.containsAll(c);
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends Box2<A, B>> c) {
+		return createdList.addAll(c);
+	}
+
+	@Override
+	public boolean addAll(int index, Collection<? extends Box2<A, B>> c) {
+		return createdList.addAll(index, c);
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		return createdList.removeAll(c);
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		return createdList.retainAll(c);
+	}
+
+	@Override
+	public Box2<A, B> set(int index, Box2<A, B> element) {
+		return createdList.set(index, element);
+	}
+
+	@Override
+	public void add(int index, Box2<A, B> element) {
+		createdList.add(index, element);
+	}
+
+	@Override
+	public int indexOf(Object o) {
+		return createdList.indexOf(o);
+	}
+
+	@Override
+	public int lastIndexOf(Object o) {
+		return createdList.lastIndexOf(o);
+	}
+
+	@Override
+	public ListIterator<Box2<A, B>> listIterator() {
+		return createdList.listIterator();
+	}
+
+	@Override
+	public ListIterator<Box2<A, B>> listIterator(int index) {
+		return createdList.listIterator(index);
+	}
+
+	@Override
+	public List<Box2<A, B>> subList(int fromIndex, int toIndex) {
+		return createdList.subList(fromIndex, toIndex);
+	}
+
+	@Override
+	public void ensureCapacity(int size) {
+		createdList.ensureCapacity(size);
 	}
 	
 }

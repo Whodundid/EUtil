@@ -2,6 +2,8 @@ package eutil.datatypes;
 
 import static eutil.EUtil.*;
 
+import eutil.EUtil;
+
 /**
  * A type of box which contains four distinct types.
  * 
@@ -58,6 +60,36 @@ public class Box4<A, B, C, D> {
 	public boolean compareB(B bIn) { return isEqual(b, bIn); }
 	public boolean compareC(C cIn) { return isEqual(c, cIn); }
 	public boolean compareD(D dIn) { return isEqual(d, dIn); }
+	
+	/**
+	 * Returns true if any of this box's objects are null.
+	 * 
+	 * @return True if either A, B, C or D are null
+	 * @since 1.6.6
+	 */
+	public boolean anyNull() {
+		return EUtil.anyNull(a, b, c, d);
+	}
+	
+	/**
+	 * Returns true if none of this box's objects are null.
+	 * 
+	 * @return True if A, B, C and D are not null
+	 * @since 1.6.6
+	 */
+	public boolean notNull() {
+		return EUtil.notNull(a, b, c, d);
+	}
+	
+	/**
+	 * Returns true if all of this box's objects are null.
+	 * 
+	 * @return True if A, B, C and D are null
+	 * @since 1.6.6
+	 */
+	public boolean allNull() {
+		return EUtil.allNull(a, b, c, d);
+	}
 	
 	//---------
 	// Getters

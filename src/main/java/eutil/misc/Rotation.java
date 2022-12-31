@@ -1,6 +1,6 @@
 package eutil.misc;
 
-import eutil.random.RandomUtil;
+import eutil.random.ERandomUtil;
 
 /**
  * A simple enum used to represent four different object rotations.
@@ -22,7 +22,7 @@ public enum Rotation {
 	 * @since 1.1
 	 */
 	public static Rotation random() {
-		return values()[RandomUtil.getRoll(0, values().length - 1)];
+		return values()[ERandomUtil.getRoll(0, values().length - 1)];
 	}
 	
 }

@@ -1,6 +1,6 @@
 package eutil.date;
 
-import eutil.strings.StringUtil;
+import eutil.strings.EStringUtil;
 import java.sql.Date;
 
 /**
@@ -39,7 +39,7 @@ public class EDate implements Comparable<EDate> {
 		int y = EDateTime.getYear();
 		
 		try {
-			Character c = StringUtil.testCharR(dateString.charAt(2), '/', '\\', '-', '|', '_', '.');
+			Character c = EStringUtil.testCharR(dateString.charAt(2), '/', '\\', '-', '|', '_', '.');
 			if (c != null) {
 				String[] parts = dateString.split(c + "");
 				
@@ -88,7 +88,7 @@ public class EDate implements Comparable<EDate> {
 	//---------
 	
 	public String getDayName() {
-		return StringUtil.capitalFirst(Date.valueOf(year + "-" + month + "-" + day).toLocalDate().getDayOfWeek().toString().toLowerCase());
+		return EStringUtil.capitalFirst(Date.valueOf(year + "-" + month + "-" + day).toLocalDate().getDayOfWeek().toString().toLowerCase());
 	}
 	
 	public String getMonthName() {

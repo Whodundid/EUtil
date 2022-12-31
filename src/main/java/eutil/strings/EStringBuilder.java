@@ -8,22 +8,22 @@ public class EStringBuilder implements Appendable, CharSequence {
 	// Fields
 	//--------
 	
-	private StringBuilder internalString;
+	private StringBuilder sb;
 	
 	//--------------
 	// Constructors
 	//--------------
 	
 	public EStringBuilder() {
-		internalString = new StringBuilder();
+		sb = new StringBuilder();
 	}
 	
 	public EStringBuilder(int capacity) {
-		internalString = new StringBuilder(capacity);
+		sb = new StringBuilder(capacity);
 	}
 	
 	public EStringBuilder(String str) {
-		internalString = new StringBuilder(str);
+		sb = new StringBuilder(str);
 	}
 	
 	public EStringBuilder(CharSequence seq) {
@@ -54,7 +54,7 @@ public class EStringBuilder implements Appendable, CharSequence {
 	
 	@Override
 	public String toString() {
-		return internalString.toString();
+		return sb.toString();
 	}
 	
 	//-----------------
@@ -62,85 +62,87 @@ public class EStringBuilder implements Appendable, CharSequence {
 	//-----------------
 	
 	public EStringBuilder append(Object obj) { return append(String.valueOf(obj)); }
-	public EStringBuilder append(String str) { internalString.append(str); return this; }
-	public EStringBuilder append(StringBuffer sb) { internalString.append(sb); return this; }
-	public EStringBuilder append(CharSequence s) { internalString.append(s); return this; }
-	public EStringBuilder append(CharSequence s, int start, int end) { internalString.append(s, start, end); return this; }
-	public EStringBuilder append(char[] str) { internalString.append(str); return this; }
-	public EStringBuilder append(char[] str, int offset, int len) { internalString.append(str, offset, len); return this; }
-	public EStringBuilder append(boolean b) { internalString.append(b); return this; }
-	public EStringBuilder append(char c) { internalString.append(c); return this; }
-	public EStringBuilder append(int i) { internalString.append(i); return this; }
-	public EStringBuilder append(long lng) { internalString.append(lng); return this; }
-	public EStringBuilder append(float f) { internalString.append(f); return this; }
-	public EStringBuilder append(double d) { internalString.append(d); return this; }
-	public EStringBuilder appendCodePoint(int codePoint) { internalString.appendCodePoint(codePoint); return this; }
-	public EStringBuilder delete(int start, int end) { internalString.delete(start, end); return this; }
-	public EStringBuilder deleteCharAt(int index) { internalString.deleteCharAt(index); return this; }
-	public EStringBuilder replace(int start, int end, String str) { internalString.replace(start, end, str); return this; }
-	public EStringBuilder insert(int index, char[] str, int offset, int len) { internalString.insert(index, str, offset, len); return this; }
-	public EStringBuilder insert(int offset, Object obj) { internalString.insert(offset, obj); return this; }
-	public EStringBuilder insert(int offset, String str) { internalString.insert(offset, str); return this; }
-	public EStringBuilder insert(int offset, char[] str) { internalString.insert(offset, str); return this; }
-	public EStringBuilder insert(int dstOffset, CharSequence s) { internalString.insert(dstOffset, s); return this; }
-	public EStringBuilder insert(int dstOffset, CharSequence s, int start, int end) { internalString.insert(dstOffset, s, start, end); return this; }
-	public EStringBuilder insert(int offset, boolean b) { internalString.insert(offset, b); return this; }
-	public EStringBuilder insert(int offset, char c) { internalString.insert(offset, c); return this; }
-	public EStringBuilder insert(int offset, int i) { internalString.insert(offset, i); return this; }
-	public EStringBuilder insert(int offset, long l) { internalString.insert(offset, l); return this; }
-	public EStringBuilder insert(int offset, float f) { internalString.insert(offset, f); return this; }
-	public EStringBuilder insert(int offset, double d) { internalString.insert(offset, d); return this; }
-	public int indexOf(String str) { return internalString.indexOf(str); }
-	public int indexOf(String str, int fromIndex) { return internalString.indexOf(str, fromIndex); }
-	public int lastIndexOf(String str) { return internalString.lastIndexOf(str); }
-	public int lastIndexOf(String str, int fromIndex) { return internalString.lastIndexOf(str, fromIndex); }
-	public EStringBuilder reverse() { internalString.reverse(); return this; }
-	public int length() { return internalString.length(); }
-	public int capacity() { return internalString.capacity(); }
-	public void ensureCapacity(int minimumCapacity) { internalString.ensureCapacity(minimumCapacity); }
-	public void trimToSize() { internalString.trimToSize(); }
-	public void setLength(int newLength) { internalString.setLength(newLength); }
-	public char charAt(int index) { return internalString.charAt(index); }
-	public int codePointAt(int index) { return internalString.codePointAt(index); }
-	public int codePointBefore(int index) { return internalString.codePointBefore(index); }
-	public int codePointCount(int beginIndex, int endIndex) { return internalString.codePointCount(beginIndex, endIndex); }
-	public int offsetByCodePoints(int index, int codePointOffset) { return internalString.offsetByCodePoints(index, codePointOffset); }
-	public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { internalString.getChars(srcBegin, srcEnd, dst, dstBegin); }
-	public void setCharAt(int index, char ch) { internalString.setCharAt(index, ch); }
-	public String substring(int start) { return internalString.substring(start); }
-	public CharSequence subSequence(int start, int end) { return internalString.subSequence(start, end); }
-	public String substring(int start, int end) { return internalString.substring(start, end); }
-	public IntStream chars() { return internalString.chars(); }
-	public IntStream codePoints() { return internalString.codePoints(); }
+	public EStringBuilder append(String str) { sb.append(str); return this; }
+	public EStringBuilder append(StringBuffer sb) { sb.append(sb); return this; }
+	public EStringBuilder append(CharSequence s) { sb.append(s); return this; }
+	public EStringBuilder append(CharSequence s, int start, int end) { sb.append(s, start, end); return this; }
+	public EStringBuilder append(char[] str) { sb.append(str); return this; }
+	public EStringBuilder append(char[] str, int offset, int len) { sb.append(str, offset, len); return this; }
+	public EStringBuilder append(boolean b) { sb.append(b); return this; }
+	public EStringBuilder append(char c) { sb.append(c); return this; }
+	public EStringBuilder append(int i) { sb.append(i); return this; }
+	public EStringBuilder append(long lng) { sb.append(lng); return this; }
+	public EStringBuilder append(float f) { sb.append(f); return this; }
+	public EStringBuilder append(double d) { sb.append(d); return this; }
+	public EStringBuilder appendCodePoint(int codePoint) { sb.appendCodePoint(codePoint); return this; }
+	public EStringBuilder delete(int start, int end) { sb.delete(start, end); return this; }
+	public EStringBuilder deleteCharAt(int index) { sb.deleteCharAt(index); return this; }
+	public EStringBuilder replace(int start, int end, String str) { sb.replace(start, end, str); return this; }
+	public EStringBuilder insert(int index, char[] str, int offset, int len) { sb.insert(index, str, offset, len); return this; }
+	public EStringBuilder insert(int offset, Object obj) { sb.insert(offset, obj); return this; }
+	public EStringBuilder insert(int offset, String str) { sb.insert(offset, str); return this; }
+	public EStringBuilder insert(int offset, char[] str) { sb.insert(offset, str); return this; }
+	public EStringBuilder insert(int dstOffset, CharSequence s) { sb.insert(dstOffset, s); return this; }
+	public EStringBuilder insert(int dstOffset, CharSequence s, int start, int end) { sb.insert(dstOffset, s, start, end); return this; }
+	public EStringBuilder insert(int offset, boolean b) { sb.insert(offset, b); return this; }
+	public EStringBuilder insert(int offset, char c) { sb.insert(offset, c); return this; }
+	public EStringBuilder insert(int offset, int i) { sb.insert(offset, i); return this; }
+	public EStringBuilder insert(int offset, long l) { sb.insert(offset, l); return this; }
+	public EStringBuilder insert(int offset, float f) { sb.insert(offset, f); return this; }
+	public EStringBuilder insert(int offset, double d) { sb.insert(offset, d); return this; }
+	public int indexOf(String str) { return sb.indexOf(str); }
+	public int indexOf(String str, int fromIndex) { return sb.indexOf(str, fromIndex); }
+	public int lastIndexOf(String str) { return sb.lastIndexOf(str); }
+	public int lastIndexOf(String str, int fromIndex) { return sb.lastIndexOf(str, fromIndex); }
+	public EStringBuilder reverse() { sb.reverse(); return this; }
+	public int length() { return sb.length(); }
+	public int capacity() { return sb.capacity(); }
+	public void ensureCapacity(int minimumCapacity) { sb.ensureCapacity(minimumCapacity); }
+	public void trimToSize() { sb.trimToSize(); }
+	public void setLength(int newLength) { sb.setLength(newLength); }
+	public char charAt(int index) { return sb.charAt(index); }
+	public int codePointAt(int index) { return sb.codePointAt(index); }
+	public int codePointBefore(int index) { return sb.codePointBefore(index); }
+	public int codePointCount(int beginIndex, int endIndex) { return sb.codePointCount(beginIndex, endIndex); }
+	public int offsetByCodePoints(int index, int codePointOffset) { return sb.offsetByCodePoints(index, codePointOffset); }
+	public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { sb.getChars(srcBegin, srcEnd, dst, dstBegin); }
+	public void setCharAt(int index, char ch) { sb.setCharAt(index, ch); }
+	public String substring(int start) { return sb.substring(start); }
+	public CharSequence subSequence(int start, int end) { return sb.subSequence(start, end); }
+	public String substring(int start, int end) { return sb.substring(start, end); }
+	public IntStream chars() { return sb.chars(); }
+	public IntStream codePoints() { return sb.codePoints(); }
 	
 	//---------
 	// Methods
 	//---------
 	
 	/** Shorthand 'substring' method. */
-	public String sub(int index) { return internalString.substring(index); }
+	public String sub(int index) { return sb.substring(index); }
 	/** Shorthand 'substring' method. */
-	public String sub(int start, int end) { return internalString.substring(start, end); }
+	public String sub(int start, int end) { return sb.substring(start, end); }
 	
 	/** Shorthand 'reverse' method. */
-	public EStringBuilder rev() { internalString.reverse(); return this; }
+	public EStringBuilder rev() { sb.reverse(); return this; }
 	
 	/** Shorthand 'length' method. */
-	public int l() { return internalString.length(); }
+	public int l() { return sb.length(); }
 	
 	/** Shorthand 'append' method. */
-	public EStringBuilder a(Object o) { internalString.append(o); return this; }
+	public EStringBuilder a(Object o) { sb.append(o); return this; }
 	/** Shorthand batch 'append' method. */
-	public EStringBuilder a(Object... a) { for (var o : a) internalString.append(o); return this; }
+	public EStringBuilder a(Object... a) { for (var o : a) sb.append(o); return this; }
 	
 	/** Shorthand 'clear' method. */
 	public EStringBuilder c() { return clear(); }
-	public EStringBuilder clear() { internalString = new StringBuilder(); return this; }
-	public EStringBuilder clear(char c) { internalString = new StringBuilder(String.valueOf(c)); return this; }
-	public EStringBuilder clear(String in) { internalString = new StringBuilder(in); return this; }
-	public EStringBuilder clear(CharSequence in) { internalString = new StringBuilder(in); return this; }
+	public EStringBuilder clear() { sb = new StringBuilder(); return this; }
+	public EStringBuilder clear(char c) { sb = new StringBuilder(String.valueOf(c)); return this; }
+	public EStringBuilder clear(String in) { sb = new StringBuilder(in); return this; }
+	public EStringBuilder clear(CharSequence in) { sb = new StringBuilder(in); return this; }
 	
-	public EStringBuilder trimRT() { internalString = new StringBuilder(internalString.toString().trim()); return this; }
+	public boolean contains(CharSequence in) { return sb.toString().contains(in); }
+	
+	public EStringBuilder trimRT() { sb = new StringBuilder(sb.toString().trim()); return this; }
 	public String trim() { return trimRT().toString(); }
 	public boolean isBlank() { return toString().trim().isEmpty(); }
 	
@@ -151,11 +153,11 @@ public class EStringBuilder implements Appendable, CharSequence {
 	public EStringBuilder print(Object... values) { for (var v : values) append(v); return this; }
 	public EStringBuilder println(Object... values) { print(values); append("\n"); return this; }
 	
-	public EStringBuilder setSubstringRT(int start) { internalString = new StringBuilder(internalString.substring(start)); return this; }
-	public EStringBuilder setSubstringRT(int start, int end) { internalString = new StringBuilder(internalString.substring(start, end)); return this; }
+	public EStringBuilder setSubstringRT(int start) { sb = new StringBuilder(sb.substring(start)); return this; }
+	public EStringBuilder setSubstringRT(int start, int end) { sb = new StringBuilder(sb.substring(start, end)); return this; }
 	public String setSubstring(int start) { return setSubstringRT(start).toString(); }
 	public String setSubstring(int start, int end) { return setSubstringRT(start, end).toString(); }
 	
 	/** Returns the internally wrapped StringBuilder. */
-	public StringBuilder getSB() { return internalString; }
+	public StringBuilder getSB() { return sb; }
 }

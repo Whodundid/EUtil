@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import eutil.random.RandomUtil;
+import eutil.random.ERandomUtil;
 
 /**
  * A series of unit tests for the RandomUtil library.
@@ -22,9 +22,9 @@ public class Tests_RandomUtil {
 	 */
 	@Test
 	public void test_getNRolls() {
-		int[] randInts = RandomUtil.getNRolls(5, 0, 9);
-		long[] randLongs = RandomUtil.getNRolls(5, 0l, 9l);
-		double[] randDoubles = RandomUtil.getNRolls(5, 0d, 9d);
+		int[] randInts = ERandomUtil.getNRolls(5, 0, 9);
+		long[] randLongs = ERandomUtil.getNRolls(5, 0l, 9l);
+		double[] randDoubles = ERandomUtil.getNRolls(5, 0d, 9d);
 		
 		assertEquals(5, randInts.length);
 		assertEquals(5, randLongs.length);

@@ -148,10 +148,13 @@ public final class ReflectionHelper {
 	public static Object forceGet(Field f) { return forceGet(f, null); }
 	public static Object forceGet(Field f, Object obj) {
 		try {
-			return f.get(obj);
+			f.setAccessible(true);
+			Object value = f.get(obj);
+			f.setAccessible(false);
+			return value;
 		}
 		catch (Exception e) {
-			throw new RuntimeException("Cannot return field value for '" + f + "'!");
+			throw new RuntimeException("Cannot return field value for '" + f + "'!", e);
 		}
 	}
 	

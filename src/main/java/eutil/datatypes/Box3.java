@@ -2,6 +2,8 @@ package eutil.datatypes;
 
 import static eutil.EUtil.*;
 
+import eutil.EUtil;
+
 /**
  * A type of box which contains three distinct types.
  * 
@@ -53,6 +55,36 @@ public class Box3<A, B, C> {
 	public boolean compareA(A aIn) { return isEqual(a, aIn); }
 	public boolean compareB(B bIn) { return isEqual(b, bIn); }
 	public boolean compareC(C cIn) { return isEqual(c, cIn); }
+	
+	/**
+	 * Returns true if any of this box's objects are null.
+	 * 
+	 * @return True if either A, B or C are null
+	 * @since 1.6.6
+	 */
+	public boolean anyNull() {
+		return EUtil.anyNull(a, b, c);
+	}
+	
+	/**
+	 * Returns true if none of this box's objects are null.
+	 * 
+	 * @return True if A, B and C are not null
+	 * @since 1.6.6
+	 */
+	public boolean notNull() {
+		return EUtil.notNull(a, b, c);
+	}
+	
+	/**
+	 * Returns true if all of this box's objects are null.
+	 * 
+	 * @return True if A, B and C are null
+	 * @since 1.6.6
+	 */
+	public boolean allNull() {
+		return EUtil.allNull(a, b, c);
+	}
 	
 	//---------
 	// Getters

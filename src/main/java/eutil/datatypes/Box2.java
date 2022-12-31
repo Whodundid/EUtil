@@ -2,6 +2,8 @@ package eutil.datatypes;
 
 import static eutil.EUtil.*;
 
+import eutil.EUtil;
+
 /**
  * A grouping of two distinct object types.
  * 
@@ -24,6 +26,8 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
 	public Box2() { this(null, null); }
 	/** Creates a new Box2 comprised from given A and B values. */
 	public Box2(A aIn, B bIn) { a = aIn; b = bIn; }
+	/** Creates a new Box2 from a given Box2's values. */
+	public Box2(Box2<A, B> boxIn) { a = boxIn.a; b = boxIn.b; }
 	
 	//-----------
 	// Overrides
@@ -61,6 +65,36 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
 	public boolean compare(Box2<?, ?> boxIn) { return compare(boxIn.getA(), boxIn.getB()); }
 	/** Returns true if this box's contents match the given A and B values. */
 	public boolean compare(Object inA, Object inB) { return isEqual(a, inA) && isEqual(b, inB); }
+	
+	/**
+	 * Returns true if any of this box's objects are null.
+	 * 
+	 * @return True if both A or B are null
+	 * @since 1.6.6
+	 */
+	public boolean anyNull() {
+		return EUtil.anyNull(a, b);
+	}
+	
+	/**
+	 * Returns true if none of this box's objects are null.
+	 * 
+	 * @return True if both A and B are not null
+	 * @since 1.6.6
+	 */
+	public boolean notNull() {
+		return EUtil.notNull(a, b);
+	}
+	
+	/**
+	 * Returns true if all of this box's objects are null.
+	 * 
+	 * @return True if both A and B are null
+	 * @since 1.6.6
+	 */
+	public boolean allNull() {
+		return EUtil.allNull(a, b);
+	}
 	
 	//---------
 	// Getters

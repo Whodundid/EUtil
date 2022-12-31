@@ -6,7 +6,7 @@ import eutil.datatypes.util.AnchorPoint;
 import eutil.debug.Experimental;
 import eutil.misc.Direction;
 import eutil.strings.EStringBuilder;
-import eutil.strings.StringUtil;
+import eutil.strings.EStringUtil;
 
 @Experimental(since = "1.5.4")
 public class ExpandableGrid<E> {
@@ -61,7 +61,7 @@ public class ExpandableGrid<E> {
 		int longest = 0;
 		
 		for (int i = 0; i < height; i++) {
-			int rowLongest = StringUtil.getLongestLength(grid.get(i));
+			int rowLongest = EStringUtil.getLongestLength(grid.get(i));
 			if (rowLongest > longest) longest = rowLongest;
 		}
 		
@@ -71,7 +71,7 @@ public class ExpandableGrid<E> {
 				var val = get(j, i);
 				String str = String.valueOf(get(j, i));
 				int offset = longest - str.length();
-				sb.a(StringUtil.repeatString(" ", offset));
+				sb.a(EStringUtil.repeatString(" ", offset));
 				sb.print(val, (j + 1 < width) ? ", " : "");
 			}
 			sb.println("|");
@@ -280,6 +280,14 @@ public class ExpandableGrid<E> {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				grid.get(i).set(j, object);
+			}
+		}
+	}
+	
+	public void clear() {
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				set(null, j, i);
 			}
 		}
 	}

@@ -15,16 +15,42 @@ import static eutil.EUtil.*;
  */
 public class Vec2i {
 
-	public long x = 0, y = 0;
+	/** 2D long vector of {0.0x, 0.0y}. */
+	public static final Vec2i ZERO = new Vec2i(0L, 0L);
+	
+	public long x = 0L, y = 0L;
 	
 	//--------------
 	// Constructors
 	//--------------
 	
-	public Vec2i() { set(0, 0); }
-	public Vec2i(Vec2i vecIn) { nullDo(vecIn, v -> set(v.x, v.y)); }
-	public Vec2i(Number n) { set(n, n); }
-	public Vec2i(Number x, Number y) { set(x, y); }
+	/** Creates a new Vec2i with 0L for x and 0L for y. */
+	public Vec2i() { this(0l, 0l); }
+	/** Creates a new Vec2i using the given longs 'n' for this Vec2i's x and y coordinate values. */
+	public Vec2i(long n) { this(n, n); }
+	/** Creates a new Vec2i using the given longs 'x' and 'y' for this Vec2i's x and y coordinate values. */
+	public Vec2i(long x, long y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	/** Creates a new Vec2i using the given NUMBER 'n' for this Vec2i's x and y coordinate values. */
+	public Vec2i(Number n) { this(n, n); }
+	/** Creates a new Vec2i using the given NUMBERS 'x' and 'y' for this Vec2i's x and y coordinate values. */
+	public Vec2i(Number x, Number y) {
+		this.x = x.longValue();
+		this.y = y.longValue();
+	}
+	
+	/**
+	 * Creates a new Vec2i from an existing Vec2i's coordinates.
+	 * Note: If the given Vec2i 'vecIn' is null, then this Vec2d's coordinates will be set to {0L, 0L}.
+	 */
+	public Vec2i(Vec2i vecIn) {
+		if (vecIn == null) return;
+		this.x = vecIn.x;
+		this.y = vecIn.y;
+	}
 	
 	//-----------
 	// Overrides
@@ -57,19 +83,23 @@ public class Vec2i {
 	/** Returns true if this Vector3Ds y is equal to the given value. */
 	public boolean compareY(long yIn) { return y == yIn; }
 	
+	/** Returns this vector's coordinates in the form of an array. */
+	public long[] toArray() {
+		return new long[] { x, y };
+	}
+	
 	//-------------
 	// Vector Math
 	//-------------
 	
 	public long magnitude() { return (long) Math.sqrt(x * x + y * y); }
-	public long dotProduct(Vec2i vecIn) { return (long) Math.acos(multiplyAndAdd(vecIn) / (magnitude() * vecIn.magnitude())); }
+	public long dotProduct(Vec2i vecIn) { return dotProduct(this, vecIn); }
 	public long dotProductDegrees(Vec2i vecIn) { return (long) ((dotProduct(vecIn) * 180) / Math.PI); }
-	public long multiplyAndAdd(Vec2i vecIn) { return nullApplyR(vecIn, v -> x * v.x + y * v.y, (long) -0); }
+	public long multiplyAndAdd(Vec2i vecIn) { return multiplyAndAdd(this, vecIn); }
 	public Vec2i scale(long val) { return scale(this, val);  }
-	//public Vector2D cross(Vector2D vecIn) { return nullApplyR(vecIn, v -> new Vector2D(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x), null); }
-	public Vec2i add(Vec2i vecIn) { return nullApplyR(vecIn, v -> new Vec2i(x + v.x, y + v.y), this); }
-	public Vec2i sub(Vec2i vecIn) { return nullApplyR(vecIn, v -> new Vec2i(x - v.x, y - v.y), null); }
-	public Vec2i normalize() { return nullDoR(magnitude(), l -> { x /= l; y /= l; }, this); }
+	public Vec2i add(Vec2i vecIn) { return add(this, vecIn); }
+	public Vec2i sub(Vec2i vecIn) { return sub(this, vecIn); }
+	public Vec2i normalize() { return normalize(this); }
 
 	//---------
 	// Getters
@@ -84,6 +114,7 @@ public class Vec2i {
 	
 	public Vec2i set(Vec2i vecIn) { return nullDoR(vecIn, v -> set(v.x, v.y), this); }
 	public Vec2i set(Vec3i vecIn) { return nullDoR(vecIn, v -> set(v.x, v.y), this); }
+	public Vec2i set(long xIn, long yIn) { x = xIn; y = yIn; return this; }
 	public Vec2i set(Number xIn, Number yIn) { x = xIn.longValue(); y = yIn.longValue(); return this; }
 	
 	public Vec2i setX(long xIn) { x = xIn; return this; }

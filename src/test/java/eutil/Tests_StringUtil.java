@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import eutil.strings.StringUtil;
+import eutil.strings.EStringUtil;
 
 /**
  * A series of unit tests for the StringUtil library.
@@ -32,13 +32,13 @@ public class Tests_StringUtil {
 		
 		//test object array
 		Object[] arr_objects = new Object[] { "aa", 5432, '4', "Banana", new Test() };
-		int arr_longestLen = StringUtil.getLongestLength(arr_objects);
+		int arr_longestLen = EStringUtil.getLongestLength(arr_objects);
 		
 		assertEquals(6, arr_longestLen);
 		
 		//test object collection
 		Collection<?> col_objects = List.of("aa", 5432, '4', "Banana", new Test());
-		int col_longestLen = StringUtil.getLongestLength(col_objects);
+		int col_longestLen = EStringUtil.getLongestLength(col_objects);
 		
 		assertEquals(6, col_longestLen);
 	}
@@ -50,24 +50,24 @@ public class Tests_StringUtil {
 		
 		String base = "BASE";
 		
-		assertFalse(StringUtil.equalsAny(base));
-		assertFalse(StringUtil.equalsAny(base, "a", "b", "c"));
-		assertFalse(StringUtil.equalsAny(base, new Not_Match_Class()));
-		assertFalse(StringUtil.equalsAny(base, "a", "b", "c", new Not_Match_Class()));
+		assertFalse(EStringUtil.equalsAny(base));
+		assertFalse(EStringUtil.equalsAny(base, "a", "b", "c"));
+		assertFalse(EStringUtil.equalsAny(base, new Not_Match_Class()));
+		assertFalse(EStringUtil.equalsAny(base, "a", "b", "c", new Not_Match_Class()));
 		
-		assertTrue(StringUtil.equalsAny(base, base));
-		assertTrue(StringUtil.equalsAny(base, "BASE"));
-		assertTrue(StringUtil.equalsAny(base, new Match_Class()));
-		assertTrue(StringUtil.equalsAny(base, "a", "b", "c", new Match_Class()));
-		assertTrue(StringUtil.equalsAny(base, "a", "b", "c", "BASE", new Not_Match_Class()));
+		assertTrue(EStringUtil.equalsAny(base, base));
+		assertTrue(EStringUtil.equalsAny(base, "BASE"));
+		assertTrue(EStringUtil.equalsAny(base, new Match_Class()));
+		assertTrue(EStringUtil.equalsAny(base, "a", "b", "c", new Match_Class()));
+		assertTrue(EStringUtil.equalsAny(base, "a", "b", "c", "BASE", new Not_Match_Class()));
 		
 		var match = new Match_Class();
 		var not_match = new Not_Match_Class();
 		
-		assertNull(StringUtil.equalsAnyR(base, "a", "b", "c"));
-		assertEquals("BASE", StringUtil.equalsAnyR(base, base));
-		assertEquals(match, StringUtil.equalsAnyR(base, "a", 'b', "c", match, "d", "e"));
-		assertEquals(null, StringUtil.equalsAnyR(base, "a", 'b', "c", not_match, "d", "e"));
+		assertNull(EStringUtil.equalsAnyR(base, "a", "b", "c"));
+		assertEquals("BASE", EStringUtil.equalsAnyR(base, base));
+		assertEquals(match, EStringUtil.equalsAnyR(base, "a", 'b', "c", match, "d", "e"));
+		assertEquals(null, EStringUtil.equalsAnyR(base, "a", 'b', "c", not_match, "d", "e"));
 	}
 	
 }
