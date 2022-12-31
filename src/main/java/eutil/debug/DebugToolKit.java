@@ -1,5 +1,6 @@
 package eutil.debug;
 
+import eutil.strings.EStringBuilder;
 import eutil.strings.EStringUtil;
 
 /**
@@ -82,6 +83,55 @@ public class DebugToolKit {
 	 */
 	public static void println(Object... toPrint) {
 		performPrintln(true, toPrint);
+	}
+	
+	public static String debugPrint(Object... toPrint) {
+		return debugPrintWithTitle(null, true, toPrint);
+	}
+	
+	public static String debugPrint(boolean printToConsole, Object... toPrint) {
+		return debugPrintWithTitle(null, printToConsole, toPrint);
+	}
+	
+	public static String debugPrintWithTitle(String title, Object... toPrint) {
+		return debugPrintWithTitle(title, true, toPrint);
+	}
+	
+	public static String debugPrintWithTitle(String title, boolean printToConsole, Object... toPrint) {
+		String converted = EStringUtil.combineAll(toPrint);
+		boolean hasTitle = title != null && !title.isBlank();
+		
+		converted = converted.replace("\t", "    ");
+		if (converted.endsWith("\n")) converted = converted.substring(0, converted.length() - 1);
+		
+		int longestConvertedLength = converted.length();
+		if (converted.contains("\n")) {
+			longestConvertedLength = EStringUtil.getLongestLength(converted.split("\n"));
+		}
+		
+		int len = longestConvertedLength;
+		if (hasTitle) {
+			title = "| " + title + " |";
+			len = Math.max(len, title.length());
+		}
+		
+		String titleDashes = EStringUtil.repeatString("-", title.length());
+		String dashes = EStringUtil.repeatString("-", len);
+		
+		var sb = new EStringBuilder();
+		if (hasTitle) {
+			sb.println(titleDashes);
+			sb.println(title);
+		}
+		sb.println(dashes);
+		sb.println();
+		sb.println(converted);
+		sb.println();
+		sb.println(dashes);
+		
+		if (printToConsole) System.out.println(sb);
+		
+		return sb.toString();
 	}
 	
 	//------------------------------------------------------------------------------

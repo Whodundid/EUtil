@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import eutil.EUtil;
+import eutil.datatypes.util.EList;
 import eutil.random.ERandomUtil;
 
 /**
@@ -35,7 +36,7 @@ import eutil.random.ERandomUtil;
  * @author Hunter Bragg
  * @since 1.0.0
  */
-public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
+public class EArrayList<E> extends ArrayList<E> implements Deque<E>, EList<E> {
 	
 	private List<E> list;
 	private boolean allowDuplicates = true;
@@ -346,15 +347,6 @@ public class EArrayList<E> extends ArrayList<E> implements Deque<E> {
 		set(indexB, temp);
 		
 		return this;
-	}
-	
-	/** Returns a new WrapperList with reversed contents of this list. */
-	public EArrayList<E> flip() {
-		EArrayList<E> l = new EArrayList();
-		for (int i = size() - 1; i >= 0; i--) {
-			l.add(get(i));
-		}
-		return l;
 	}
 	
 	/** Returns true if there is only a single element in this list. */
