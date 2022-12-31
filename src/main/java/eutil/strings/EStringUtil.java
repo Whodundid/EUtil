@@ -233,6 +233,17 @@ public final class EStringUtil {
 	 * @return The length of the string with the longest toString value
 	 * @since 1.5.2
 	 */
+	public static int getLongestLength(String... strings) {
+		return tryGet(map(strings, toStringLen).max(compareInts), -1);
+	}
+	
+	/**
+	 * Returns the length of the 'toString' String for each given object.
+	 * 
+	 * @param objects The length of the longest 'toString' String
+	 * @return The length of the string with the longest toString value
+	 * @since 1.5.2
+	 */
 	public static int getLongestLength(Object... objects) {
 		return tryGet(map(objects, toStringLen).max(compareInts), -1);
 	}

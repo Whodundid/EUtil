@@ -89,7 +89,7 @@ class ETimerInternalManager {
 					/** IDK ??? */
 					activeTimers.remove(timer);
 				}
-				if (num == 1) activeTimers.remove(timer);
+				else if (num == 1) activeTimers.remove(timer);
 				else activeTimers.put(timer, num - 1);
 			}
 		}

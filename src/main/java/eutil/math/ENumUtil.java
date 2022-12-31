@@ -3,6 +3,8 @@ package eutil.math;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import org.apache.commons.math3.util.FastMath;
+
 import eutil.EUtil;
 import eutil.datatypes.Box2;
 import eutil.datatypes.util.ENumType;
@@ -51,6 +53,46 @@ public class ENumUtil {
 	public static Number max(Number a, Number b) { return (a.doubleValue() > b.doubleValue()) ? a : b; }
 	/** Returns the lower of the given two numbers. */
 	public static Number min(Number a, Number b) { return (a.doubleValue() < b.doubleValue()) ? a : b; }
+	
+	//==================================================================
+	// Fast Math : Apache Commons Math 3.6.1 : Directly Mapped : et al.
+	//==================================================================
+	
+    /**
+     * Absolute value.
+     * @param x number from which absolute value is requested
+     * @return abs(x)
+     */
+	public static int abs(final int x) {
+		return FastMath.abs(x);
+	}
+	
+    /**
+     * Absolute value.
+     * @param x number from which absolute value is requested
+     * @return abs(x)
+     */
+    public static long abs(final long x) {
+       return FastMath.abs(x);
+    }
+
+    /**
+     * Absolute value.
+     * @param x number from which absolute value is requested
+     * @return abs(x)
+     */
+    public static float abs(final float x) {
+        return FastMath.abs(x);
+    }
+
+    /**
+     * Absolute value.
+     * @param x number from which absolute value is requested
+     * @return abs(x)
+     */
+    public static double abs(double x) {
+        return FastMath.abs(x);
+    }
 	
 	//==================
 	// Decimal Rounding

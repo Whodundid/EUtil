@@ -11,7 +11,7 @@ import eutil.math.ENumUtil;
  * @author Hunter Bragg
  * @since 1.0.0
  */
-public enum EDataType {
+public enum JavaDatatype {
 	
 	// Standard Java datatypes
 	BOOLEAN,
@@ -85,12 +85,12 @@ public enum EDataType {
 	//----------------
 	
 	/** Returns true if the given dataType is a number. */
-	public static boolean isNumber(EDataType typeIn) {
+	public static boolean isNumber(JavaDatatype typeIn) {
 		return (typeIn != null) ? typeIn.isNumber() : false;
 	}
 	
 	/** Returns the dataType of the given Number. If the input is null, null is returned instead. */
-	public static EDataType getNumberType(Number in) {
+	public static JavaDatatype getNumberType(Number in) {
 		if (in instanceof Byte) return BYTE;
 		if (in instanceof Short) return SHORT;
 		if (in instanceof Integer) return INT;
@@ -101,7 +101,7 @@ public enum EDataType {
 	}
 	
 	/** Returns the datatype of the given object. */
-	public static EDataType getDataType(Object in) {
+	public static JavaDatatype getDataType(Object in) {
 		if (in == null) return NULL;
 		
 		if (in instanceof Boolean) return BOOLEAN;
@@ -137,7 +137,7 @@ public enum EDataType {
 	 * 
 	 * @since 1.8.1
 	 */
-	public static EDataType getDataType(Class<?> in) {
+	public static JavaDatatype getDataType(Class<?> in) {
 		if (in == null) return NULL;
 		
 		if (in.isRecord()) return RECORD;
@@ -168,7 +168,7 @@ public enum EDataType {
 		return OBJECT;
 	}
 	
-	public static EDataType getStringDataType(String in) {
+	public static JavaDatatype getStringDataType(String in) {
 		if (in == null || in.equals("null")) return NULL;
 		if (in.equals("true") || in.equals("false")) return BOOLEAN;
 		if (in.isEmpty() || in.trim().isEmpty()) return STRING;
@@ -180,11 +180,11 @@ public enum EDataType {
 	/** Returns the dataType of the given String.
 	 *  If the input is found to not be a number, null is returned instead.
 	 *  If the input is null, null is returned instead. */
-	public static EDataType getNumberType(String in) {
+	public static JavaDatatype getNumberType(String in) {
 		return getNumberType(ENumUtil.parseNumber(in));
 	}
 	
-	public static Object castTo(Number in, EDataType typeOut) {
+	public static Object castTo(Number in, JavaDatatype typeOut) {
 		if (in != null && typeOut != null && typeOut.isNumber()) {
 			switch (typeOut) {
 			case BYTE: return in.byteValue();
@@ -199,12 +199,12 @@ public enum EDataType {
 		return null;
 	}
 	
-	public static Object castTo(Object in, EDataType typeOut) {
+	public static Object castTo(Object in, JavaDatatype typeOut) {
 		if (in == null) return null;
 		if (in instanceof Number n) return castTo(n, typeOut);
 		if (in instanceof String s) {
 			if (typeOut.isNumber()) return castTo(ENumUtil.parseNumber(s), typeOut);
-			if (typeOut == EDataType.CHAR) return (s.isEmpty()) ? '\u0000' : s.charAt(0);
+			if (typeOut == JavaDatatype.CHAR) return (s.isEmpty()) ? '\u0000' : s.charAt(0);
 		}
 		return in;
 	}
@@ -221,7 +221,7 @@ public enum EDataType {
 	 * 
 	 * @since 1.8.1
 	 */
-	public static EDataType of(Object objectIn) { return EDataType.getDataType(objectIn); }
+	public static JavaDatatype of(Object objectIn) { return JavaDatatype.getDataType(objectIn); }
 	
 	/**
 	 * Returns the datatype that the given class represents.
@@ -231,6 +231,6 @@ public enum EDataType {
 	 * 
 	 * @since 1.8.1
 	 */
-	public static EDataType of(Class<?> classIn) { return EDataType.getDataType(classIn); }
+	public static JavaDatatype of(Class<?> classIn) { return JavaDatatype.getDataType(classIn); }
 	
 }
