@@ -304,12 +304,12 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
 	}
 	
 	/** Retrieves all boxes that contain the specified A value. */
-	public EArrayList<Box2<A, B>> getAllBoxesWithA(A obj) { return createdList.filter(b -> b.getA().equals(obj)); }
+	public EList<Box2<A, B>> getAllBoxesWithA(A obj) { return createdList.filter(b -> b.getA().equals(obj)); }
 	
 	/** Returns a list of every A value in each box. */
-	public EArrayList<A> getAVals() { return createdList.map(Box2::getA); }
+	public EList<A> getAVals() { return createdList.map(Box2::getA); }
 	/** Returns a list of every B value in each box. */
-	public EArrayList<B> getBVals() { return createdList.map(Box2::getB); }
+	public EList<B> getBVals() { return createdList.map(Box2::getB); }
 	
 	/** Returns a list containing every box in this holder. */
 	public EArrayList<Box2<A, B>> getBoxes() { return new EArrayList<Box2<A, B>>(createdList); }

@@ -221,7 +221,7 @@ public class ENumUtil {
 	
 	/** Returns the Cartesian distance between two points. (the distance formula) */
 	public static double distance(double x1, double y1, double x2, double y2) {
-		return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+		return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	}
 	
 	/** Returns the Cartesian distance between two points within storage boxes. (the distance formula) */

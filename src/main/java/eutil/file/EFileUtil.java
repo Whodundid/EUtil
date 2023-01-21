@@ -7,11 +7,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
+import java.nio.file.Files;
 import java.util.function.Function;
 
 import eutil.EUtil;
-import eutil.datatypes.EArrayList;
+import eutil.datatypes.util.EList;
+import eutil.random.ERandomUtil;
 
 /**
  * A collection of functions that assist with common file operations.
@@ -78,12 +79,12 @@ public class EFileUtil {
 	 * @return A list of all immediate files found
 	 * @since 1.6.0
 	 */
-	public static List<File> getAllFiles(File dir) {
+	public static EList<File> getAllFiles(File dir) {
 		if (!fileExists(dir)) return null;
 		if (!dir.isDirectory()) return null;
 		
 		try {
-			List<File> files = new EArrayList<>();
+			EList<File> files = EList.newList();
 			for (File f : dir.listFiles()) {
 				if (f.isDirectory()) continue;
 				files.add(f);
@@ -103,7 +104,7 @@ public class EFileUtil {
 	 * @return A list of all files found
 	 * @since 1.6.0
 	 */
-	public static List<File> getAllFilesRecursive(File dir) {
+	public static EList<File> getAllFilesRecursive(File dir) {
 		if (!fileExists(dir)) return null;
 		if (!dir.isDirectory()) return null;
 		
@@ -117,8 +118,8 @@ public class EFileUtil {
 	}
 	
 	/** Recursively collects all files found within the given parent directory. */
-	private static List<File> getAllFiles_i(File dir) {
-		List<File> files = new EArrayList<>();
+	private static EList<File> getAllFiles_i(File dir) {
+		EList<File> files = EList.newList();
 		for (File f : dir.listFiles()) {
 			if (f.isDirectory()) files.addAll(getAllFiles_i(f));
 			else files.add(f);
@@ -182,12 +183,7 @@ public class EFileUtil {
 	public static long countLines(File f) throws FileNotFoundException, IOException {
 		if (!fileExists(f)) return -1;
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
-			return reader.lines().count();
-		}
-		catch (Throwable t) {
-			return -1;
-		}
+		return Files.lines(f.toPath()).count();
 	}
 	
 	/**
@@ -211,6 +207,49 @@ public class EFileUtil {
 		}
 		
 		return chars;
+	}
+	
+	/**
+	 * Returns a random line from the given file.
+	 * <p>
+	 * If the file doesn't exist or an issue occurred while reading it, null
+	 * will be returned instead.
+	 * 
+	 * @param fileIn The file to parse through
+	 * 
+	 * @return A random line from the given file
+	 * 
+	 * @since 2.1.0
+	 */
+	public static String randomLine(File fileIn) {
+		return randomLine(fileIn, null);
+	}
+	
+	/**
+	 * Returns a random line from the given file.
+	 * <p>
+	 * If the file doesn't exist or an issue occurred while reading it, the
+	 * given 'defaultVal' will be returned instead.
+	 * 
+	 * @param fileIn The file to parse through
+	 * 
+	 * @return A random line from the given file
+	 * 
+	 * @since 2.1.0
+	 */
+	public static String randomLine(File fileIn, String defaultVal) {
+		if (!fileExists(fileIn)) return defaultVal;
+		
+		try {
+			var p = fileIn.toPath();
+			var count = Files.lines(p).count();
+			var randIndex = ERandomUtil.getRoll(0L, count - 1);
+			var randLine = Files.lines(p).skip(randIndex).findFirst().orElse(null);
+			return randLine;
+		}
+		catch (IOException e) {
+			return defaultVal;
+		}
 	}
 	
 	//------------------

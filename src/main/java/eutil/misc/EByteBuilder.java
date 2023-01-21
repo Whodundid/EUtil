@@ -2,9 +2,9 @@ package eutil.misc;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 
 import eutil.datatypes.EArrayList;
+import eutil.datatypes.util.EList;
 
 /**
  * Similar to a StringBuilder but for bytes.
@@ -14,19 +14,18 @@ import eutil.datatypes.EArrayList;
  */
 public class EByteBuilder {
 	
-	private EArrayList<Byte> bytes;
+	private EList<Byte> bytes;
 	
 	//--------------
 	// Constructors
 	//--------------
 	
 	public EByteBuilder() {
-		bytes = new EArrayList<Byte>();
+		bytes = EList.newList();
 	}
 	
 	public EByteBuilder(Byte[] bytesIn) {
-		bytes = new EArrayList<Byte>(bytesIn.length);
-		for (Byte b : bytesIn) bytes.add(b);
+		bytes = EList.newList(bytesIn);
 	}
 	
 	public EByteBuilder(byte[] bytesIn) {
@@ -35,7 +34,7 @@ public class EByteBuilder {
 	}
 	
 	public EByteBuilder(String[] stringsIn) {
-		bytes = new EArrayList<Byte>();
+		bytes = EList.newList();
 		for (String s : stringsIn) {
 			var total = s.getBytes();
 			bytes.ensureCapacity(bytes.size() + total.length);
@@ -74,8 +73,8 @@ public class EByteBuilder {
 		return r;
 	}
 	
-	public List<Byte> toByteList() {
-		return new EArrayList<Byte>(bytes);
+	public EList<Byte> toByteList() {
+		return EList.newList(bytes);
 	}
 	
 	public void write(OutputStream stream) {

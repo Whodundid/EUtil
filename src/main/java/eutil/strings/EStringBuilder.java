@@ -2,6 +2,8 @@ package eutil.strings;
 
 import java.util.stream.IntStream;
 
+import eutil.datatypes.util.EList;
+
 public class EStringBuilder implements Appendable, CharSequence {
 	
 	//--------
@@ -112,6 +114,9 @@ public class EStringBuilder implements Appendable, CharSequence {
 	public String substring(int start, int end) { return sb.substring(start, end); }
 	public IntStream chars() { return sb.chars(); }
 	public IntStream codePoints() { return sb.codePoints(); }
+	
+	public String[] splitA(String regex) { return sb.toString().split(regex); }
+	public EList<String> split(String regex) { return EList.of(splitA(regex)); }
 	
 	//---------
 	// Methods

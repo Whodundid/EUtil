@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.ListIterator;
 
 import eutil.datatypes.util.EList;
+import eutil.math.ENumUtil;
 
 public class EStack<E> implements EList<E> {
 
-	private EArrayList<E> elements = new EArrayList<>();
+	private EList<E> elements = EList.newList();
 	private int maxSize;
 	
 	//--------------
@@ -41,8 +42,13 @@ public class EStack<E> implements EList<E> {
 	//---------
 	
 	public EStack<E> setMaxSize(int val) {
-		maxSize = val;
-		elements.trimToSize(val);
+		maxSize = val = ENumUtil.clamp(val, 0, Integer.MAX_VALUE);
+		// remove each element after the size limit
+		if (val < elements.size()) {
+			for (int i = val; i < elements.size(); i++) {
+				elements.remove(i);
+			}
+		}
 		return this;
 	}
 	

@@ -20,33 +20,34 @@ public final class ERandomUtil {
 	// prevent instantiation
 	private ERandomUtil() {}
 	
-	/** Returns true if the check value matches the produced random number within range. */
+	/** Returns true if the check value matches the produced random number within inclusive range boundaries. */
 	public static boolean roll(int check, int min, int max) {
 		return check == ThreadLocalRandom.current().nextInt(min, max + 1);
 	}
 	
-	/** Returns the number from a roll within a specified range. (ints) */
+	/** Returns the number from a roll within a specified inclusive range boundaries. (ints) */
 	public static int getRoll(int min, int max) {
 		return ThreadLocalRandom.current().nextInt(min, ENumUtil.clamp(max + 1, max, Integer.MAX_VALUE));
 	}
 	
-	/** Returns the number from a roll within a specified range. (longs) */
+	/** Returns the number from a roll within a specified inclusive range boundaries. (longs) */
 	public static long getRoll(long min, long max) {
 		return ThreadLocalRandom.current().nextLong(min, ENumUtil.clamp(max + 1, max, Long.MAX_VALUE));
 	}
 	
-	/** Returns the number from a roll within a specified range. (floats) */
+	/** Returns the number from a roll within a specified inclusive range boundaries. (floats) */
 	//public static float getRoll(float min, float max) {
 	//	return ThreadLocalRandom.current().nextFloat(min, max + 1);
 	//}
 	
-	/** Returns the number from a roll within a specified range. (doubles) */
+	/** Returns the number from a roll within a specified inclusive range boundaries. (doubles) */
 	public static double getRoll(double min, double max) {
 		return ThreadLocalRandom.current().nextDouble(min, ENumUtil.clamp(max, max, Double.MAX_VALUE));
 	}
 	
 	/**
-	 * Returns 'n' number of randomly generated numbers between the given range.
+	 * Returns 'n' number of randomly generated numbers between the given
+	 * inclusive range boundaries.
 	 * 
 	 * @param nTimes The number of random values to produce
 	 * @param min The lower bound
@@ -63,7 +64,8 @@ public final class ERandomUtil {
 	}
 	
 	/**
-	 * Returns 'n' number of randomly generated numbers between the given range.
+	 * Returns 'n' number of randomly generated numbers between the given
+	 * inclusive range boundaries.
 	 * 
 	 * @param nTimes The number of random values to produce
 	 * @param min The lower bound
@@ -80,7 +82,8 @@ public final class ERandomUtil {
 	}
 	
 	/**
-	 * Returns 'n' number of randomly generated numbers between the given range.
+	 * Returns 'n' number of randomly generated numbers between the given
+	 * inclusive range boundaries.
 	 * 
 	 * @param nTimes The number of random values to produce
 	 * @param min The lower bound

@@ -9,7 +9,7 @@ import java.nio.charset.Charset;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import eutil.datatypes.EArrayList;
+import eutil.datatypes.util.EList;
 
 /**
  * Creates an auto-closable stream that reads a specified file
@@ -83,7 +83,7 @@ public class LineReader implements Closeable {
 	public Stream<String> lines() { return reader.lines(); }
 	public void forEach(Consumer<? super String> action) { reader.lines().forEach(action); }
 	
-	public EArrayList<String> getAllLines() { return lines().collect(EArrayList.toEArrayList()); }
+	public EList<String> getAllLines() { return lines().collect(EList.toEList()); }
 	
 	//---------
 	// Getters
@@ -119,10 +119,10 @@ public class LineReader implements Closeable {
 	 * @return A list containing all of the lines from the given file
 	 * @since 1.6.3
 	 */
-	public static EArrayList<String> readAllLines(File fileIn) {
+	public static EList<String> readAllLines(File fileIn) {
 		try {
 			var lr = new LineReader(fileIn);
-			EArrayList<String> lines = lr.getAllLines();
+			EList<String> lines = lr.getAllLines();
 			lr.close();
 			return lines;
 		}

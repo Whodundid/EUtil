@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
-import eutil.datatypes.EArrayList;
+import eutil.datatypes.util.EList;
 import eutil.file.EFileUtil;
 import eutil.strings.EStringUtil;
 
@@ -47,16 +47,16 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 2.0.0
+ *  @version 2.1.0
  */
 public class EUtil {
 	
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "2.0.0";
+	public static final String version = "2.1.0";
 	/** The EUtil library version date String. */
-	public static final String versionDate = "12/30/2022";
+	public static final String versionDate = "1/21/2023";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -350,8 +350,8 @@ public class EUtil {
 	 * @param in  The given Stack
 	 * @return A list containing the items in the given Stack
 	 */
-	public static <E> EArrayList<E> toList(Stack<E> in) {
-		var list = new EArrayList<E>();
+	public static <E> EList<E> toList(Stack<E> in) {
+		EList<E> list = EList.newList();
 		if (in != null) {
 			var it = in.iterator();
 			while (it.hasNext()) list.add(it.next());
@@ -433,18 +433,18 @@ public class EUtil {
 	public static void printList(Enumeration<?> list) { forEach(list, System.out::println); }
 	
 	public static <E> E[] add(E obj, E[] array) {
-		var list = new EArrayList<E>(obj).addA(array);
+		var list = EList.newList(obj).addA(array);
 		return list.toArray(array);
 	}
 	
 	public static <E> E[] addEnd(E obj, E[] array) {
-		var list = new EArrayList<E>().addA(array);
+		var list = EList.newList().addA(array);
 		list.add(obj);
 		return list.toArray(array);
 	}
 	
 	public static <E> E[] addAt(E obj, int pos, E[] array) {
-		var list = new EArrayList<E>().addA(array);
+		var list = EList.newList().addA(array);
 		if (pos >= 0 && pos < array.length + 1) {
 			list.add(pos, obj);
 		}
@@ -493,8 +493,8 @@ public class EUtil {
 	/** Boxes a generic varargs of typed-objects into a typed-array. */
 	public static <E> E[] asArray(E... vals) { return asList(vals).toArray(vals); }
 	
-	/** Converts a generic varargs of typed-objects into a typed-EArrayList. */
-	public static <E> EArrayList<E> asList(E... vals) { return new EArrayList<E>(vals); }
+	/** Converts a generic varargs of typed-objects into a typed-EList. */
+	public static <E> EList<E> asList(E... vals) { return EList.newList(vals); }
 	
 	public static <E> E[] toArray(Collection<? extends E> list) {
 		E[] arr = (E[]) new Object[list.size()];
@@ -502,7 +502,7 @@ public class EUtil {
 		return arr;
 	}
 	
-	public static <E> EArrayList<E> toList(E[] arr) { return new EArrayList<E>(arr); }
+	public static <E> EList<E> toList(E[] arr) { return EList.newList(arr); }
 	
 	/** Converts a typed-array to a Stream. */
 	public static <E> Stream<E> stream(E... vals) { return Arrays.stream(vals); }
@@ -554,7 +554,7 @@ public class EUtil {
 	/** Converts a typed-Collection to a Stream that filters out null objects then performs the given filter then finally performs a forEach loop on each remaining element. Then returns the specified value. */
 	public static <E, R> R filterNullForEachR(Collection<E> list, Predicate<? super E> filter, Consumer<? super E> action, R retVal) { filterNull(list).filter(filter).forEach(action); return retVal; }
 	
-	public static <E, R> EArrayList<R> mapList(Collection<E> list, Function<? super E, ? extends R> mapper) { return list.stream().map(mapper).collect(EArrayList.toEArrayList()); }
+	public static <E, R> EList<R> mapList(Collection<E> list, Function<? super E, ? extends R> mapper) { return list.stream().map(mapper).collect(EList.toEList()); }
 	
 	/** Converts a typed-Array to a Stream then performs the given filter. */
 	public static <E> Stream<E> filter(E[] arr, Predicate<? super E> filter) { return stream(arr).filter(filter); }
@@ -577,7 +577,7 @@ public class EUtil {
 	/** Converts a typed-Array to a Stream that filters out null objects then performs the given filter then finally performs a forEach loop on each remaining element. Then returns the specified value. */
 	public static <E, R> R filterNullForEachR(E[] arr, Predicate<? super E> filter, Consumer<? super E> action, R retVal) { filterNull(arr).filter(filter).forEach(action); return retVal; }
 	
-	public static <E, R> EArrayList<R> mapList(E[] arr, Function<? super E, ? extends R> mapper) { return map(arr, mapper).collect(EArrayList.toEArrayList()); }
+	public static <E, R> EList<R> mapList(E[] arr, Function<? super E, ? extends R> mapper) { return map(arr, mapper).collect(EList.toEList()); }
 	
 	/** Converts an array of a specified type into a Stream and performs the given filter across each element then 
 	 *  finally collects the filtered data into the specified Collector. */
@@ -586,8 +586,8 @@ public class EUtil {
 	 *  finally collects the filtered data into the specified Collector. */
 	public static <E, R, A> R filterInto(Collection<E> listIn, Predicate<? super E> filter, Collector<? super E, A, R> collector) { return filter(listIn, filter).collect(collector); }
 	
-	public static <E, A> EArrayList<E> filterAsList(E[] arrIn, Predicate<? super E> filter) { return filterA(filter, arrIn).collect(EArrayList.toEArrayList()); }
-	public static <E, A> EArrayList<E> filterAsList(Collection<E> listIn, Predicate<? super E> filter) { return filter(listIn, filter).collect(EArrayList.toEArrayList()); }
+	public static <E, A> EList<E> filterAsList(E[] arrIn, Predicate<? super E> filter) { return filterA(filter, arrIn).collect(EList.toEList()); }
+	public static <E, A> EList<E> filterAsList(Collection<E> listIn, Predicate<? super E> filter) { return filter(listIn, filter).collect(EList.toEList()); }
 	
 	//-----------------------
 	// Map Stream Operations
@@ -620,7 +620,7 @@ public class EUtil {
 	 * @since 1.4.2
 	 */
 	public static <K, V, T> List<T> mapList(Map<K, V> map, Function<? super Entry<K, V>, ? extends T> mapper) {
-		return map(map, mapper).collect(EArrayList.toEArrayList());
+		return map(map, mapper).collect(EList.toEList());
 	}
 	
 	/**
