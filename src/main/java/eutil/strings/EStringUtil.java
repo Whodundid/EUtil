@@ -238,7 +238,7 @@ public final class EStringUtil {
 	}
 	
 	/**
-	 * Returns the length of the 'toString' String for each given object.
+	 * Returns the longest 'toString' length across each of the given objects.
 	 * 
 	 * @param objects The length of the longest 'toString' String
 	 * @return The length of the string with the longest toString value
@@ -246,6 +246,32 @@ public final class EStringUtil {
 	 */
 	public static int getLongestLength(Object... objects) {
 		return tryGet(map(objects, toStringLen).max(compareInts), -1);
+	}
+	
+	/**
+	 * Returns the longest 'toString' length from the given two objects.
+	 * 
+	 * @param objects The length of the longest 'toString' String
+	 * @return The length of the string with the longest toString value
+	 * @since 2.2.0
+	 */
+	public static int getLongestLength(Object a, Object b) {
+		var aLen = String.valueOf(a).length();
+		var bLen = String.valueOf(b).length();
+		return Math.max(aLen, bLen);
+	}
+	
+	/**
+	 * Returns the shortest 'toString' length from the given two objects.
+	 * 
+	 * @param objects The length of the shortest 'toString' String
+	 * @return The length of the string with the shortest toString value
+	 * @since 2.2.0
+	 */
+	public static int getShortestLength(Object a, Object b) {
+		var aLen = String.valueOf(a).length();
+		var bLen = String.valueOf(b).length();
+		return Math.min(aLen, bLen);
 	}
 	
 	/**

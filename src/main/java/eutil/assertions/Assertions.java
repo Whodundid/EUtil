@@ -2,8 +2,15 @@ package eutil.assertions;
 
 import static eutil.EUtil.*;
 
-import eutil.assertions.exceptions.*;
 import java.util.Collection;
+
+import eutil.assertions.exceptions.AssertionException;
+import eutil.assertions.exceptions.EqualsAssertionException;
+import eutil.assertions.exceptions.FalseAssertionException;
+import eutil.assertions.exceptions.NotEqualsAssertionException;
+import eutil.assertions.exceptions.TrueAssertionException;
+import eutil.debug.PoorlyDocumented;
+import eutil.debug.Unused;
 
 /**
  * A library of various assertion statements to ensure logic flow and proper values.
@@ -11,6 +18,8 @@ import java.util.Collection;
  * @author Hunter Bragg
  * @since 1.2.0
  */
+@Unused
+@PoorlyDocumented
 public final class Assertions {
 	
 	//----------------------

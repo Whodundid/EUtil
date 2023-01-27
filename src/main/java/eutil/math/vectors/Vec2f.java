@@ -1,4 +1,4 @@
-package eutil.math;
+package eutil.math.vectors;
 
 import static eutil.EUtil.*;
 

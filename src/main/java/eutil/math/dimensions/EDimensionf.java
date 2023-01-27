@@ -1,4 +1,4 @@
-package eutil.math;
+package eutil.math.dimensions;
 
 /**
  * A datatype containing 2D object dimensions using float. 

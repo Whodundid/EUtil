@@ -2,10 +2,10 @@ package eutil.colors;
 
 import java.awt.Color;
 
-import eutil.math.Vec3f;
-import eutil.math.Vec3i;
-import eutil.math.Vec4f;
-import eutil.math.Vec4i;
+import eutil.math.vectors.Vec3f;
+import eutil.math.vectors.Vec3i;
+import eutil.math.vectors.Vec4f;
+import eutil.math.vectors.Vec4i;
 import eutil.random.ERandomUtil;
 
 //Author: Hunter Bragg

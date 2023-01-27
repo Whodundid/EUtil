@@ -8,6 +8,17 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
+import eutil.debug.Broken;
+import eutil.debug.Experimental;
+import eutil.debug.InDevelopment;
+import eutil.debug.PoorlyDocumented;
+import eutil.debug.Unused;
+
+@Broken
+@Experimental
+@Unused
+@InDevelopment
+@PoorlyDocumented
 public class XMLReader extends DefaultHandler {
 	
 	private static SAXParserFactory factory = SAXParserFactory.newInstance();

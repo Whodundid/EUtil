@@ -12,6 +12,7 @@ import java.util.function.Function;
 
 import eutil.EUtil;
 import eutil.datatypes.util.EList;
+import eutil.debug.PoorlyDocumented;
 import eutil.random.ERandomUtil;
 
 /**
@@ -256,19 +257,23 @@ public class EFileUtil {
 	// File Try-Helpers
 	//------------------
 	
+	@PoorlyDocumented
 	public static boolean tryFileCode(File fileIn, Runnable func) {
 		return (fileExists(fileIn)) ? EUtil.tryCode(func) : false;
 	}
 	
+	@PoorlyDocumented
 	public static <R> R tryFileCodeR(File fileIn, Runnable func, R returnVal) {
 		tryFileCode(fileIn, func);
 		return returnVal;
 	}
 	
+	@PoorlyDocumented
 	public static <R> R tryFileCodeR(File fileIn, Runnable func, R ifPass, R ifFail) {
 		return (tryFileCode(fileIn, func)) ? ifPass : ifFail;
 	}
 	
+	@PoorlyDocumented
 	public static <R> boolean tryFileCodeR(File fileIn, Function<Object, Boolean> func) {
 		return (fileExists(fileIn)) ? func.apply(null) : false;
 	}

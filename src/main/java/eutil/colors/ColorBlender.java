@@ -1,11 +1,16 @@
 package eutil.colors;
 
+import eutil.debug.Broken;
+import eutil.debug.Experimental;
+
 /**
  * An incomplete experimental implementation of a standard integer color blending algorithm.
  * 
  * @author Hunter Bragg
  * @since 1.0.0
  */
+@Experimental(since="Its inception")
+@Broken(value="Fairly certain this code has never worked properly", since="2.2.0")
 public class ColorBlender {
 	
 	public static int overlayColor(int background, int overlay) {

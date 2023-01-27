@@ -4,12 +4,16 @@ import java.awt.Color;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import eutil.debug.PoorlyDocumented;
+
 /**
  * A static utility class that converts an RGB color to an HSL color of the same values.
  * 
  * @author Hunter Bragg
  * @since 1.0.0
  */
+@PoorlyDocumented("Aside from the Javadoc description, there is zero explanation about what"
+	            + "any this class's functions specifically do.")
 public class HSLColor {
 	
 	double hue = 0;

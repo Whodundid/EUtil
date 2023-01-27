@@ -1,24 +1,20 @@
-package eutil.math;
+package eutil.math.dimensions;
 
 /**
- * A datatype containing 2D object dimensions using double floating point precision. 
+ * A datatype containing 2D object dimensions using integer precision. 
  * 
  * @author Hunter Bragg
  * @since 1.0.0
  */
-public class EDimension {
+public class EDimensionI {
 	
-	public double startX = 0, endX = 0;
-	public double startY = 0, endY = 0;
-	public double midX = 0, midY = 0;
-	public double width = 0, height = 0;
+	public long startX = 0, endX = 0;
+	public long startY = 0, endY = 0;
+	public long midX = 0, midY = 0;
+	public long width = 0, height = 0;
 	
-	public EDimension() { this(0, 0, 0, 0); }
-	public EDimension(Number startXIn, Number startYIn, Number endXIn, Number endYIn) {
-		this(startXIn.doubleValue(), startYIn.doubleValue(), endXIn.doubleValue(), endYIn.doubleValue());
-	}
-	
-	public EDimension(double startXIn, double startYIn, double endXIn, double endYIn) {
+	public EDimensionI() { this(0, 0, 0, 0); }
+	public EDimensionI(long startXIn, long startYIn, long endXIn, long endYIn) {
 		startX = startXIn;
 		startY = startYIn;
 		endX = endXIn;
@@ -29,18 +25,7 @@ public class EDimension {
 		midY = getMidY();
 	}
 	
-	public EDimension(EDimension dimIn) {
-		startX = dimIn.startX;
-		startY = dimIn.startY;
-		endX = dimIn.endX;
-		endY = dimIn.endY;
-		width = endX - startX;
-		height = endY - startY;
-		midX = getMidX();
-		midY = getMidY();
-	}
-	
-	public EDimension(EDimensionI dimIn) {
+	public EDimensionI(EDimensionI dimIn) {
 		startX = dimIn.startX;
 		startY = dimIn.startY;
 		endX = dimIn.endX;
@@ -56,36 +41,27 @@ public class EDimension {
 		return "[startX/Y: " + startX + ", " + startY + "; endX/Y: " + endX + ", " + endY + "; width/Height: " + width + ", " + height + "]";
 	}
 	
-	public EDimension move(double changeX, double changeY) {
+	public EDimensionI move(long changeX, long changeY) {
 		startX += changeX;
 		startY += changeY;
 		reDimension();
 		return this;
 	}
 	
-	public EDimension set(double newX, double newY, double newWidth, double newHeight) {
-		startX = newX;
-		startY = newY;
-		width = newWidth;
-		height = newHeight;
-		reDimension();
-		return this;
-	}
-	
-	public EDimension setPosition(double newX, double newY) {
+	public EDimensionI setPosition(long newX, long newY) {
 		startX = newX;
 		startY = newY;
 		reDimension();
 		return this;
 	}
 	
-	public EDimension setWidth(double newWidth) {
+	public EDimensionI setWidth(long newWidth) {
 		width = newWidth;
 		reDimension();
 		return this;
 	}
 	
-	public EDimension setHeight(double newHeight) {
+	public EDimensionI setHeight(long newHeight) {
 		height = newHeight;
 		reDimension();
 		return this;
@@ -98,6 +74,36 @@ public class EDimension {
 		midY = getMidY();
 	}
 	
+	public EDimensionI expand(long amount) {
+		EDimensionI d = new EDimensionI(this);
+		d.startX -= amount;
+		d.startY -= amount;
+		d.endX += amount;
+		d.endY += amount;
+		d.width += (amount * 2);
+		d.height += (amount * 2);
+		return d;
+	}
+	
+	public EDimensionI contract(long amount) {
+		EDimensionI d = new EDimensionI(this);
+		d.startX += amount;
+		d.startY += amount;
+		d.endX -= amount;
+		d.endY -= amount;
+		d.width -= (amount * 2);
+		d.height -= (amount * 2);
+		return d;
+	}
+	
+	public EDimensionI moveDim(long x, long y) {
+		startX += x;
+		startY += y;
+		endX = startX + width;
+		endY = startY + height;
+		return this;
+	}
+	
 	/**
 	 * Expands this dimension outward in all directions by the given
 	 * amount.
@@ -106,9 +112,9 @@ public class EDimension {
 	 * @return A modified dimension using this one as a starting point
 	 * @since 1.5.1
 	 */
-	public EDimension add(Number amount) {
-		double d = amount.doubleValue();
-		return new EDimension(startX - d, startY - d, endX + d, endY + d);
+	public EDimensionI add(Number amount) {
+		long l = amount.longValue();
+		return new EDimensionI(startX - l, startY - l, endX + l, endY + l);
 	}
 	
 	/**
@@ -119,48 +125,47 @@ public class EDimension {
 	 * @return A modified dimension using this one as a starting point
 	 * @since 1.5.1
 	 */
-	public EDimension sub(Number amount) {
-		double d = amount.doubleValue();
-		return new EDimension(startX + d, startY + d, endX - d, endY - d);
+	public EDimensionI sub(Number amount) {
+		long l = amount.longValue();
+		return new EDimensionI(startX + l, startY + l, endX - l, endY - l);
 	}
 	
-	public EDimensionI toLong() { return new EDimensionI((long) startX, (long) startY, (long) endX, (long) endY); }
-	public EDimensionf toFloat() { return new EDimensionf((float) startX, (float) startY, (float) endX, (float) endY); }
+	public EDimension toDouble() { return new EDimension(startX, startY, endX, endY); }
 	
 	public boolean contains(Number xIn, Number yIn) {
-		double x = xIn.doubleValue();
-		double y = yIn.doubleValue();
+		long x = xIn.longValue();
+		long y = yIn.longValue();
 		return x >= startX && x <= endX && y >= startY && y <= endY;
 	}
 	
 	public boolean contains(Number left, Number top, Number right, Number bot) {
-		if (left.doubleValue() < right.doubleValue()) {
+		if (left.longValue() < right.longValue()) {
 			Number t = left;
 			left = right;
 			right = t;
 		}
 		
-		if (top.doubleValue() < bot.doubleValue()) {
+		if (top.longValue() < bot.longValue()) {
 			Number t = top;
 			top = bot;
 			bot = t;
 		}
 		
-		return startX < left.doubleValue() && startY < top.doubleValue() &&
-			   endX > right.doubleValue() && endY > bot.doubleValue();
+		return startX < left.longValue() && startY < top.longValue() &&
+			   endX > right.longValue() && endY > bot.longValue();
 	}
 	
-	public double getMidX() { return startX + (width / 2); }
-	public double getMidY() { return startY + (height / 2); }
+	public long getMidX() { return startX + (width / 2); }
+	public long getMidY() { return startY + (height / 2); }
 	
-	public EDimension translateHorizontal(double amount) { startX += amount; return this; }
-	public EDimension translateVertical(double amount) { startY += amount; return this; }
+	public EDimensionI translateHorizontal(long amount) { startX += amount; return this; }
+	public EDimensionI translateVertical(long amount) { startY += amount; return this; }
 	
 	/**
 	 * Returns the 2D area that this dimension occupies.
 	 * @since 1.6.1
 	 */
-	public double getArea() {
+	public long getArea() {
 		return ((endX - startX) * (endY - startY));
 	}
 	
@@ -200,11 +205,8 @@ public class EDimension {
 	public boolean isLessThan(EDimensionI dimIn) { return startX < dimIn.startX && startY < dimIn.startY && width < dimIn.width && height < dimIn.height; }
 	public boolean isEqualTo(EDimensionI dimIn) { return startX == dimIn.startX && startY == dimIn.startY && width == dimIn.width && height == dimIn.height; }
 	
-	public static EDimension of(Number startXIn, Number startYIn, Number endXIn, Number endYIn) {
-		return new EDimension(startXIn, startYIn, endXIn, endYIn);
-	}
-	
-	public static EDimension of(EDimensionI in) { return new EDimension(in); }
-	public static EDimension of(EDimension in) { return new EDimension(in.startX, in.startY, in.endX, in.endY); }
+	public static EDimensionI of(long startXIn, long startYIn, long endXIn, long endYIn) { return new EDimensionI(startXIn, startYIn, endXIn, endYIn); }
+	public static EDimensionI of(EDimensionI in) { return new EDimensionI(in); }
+	public static EDimensionI of(EDimension in) { return new EDimensionI((long) in.startX, (long) in.startY, (long) in.endX, (long) in.endY); }
 	
 }

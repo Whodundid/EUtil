@@ -2,10 +2,11 @@ package eutil.math;
 
 import java.util.List;
 
-import eutil.datatypes.Box2;
-import eutil.datatypes.BoxList;
 import eutil.datatypes.EArrayList;
+import eutil.datatypes.boxes.Box2;
+import eutil.datatypes.boxes.BoxList;
 import eutil.datatypes.util.ENumType;
+import eutil.debug.Inefficient;
 
 /**
  * The {@code Matrix} class is a data type representing a matrix structure with default {@code Double} values.
@@ -21,6 +22,11 @@ import eutil.datatypes.util.ENumType;
  * @author Hunter Bragg
  * @since 1.0.0
  */
+@Inefficient(reason="While this matrix does work, it is very inefficient in"
+				  + "terms of optimized math. Furthermore, it is relatively"
+				  + "incomplete inregards to actual matrix operations."
+				  + "As such, unless the visual formatting that this class"
+				  + "provides is desired, this class should not be used otherwise.")
 public class Matrix {
 	
 	BoxList<Integer, List<Number>> table = new BoxList<>();

@@ -12,12 +12,12 @@ import eutil.EUtil;
  * @author Hunter Bragg
  * @since 1.0.1
  */
-public final class ReflectionHelper {
+public final class EReflectionUtil {
 	
 	//----------------------------
 	
 	// prevent instantiation
-	private ReflectionHelper() {}
+	private EReflectionUtil() {}
 	
 	//----------------------------
 	

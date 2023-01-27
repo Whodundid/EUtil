@@ -1,20 +1,27 @@
 package eutil.datatypes.util;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.EmptyStackException;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import eutil.EUtil;
 import eutil.datatypes.EArrayList;
+import eutil.debug.PlannedForRefactor;
 import eutil.random.ERandomUtil;
 
 /**
@@ -29,10 +36,17 @@ import eutil.random.ERandomUtil;
 public interface EList<E> extends List<E>, Deque<E> {
 
 	static <E> EList<E> newList() { return new EArrayList<>(); }
+	static <E> EList<E> newList(E... objects) { return new EArrayList<>(objects); }
+	static <E> EList<E> newList(Collection<E> collection) { return new EArrayList<>(collection); }
+	static <E> EList<E> newList(List<E> list) { return new EArrayList<>(list); }
 	static <E> EList<E> newList(EList<E> list) { return new EArrayList<>(list); }
-	static <E> EList<E> newList(E[] array) { return new EArrayList<>(array); }
+	static <E> EList<E> newList(Stream<E> stream) { return new EArrayList<>(stream); }
 	
 	void ensureCapacity(int size);
+	
+	default List<E> toList() {
+		return (List<E>) this;
+	}
 	
 	/**
 	 * Returns true if each object specified is within this list. Returns false
@@ -182,12 +196,14 @@ public interface EList<E> extends List<E>, Deque<E> {
 	
 	@Override
 	default E peekFirst() {
-		return null;
+		if (isEmpty()) throw new EmptyStackException();
+		return getFirst();
 	}
 	
 	@Override
 	default E peekLast() {
-		return null;
+		if (isEmpty()) throw new EmptyStackException();
+		return getLast();
 	}
 	
 	@Override
@@ -331,11 +347,13 @@ public interface EList<E> extends List<E>, Deque<E> {
 	}
 	
 	/** Prints this list to the console. */
+	@PlannedForRefactor(reason="This should produce a String that contains the 'printing' instead of printing it directly to sysout", since = "2.2.0")
 	default EList<E> print() {
 		return print(false);
 	}
 	
 	/** Prints this list to the console with optional numbering. */
+	@PlannedForRefactor(reason="This should produce a String that contains the 'printing' instead of printing it directly to sysout", since = "2.2.0")
 	default EList<E> print(boolean numbering) {
 		for (int i = 0; i < size(); i++) { System.out.println(((numbering) ? i + ": " : "") + get(i)); }
 		return this;
@@ -418,7 +436,10 @@ public interface EList<E> extends List<E>, Deque<E> {
 		return (size() > 0) ? remove(size() - 1) : null;
 	}
 	
-	//filters
+	//=========
+	// Filters
+	//=========
+	
 	/**
 	 * Returns a new WrapperList consisting of elements from this list reduced
 	 * by the provided filter.
@@ -426,6 +447,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 	default EList<E> filter(Predicate<? super E> filter) {
 		return new EArrayList<>(EUtil.filter(this, filter));
 	}
+	
 	/**
 	 * Returns a new WrapperList consisting of elements from this list with
 	 * null values removed.
@@ -433,6 +455,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 	default EList<E> filterNull() {
 		return new EArrayList<>(EUtil.filterNull(this));
 	}
+	
 	/**
 	 * Returns a new WrapperList consisting of elements from this list reduced
 	 * by the provided filter with null elements also filtered out.
@@ -440,6 +463,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 	default EList<E> filterNull(Predicate<? super E> filter) {
 		return new EArrayList<>(EUtil.filterNull(this, filter));
 	}
+	
 	/**
 	 * Adds the elements from an existing array that match the given condition.
 	 */
@@ -447,6 +471,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 		EUtil.filterForEach(arr, condition, this::add);
 		return this;
 	}
+	
 	/**
 	 * Adds the elements from an existing collection that match the given
 	 * condition.
@@ -455,6 +480,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 		EUtil.filterForEach(c, condition, this::add);
 		return this;
 	}
+	
 	/**
 	 * Adds the elements from an existing array that match the given condition.
 	 */
@@ -462,6 +488,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 		EUtil.filterNullForEach(arr, condition, this::add);
 		return this;
 	}
+	
 	/**
 	 * Adds the elements from an existing collection that match the given
 	 * condition.
@@ -471,7 +498,10 @@ public interface EList<E> extends List<E>, Deque<E> {
 		return this;
 	}
 	
-	//mappers
+	//=========
+	// Mappers
+	//=========
+	
 	/**
 	 * Returns a new List<T> formed by converting each of the existing
 	 * elements in this list to the given new type.
@@ -480,7 +510,10 @@ public interface EList<E> extends List<E>, Deque<E> {
 		return new EArrayList<>(stream().map(mapper));
 	}
 	
-	//forEach methods
+	//=================
+	// ForEach Methods
+	//=================
+	
 	/**
 	 * Performs both a filtering operation as well as the given consumer action
 	 * on the remaining elements.
@@ -488,6 +521,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 	default void filterForEach(Predicate<? super E> filter, Consumer<? super E> action) {
 		EUtil.filterForEach(this, filter, action);
 	}
+	
 	/**
 	 * Performs both a null filtering operation as well as the given consumer
 	 * action on the remaining elements.
@@ -495,6 +529,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 	default void filterNullForEach(Consumer<? super E> action) {
 		EUtil.filterNullForEach(this, action);
 	}
+	
 	/**
 	 * Performs both the given filtering operation including a null filter as
 	 * well as the given consumer action on the remaining elements.
@@ -502,6 +537,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 	default void filterNullForEach(Predicate<? super E> filter, Consumer<? super E> action) {
 		EUtil.filterNullForEach(this, filter, action);
 	}
+	
 	/**
 	 * Performs the given consumer action on the existing elements and then
 	 * returns the given value.
@@ -510,6 +546,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 		forEach(action);
 		return returnVal;
 	}
+	
 	/**
 	 * Performs the given consumer action on the existing elements if the given
 	 * condition is true, then returns the result of the condition.
@@ -518,7 +555,10 @@ public interface EList<E> extends List<E>, Deque<E> {
 		return EUtil.ifForEach(check, this, action);
 	}
 	
-	//collectors
+	//============
+	// Collectors
+	//============
+	
 	/**
 	 * Takes the contents of this list and filters them into another form using
 	 * the given collector.
@@ -534,6 +574,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 	default E getFirst() {
 		return (size() > 0) ? get(0) : null;
 	}
+	
 	/**
 	 * Returns, but does not remove, the last element in this list. If this
 	 * list is empty, null is returned instead.
@@ -541,10 +582,12 @@ public interface EList<E> extends List<E>, Deque<E> {
 	default E getLast() {
 		return (size() > 0) ? get(size() - 1) : null;
 	}
+	
 	/** Returns true if there is at least one element in this list. */
 	default boolean isNotEmpty() {
 		return size() > 0;
 	}
+	
 	/** Returns true if this list does not contain the given object. */
 	default boolean notContains(Object o) {
 		return !contains(o);
@@ -563,9 +606,9 @@ public interface EList<E> extends List<E>, Deque<E> {
 	 * Returns a list of elements in this list that are instances of the given
 	 * class.
 	 */
-	default EArrayList<E> getAllInstancesOf(Class<?> cIn) {
-		EArrayList<E> instances = new EArrayList();
-		for (E e : this) { if (cIn.isInstance(e)) instances.add((E) e); }
+	default EList<E> getAllInstancesOf(Class<?> cIn) {
+		EList<E> instances = EList.newList();
+		for (E e : this) if (cIn.isInstance(e)) instances.add((E) e);
 		return instances;
 	}
 	
@@ -574,8 +617,8 @@ public interface EList<E> extends List<E>, Deque<E> {
 	 * of the given class.
 	 */
 	default EList<E> removeAllInstancesOf(Class<?> cIn) {
-		EList<E> toBeRemoved = new EArrayList<>();
-		for (E e : this) { if (cIn.isInstance(e)) toBeRemoved.add((E) e); }
+		EList<E> toBeRemoved = EList.newList();
+		for (E e : this) if (cIn.isInstance(e)) toBeRemoved.add((E) e);
 		for (E e : toBeRemoved) remove(e);
 		return this;
 	}
@@ -625,6 +668,22 @@ public interface EList<E> extends List<E>, Deque<E> {
 	default EList<E> clearThenAddA(E[] e) {
 		clear();
 		return addA(e);
+	}
+	
+	/**
+	 * Clears the contents of this list and then adds all of the elements from
+	 * the given collection.
+	 * 
+	 * @param c The collection to add
+	 * 
+	 * @return This list
+	 * 
+	 * @since 2.0.1
+	 */
+	default EList<E> clearThenAddAll(Collection<? extends E> c) {
+		clear();
+		addAll(c);
+		return this;
 	}
 	
 	/**
@@ -841,5 +900,40 @@ public interface EList<E> extends List<E>, Deque<E> {
 		return new EArrayList<>(in);
 	}
 
+	/** Collector implementation used to be able to convert a typed stream of data into an EArrayList of the same type. */
+	public static <T> Collector<T, ?, EArrayList<T>> toEList() {
+		return new ECollector<>((Supplier<List<T>>) EArrayList::new,
+								List::add, (left, right) -> { left.addAll(right); return left; },
+								Collections.unmodifiableSet(EnumSet.of(Collector.Characteristics.IDENTITY_FINISH)));
+	}
+	
+	static class ECollector<T, A, R> implements Collector<T, A, R> {
+		
+		private static <I, R> Function<I, R> castingIdentity() { return i -> (R) i; }
+		
+		private final Supplier<A> supplier;
+		private final BiConsumer<A, T> accumulator;
+		private final BinaryOperator<A> combiner;
+		private final Function<A, R> finisher;
+		private final Set<Characteristics> characteristics;
+
+		ECollector(Supplier<A> supplierIn, BiConsumer<A, T> accumulatorIn, BinaryOperator<A> combinerIn, Function<A, R> finisherIn, Set<Characteristics> characteristicsIn) {
+			supplier = supplierIn;
+			accumulator = accumulatorIn;
+			combiner = combinerIn;
+			finisher = finisherIn;
+			characteristics = characteristicsIn;
+		}
+
+		ECollector(Supplier<A> supplier, BiConsumer<A, T> accumulator, BinaryOperator<A> combiner, Set<Characteristics> characteristics) {
+			this(supplier, accumulator, combiner, castingIdentity(), characteristics);
+		}
+
+		@Override public BiConsumer<A, T> accumulator() { return accumulator; }
+		@Override public Supplier<A> supplier() { return supplier; }
+		@Override public BinaryOperator<A> combiner() { return combiner; }
+		@Override public Function<A, R> finisher() { return finisher; }
+		@Override public Set<Characteristics> characteristics() { return characteristics; }
+	}
 	
 }

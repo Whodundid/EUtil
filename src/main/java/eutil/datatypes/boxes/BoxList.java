@@ -1,4 +1,4 @@
-package eutil.datatypes;
+package eutil.datatypes.boxes;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -24,7 +24,7 @@ import eutil.datatypes.util.EList;
  */
 public class BoxList<A, B> implements EList<Box2<A, B>> {
 	
-	private final EArrayList<Box2<A, B>> createdList = new EArrayList<>();
+	private final EList<Box2<A, B>> createdList = EList.newList();
 	public boolean allowDuplicates = false;
 	
 	//--------------
@@ -223,8 +223,8 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
 	public Box2<A, B> remove(int index) { return createdList.remove(index); }
 	
 	/** Removes every box that contains the given A value. */
-	public List<Box2<A, B>> removeBoxesContainingA(A a) {
-		EArrayList<Box2<A, B>> returnList = new EArrayList<>();
+	public EList<Box2<A, B>> removeBoxesContainingA(A a) {
+		EList<Box2<A, B>> returnList = EList.newList();
 		Iterator<Box2<A, B>> it = createdList.iterator();
 		while (it.hasNext()) {
 			Box2<A, B> getBox = it.next();
@@ -237,8 +237,8 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
 	}
 	
 	/** Removes every box that contains the given B value. */
-	public List<Box2<A, B>> removeBoxesContainingB(B b) {
-		EArrayList<Box2<A, B>> returnList = new EArrayList<>();
+	public EList<Box2<A, B>> removeBoxesContainingB(B b) {
+		EList<Box2<A, B>> returnList = EList.newList();
 		Iterator<Box2<A, B>> it = createdList.iterator();
 		while (it.hasNext()) {
 			Box2<A, B> getBox = it.next();
@@ -251,8 +251,8 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
 	}
 	
 	/** Removes every box that has the exact A and B values. */
-	public List<Box2<A, B>> removeBoxesWithSaidValues(A a, B b) {
-		EArrayList<Box2<A, B>> returnList = new EArrayList<>();
+	public EList<Box2<A, B>> removeBoxesWithSaidValues(A a, B b) {
+		EList<Box2<A, B>> returnList = EList.newList();
 		Iterator<Box2<A, B>> it = createdList.iterator();
 		while (it.hasNext()) {
 			Box2<A, B> getBox = it.next();
@@ -312,7 +312,7 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
 	public EList<B> getBVals() { return createdList.map(Box2::getB); }
 	
 	/** Returns a list containing every box in this holder. */
-	public EArrayList<Box2<A, B>> getBoxes() { return new EArrayList<Box2<A, B>>(createdList); }
+	public EList<Box2<A, B>> getBoxes() { return EList.newList(createdList); }
 	
 	/** Returns the boxes of this holder within an array of StorageBox objects with the corresponding parameters. */
 	public Box2<A, B>[] getBoxesAsArray() {
@@ -359,9 +359,9 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
 	// Static Methods
 	//----------------
 	
-	/** Static method used to create a new BoxList parametized with the given object and value types for each list.
+	/** Static method used to create a new BoxList parameterized with the given object and value types for each list.
 	 *  If values are to be passed, they must be passed in list objects, and each list must have the same size. If both lists
-	 *  are null, an empty parametized holder with be returned. If one list is null and the other is not, nothing is returned. */
+	 *  are null, an empty parameterized holder with be returned. If one list is null and the other is not, nothing is returned. */
 	public static <A, B> BoxList<A, B> createBox(List<A> a, List<B> b) {
 		if (a == null || b == null) return null;
 		if (a.size() != b.size()) return null;
@@ -397,7 +397,7 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
 	/** Internal function used to remove duplicates from a specified holder. */
 	private static void purgeDuplicates(BoxList holderIn) {
 		if (holderIn == null) return;
-		EArrayList<Box2> noDups = new EArrayList<>();
+		EList<Box2> noDups = EList.newList();
 		Iterator<Box2> it = holderIn.iterator();
 		
 		while (it.hasNext()) {

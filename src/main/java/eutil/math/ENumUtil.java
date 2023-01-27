@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.math3.util.FastMath;
 
 import eutil.EUtil;
-import eutil.datatypes.Box2;
+import eutil.datatypes.boxes.Box2;
 import eutil.datatypes.util.ENumType;
 import eutil.strings.EStringUtil;
 

@@ -1,4 +1,4 @@
-package eutil.datatypes;
+package eutil.datatypes.boxes;
 
 import static eutil.EUtil.*;
 
