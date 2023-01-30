@@ -84,7 +84,7 @@ public final class EStringUtil {
 	public static String toString(Iterator<?> e, String separator) { var s=sbs(separator);while(e.hasNext())s.a(e.next(),separator);return s.r(); }
 	public static String toString(Enumeration<?> e, String separator) { var s=sbs(separator);while(e.hasMoreElements())s.a(e.nextElement(),separator);return s.r(); }
 	public static String toString(Map<?, ?> e, String separator) {
-		var s = sb(separator);
+		var s = sbs(separator);
 		var it = e.entrySet().iterator();
 		while (it.hasNext()) {
 			var o = it.next();
@@ -100,10 +100,9 @@ public final class EStringUtil {
 	}
 	
 	public static <E, T> String toString(E[] e, Function<? super E, ? extends T> mapper, String separator) {
-		var out = sb();
+		var out = sbs(separator);
 		for (int i = 0; i < e.length; i++) {
-			out.a(mapper.apply(e[i]));
-			out.a(separator);
+			out.a(mapper.apply(e[i]), separator);
 		}
 		return (out.toString().isEmpty()) ? out.toString() : out.sub(0, out.l() - separator.length());
 	}
@@ -532,39 +531,43 @@ public final class EStringUtil {
 	 * @author Hunter Bragg
 	 */
 	private static final class ShortSB {
-		private StringBuilder b;
+		private StringBuilder sb;
 		private String s; //separator
 		
-		private ShortSB() { b = new StringBuilder(); }
-		private ShortSB(String in) { b = new StringBuilder(in); }
+		private ShortSB() { sb = new StringBuilder(); }
+		private ShortSB(String in) { sb = new StringBuilder(in); }
 		private static ShortSB sep(String in) { var s=new ShortSB();s.s=in;return s; }
 		private static ShortSB sep(String in, String sep) { var s=new ShortSB(in);s.s=sep;return s; }
 		
-		@Override public String toString() { return b.toString(); }
+		@Override public String toString() { return sb.toString(); }
 		
-		String r() { return(e())?b.toString():(s!=null)?sub(0,l()-l(s)):b.toString(); }
-		String r(String sep) { return(e())?b.toString():sub(0,l()-l(sep)); }
+		String r() { return(e())?sb.toString():(s!=null)?sub(0,l()-l(s)):sb.toString(); }
+		String r(String sep) { return(e())?sb.toString():sub(0,l()-l(sep)); }
 		
 		private static int l(String in) { return in.length(); }
 		
-		ShortSB c() { b = new StringBuilder(); return this; }
+		ShortSB c() { sb = new StringBuilder(); return this; }
 		ShortSB clear() { return c(); }
-		ShortSB a(Object o) { b.append(o); return this; }
-		ShortSB a(Object... a) { for(var o:a)b.append(o);return this; }
-		ShortSB append(Object o) { b.append(o); return this; }
-		ShortSB append(Object... a) { for(var o:a)b.append(o);return this; }
-		ShortSB rev() { b.reverse(); return this; }
-		ShortSB reverse() { b.reverse(); return this; }
-		int indexOf(String in) { return b.indexOf(in); }
-		int l() { return b.length(); }
-		int length() { return b.length(); }
-		boolean e() { return b.isEmpty(); }
-		boolean isEmpty() { return b.isEmpty(); }
-		String sub(int index) { return b.substring(index); }
-		String sub(int start, int end) { return b.substring(start, end); }
-		String ts() { return b.toString(); }
-		String trim() { return b.toString().trim(); }
-		StringBuilder getSB() { return b; }
+		ShortSB a(Object o) { sb.append(o); return this; }
+		ShortSB a(Object a, Object b) { sb.append(a);sb.append(b);return this; }
+		ShortSB a(Object a, Object b, Object c) { sb.append(a);sb.append(b);sb.append(c);return this; }
+		ShortSB a(Object... a) { for(var o:a)sb.append(o);return this; }
+		ShortSB append(Object o) { sb.append(o); return this; }
+		ShortSB append(Object a, Object b) { sb.append(a);sb.append(b);return this; }
+		ShortSB append(Object a, Object b, Object c) { sb.append(a);sb.append(b);sb.append(c);return this; }
+		ShortSB append(Object... a) { for(var o:a)sb.append(o);return this; }
+		ShortSB rev() { sb.reverse(); return this; }
+		ShortSB reverse() { sb.reverse(); return this; }
+		int indexOf(String in) { return sb.indexOf(in); }
+		int l() { return sb.length(); }
+		int length() { return sb.length(); }
+		boolean e() { return sb.isEmpty(); }
+		boolean isEmpty() { return sb.isEmpty(); }
+		String sub(int index) { return sb.substring(index); }
+		String sub(int start, int end) { return sb.substring(start, end); }
+		String ts() { return sb.toString(); }
+		String trim() { return sb.toString().trim(); }
+		StringBuilder getSB() { return sb; }
 	}
 	
 	private static ShortSB sb() { return new ShortSB(); }

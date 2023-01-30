@@ -36,6 +36,6 @@ public @interface Broken {
 	 * @return The reason for being broken
 	 * @since 1.8.1
 	 */
-	String value() default "";
+	String reason() default "";
 	
 }

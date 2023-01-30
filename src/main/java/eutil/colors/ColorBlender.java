@@ -10,7 +10,7 @@ import eutil.debug.Experimental;
  * @since 1.0.0
  */
 @Experimental(since="Its inception")
-@Broken(value="Fairly certain this code has never worked properly", since="2.2.0")
+@Broken(reason="Fairly certain this code has never worked properly", since="2.2.0")
 public class ColorBlender {
 	
 	public static int overlayColor(int background, int overlay) {
