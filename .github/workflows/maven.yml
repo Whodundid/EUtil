@@ -29,10 +29,6 @@ jobs:
         java-version: '19'
         distribution: 'temurin'
         cache: maven
-    - name: Run unit tests
-      run: mvn -B test --file pom.xml
-    - name: Install
-      run: mvn -B package --file pom.xml
     - name: Deploy
       run: mvn -B --batch-mode deploy --file pom.xml
       env:
