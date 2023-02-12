@@ -34,5 +34,7 @@ jobs:
     - name: Install
       run: mvn -B package --file pom.xml
     - name: Deploy
-      run: mvn -B deploy --file pom.xml
-      
+      run: mvn -B --batch-mode deploy --file pom.xml
+      env:
+        MAVEN_USERNAME: ${{ secrets.DEPLOYMENT_USERNAME }}
+        MAVEN_PASSWORD: ${{ secrets.DEPLOYMENT_PASSWORD }}
