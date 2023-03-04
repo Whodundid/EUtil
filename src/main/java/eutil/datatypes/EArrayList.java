@@ -27,44 +27,63 @@ import eutil.datatypes.util.EList;
  */
 public class EArrayList<E> implements EList<E> {
 	
-	private ArrayList<E> list;
+	private List<E> list;
 	private boolean allowDuplicates = true;
 	
 	//--------------
 	// Constructors
 	//--------------
 	
-	public EArrayList() { list = new ArrayList<>(); }
-	public EArrayList(int initialCapacity) { list = new ArrayList<>(initialCapacity); }
+	public EArrayList() {
+		list = new ArrayList<>();
+	}
+	
+	public EArrayList(int initialCapacity) {
+		list = new ArrayList<>(initialCapacity);
+	}
 	
 	/** Internal constructor used to wrap an existing list. */
-	private EArrayList(ArrayList<E> listIn) {
+	private EArrayList(List<E> listIn) {
 		Objects.requireNonNull(listIn);
-		list = listIn;
+		if (listIn instanceof ArrayList<E>) list = listIn;
+		else list = new ArrayList<>(listIn);
 	}
 	
 	/** Creates an EArrayList from a given Iterable object. */
 	public EArrayList(Iterable<E> it) {
 		this();
-		it.forEach(i -> add(i));
+		Objects.requireNonNull(it);
+		
+		if (it instanceof List<E> l) {
+			if (l instanceof ArrayList<E>) list = l;
+			else list = new ArrayList<>(l);
+		}
+		else {
+			for (var e : it) add(e);
+		}
 	}
 	
 	public EArrayList(E... objs) {
-		list = new ArrayList(objs.length);
-		for (E e : objs) { add(e); }
+		list = new ArrayList<>(objs.length);
+		for (E e : objs) add(e);
 	}
 	
 	public EArrayList(Stream<E> streamIn) {
 		this();
-		if (streamIn == null) { return; }
+		Objects.requireNonNull(streamIn);
+		
 		Iterator<E> it = streamIn.iterator();
-		while (it.hasNext()) { list.add(it.next()); }
+		while (it.hasNext()) list.add(it.next());
 	}
 	
 	public EArrayList(List<E> in, int from) { this(in, from, (in != null) ? in.size() : -1); }
 	public EArrayList(List<E> in, int from, int to) {
-		if (in == null || from < 0 || to < 0) { list = new ArrayList(); return; }
-		list = new ArrayList(in.size());
+		if (in == null || from < 0 || to < 0) {
+			list = new ArrayList<>();
+			return;
+		}
+		
+		list = new ArrayList<>(in.size());
 		
 		for (int i = from; i < to; i++) {
 			add(in.get(i));
@@ -80,8 +99,8 @@ public class EArrayList<E> implements EList<E> {
 		return list.toString();
 	}
 	
-	public void trimToSize() { list.trimToSize(); }
-	@Override public void ensureCapacity(int minCapacity) { list.ensureCapacity(minCapacity); }
+	public void trimToSize() { ((ArrayList) list).trimToSize(); }
+	@Override public void ensureCapacity(int minCapacity) { ((ArrayList) list).ensureCapacity(minCapacity); }
 	
 	//=================
 	// EList Overrides
@@ -123,9 +142,9 @@ public class EArrayList<E> implements EList<E> {
 	@Override
 	public Object clone() {
 		try {
-			EArrayList v = (EArrayList) super.clone();
-			ArrayList l = (ArrayList) list.clone();
-			v.list = (ArrayList) l;
+			EArrayList<E> v = (EArrayList<E>) super.clone();
+			ArrayList<E> l = (ArrayList<E>) ((ArrayList<E>) list).clone();
+			v.list = (ArrayList<E>) l;
 			return v;
 		}
 		catch (CloneNotSupportedException e) {
@@ -186,7 +205,7 @@ public class EArrayList<E> implements EList<E> {
 	
 	/** Does not create a new internal list but instead wraps EArrayList functionality around the given one. */
 	public static <T> EArrayList<T> wrap(List<T> listIn) {
-		return (listIn != null) ? new EArrayList(listIn) : null;
+		return (listIn != null) ? new EArrayList<>(listIn) : null;
 	}
 	
 }

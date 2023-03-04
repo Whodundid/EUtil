@@ -155,8 +155,14 @@ public class EDimensionI {
 			   endX > right.longValue() && endY > bot.longValue();
 	}
 	
+	public long getStartX() { return startX; }
+	public long getStartY() { return startY; }
+	public long getEndX() { return endX; }
+	public long getEndY() { return endY; }
 	public long getMidX() { return startX + (width / 2); }
 	public long getMidY() { return startY + (height / 2); }
+	public long getWidth() { return width; }
+	public long getHeight() { return height; }
 	
 	public EDimensionI translateHorizontal(long amount) { startX += amount; return this; }
 	public EDimensionI translateVertical(long amount) { startY += amount; return this; }

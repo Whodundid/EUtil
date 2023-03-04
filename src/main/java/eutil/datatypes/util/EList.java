@@ -34,7 +34,7 @@ import eutil.random.ERandomUtil;
  * @since 2.0.0
  */
 public interface EList<E> extends List<E>, Deque<E> {
-
+	
 	static <E> EList<E> newList() { return new EArrayList<>(); }
 	static <E> EList<E> newList(E... objects) { return new EArrayList<>(objects); }
 	static <E> EList<E> newList(Collection<E> collection) { return new EArrayList<>(collection); }
@@ -136,8 +136,8 @@ public interface EList<E> extends List<E>, Deque<E> {
 	 */
 	@Override
 	default E pop() {
+		if (size() == 0) throw new EmptyStackException();
 		E val = removeFirst();
-		if (val == null) throw new EmptyStackException();
 		return val;
 	}
 	
@@ -880,7 +880,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 	 * functionality around the given one.
 	 */
 	static <T> EList<T> wrap(List<T> listIn) {
-		return (listIn != null) ? new EArrayList<>(listIn) : null;
+		return new EArrayList<>(listIn);
 	}
 	
 	/**
@@ -893,7 +893,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 	
 	/** Returns a new EArrayList<T> created from values of the given list. */
 	static <T> EList<T> of(EArrayList<T> in) {
-		return new EArrayList(in);
+		return new EArrayList<>(in);
 	}
 	
 	static <T> EList<T> of(Collection<T> in) {

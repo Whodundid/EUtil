@@ -234,8 +234,14 @@ public class EDimensionf {
 			   endX > right.floatValue() && endY > bot.floatValue();
 	}
 	
+	public float getStartX() { return startX; }
+	public float getStartY() { return startY; }
+	public float getEndX() { return endX; }
+	public float getEndY() { return endY; }
 	public float getMidX() { return startX + (width / 2.0f); }
 	public float getMidY() { return startY + (height / 2.0f); }
+	public float getWidth() { return width; }
+	public float getHeight() { return height; }
 	
 	public EDimensionf translateHorizontal(float amount) { startX += amount; return this; }
 	public EDimensionf translateVertical(float amount) { startY += amount; return this; }

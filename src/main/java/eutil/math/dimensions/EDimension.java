@@ -150,8 +150,15 @@ public class EDimension {
 			   endX > right.doubleValue() && endY > bot.doubleValue();
 	}
 	
+	
+	public double getStartX() { return startX; }
+	public double getStartY() { return startY; }
+	public double getEndX() { return endX; }
+	public double getEndY() { return endY; }
 	public double getMidX() { return startX + (width / 2); }
 	public double getMidY() { return startY + (height / 2); }
+	public double getWidth() { return width; }
+	public double getHeight() { return height; }
 	
 	public EDimension translateHorizontal(double amount) { startX += amount; return this; }
 	public EDimension translateVertical(double amount) { startY += amount; return this; }
