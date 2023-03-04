@@ -884,6 +884,34 @@ public interface EList<E> extends List<E>, Deque<E> {
 	}
 	
 	/**
+	 * Returns an empty unmodifiable EList.
+	 * 
+	 * @param <T> The list type
+	 * 
+	 * @return An unmodifiable, empty EList.
+	 * 
+	 * @since 2.3.2
+	 */
+	static <T> EList<T> emptyUnmodifiableList() {
+		return unmodifiableList(EList.newList());
+	}
+	
+	/**
+	 * Returns an unmodifiable view of the given list instance wrapped in an
+	 * EList shell.
+	 * 
+	 * @param <T>    The list type
+	 * @param listIn The list to wrap
+	 * 
+	 * @return An unmodifiable version of the given list in an EList form
+	 * 
+	 * @since 2.3.2
+	 */
+	static <T> EList<T> unmodifiableList(List<T> listIn) {
+		return wrap(Collections.unmodifiableList(listIn));
+	}
+	
+	/**
 	 * Returns a new EArrayList<T> created from values of the given typed
 	 * array.
 	 */
