@@ -98,12 +98,12 @@ public class Vec2f {
 	// Vector Math
 	//-------------
 	
-	public double magnitude() { return Math.sqrt(x * x + y * y); }
-	public double dotProduct(Vec2f vecIn) { return Math.acos(multiplyAndAdd(vecIn) / (magnitude() * vecIn.magnitude())); }
-	public double dotProductDegrees(Vec2f vecIn) { return (dotProduct(vecIn) * 180) / Math.PI; }
-	public float multiplyAndAdd(Vec2f vecIn) { return nullApplyR(vecIn, v -> x * v.x + y * v.y, Float.NaN); }
+	public float magnitude() { return (float) Math.sqrt(x * x + y * y); }
+	public float angle(Vec2f vecIn) { return (float) Math.acos(dot(vecIn) / (magnitude() * vecIn.magnitude())); }
+	public float angleDegrees(Vec2f vecIn) { return (float) ((dot(vecIn) * 180.0f) / (float) Math.PI); }
+	public float dot(Vec2f vecIn) { return nullApplyR(vecIn, v -> x * v.x + y * v.y, Float.NaN); }
 	public Vec2f scale(double val) { return scale(this, val);  }
-	//public Vector2D cross(Vector2D vecIn) { return nullApplyR(vecIn, v -> new Vector2D(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x), null); }
+	public Vec2f cross(Vec2f vecIn) { return nullApplyR(vecIn, v -> new Vec2f(x * v.y - y * v.x), null); }
 	public Vec2f add(Vec2f vecIn) { return nullApplyR(vecIn, v -> new Vec2f(x + v.x, y + v.y), this); }
 	public Vec2f sub(Vec2f vecIn) { return nullApplyR(vecIn, v -> new Vec2f(x - v.x, y - v.y), null); }
 	public Vec2f normalize() { return nullDoR(magnitude(), l -> { x /= l; y /= l; }, this); }

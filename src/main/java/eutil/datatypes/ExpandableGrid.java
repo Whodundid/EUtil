@@ -30,7 +30,7 @@ public class ExpandableGrid<E> {
 		width = widthIn;
 		height = heightIn;
 		grid = new EArrayList<>(height);
-		for (int i = 0; i < width; i++) {
+		for (int i = 0; i < height; i++) {
 			var row = new EArrayList<E>(width);
 			for (int j = 0; j < width; j++) row.add((E) null);
 			grid.add(row);
