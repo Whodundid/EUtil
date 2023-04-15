@@ -158,8 +158,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 	
 	@Override
 	default void addLast(E e) {
-		if (isEmpty()) add(e);
-		else add(size() - 1, e);
+		add(e);
 	}
 	
 	@Override

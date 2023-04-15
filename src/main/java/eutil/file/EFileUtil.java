@@ -8,7 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.UUID;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import eutil.EUtil;
 import eutil.datatypes.util.EList;
@@ -43,6 +45,32 @@ public class EFileUtil {
 	}
 	
 	/**
+	 * Returns true if the given directory is empty.
+	 * <p>
+	 * NOTE: If the given file is null or does not actually exist,
+	 * 
+	 * @param f The directory to check
+	 * @return True if empty
+	 * @since 2.3.4
+	 */
+	public static boolean isDirectoryEmpty(File f) {
+		if (f == null || !f.exists()) return false;
+		return f.list().length == 0;
+	}
+	
+	/**
+	 * Returns true if the given file is a symbolic link to another file.
+	 * 
+	 * @param f The file to check
+	 * @return True if a symbolic link
+	 * @since 2.3.4
+	 */
+	public static boolean isSymbolicLink(File f) {
+		if (f == null) return false;
+		return Files.isSymbolicLink(f.toPath());
+	}
+	
+	/**
 	 * Returns true if each of the given files are not null and actually exist
 	 * on the file system.
 	 * 
@@ -71,6 +99,48 @@ public class EFileUtil {
 	}
 	
 	/**
+	 * Attempts to create a temporary file with the give name.
+	 * 
+	 * @param name The name of the temporary file to make
+	 * @return The created file, if successfully made
+	 * @since 2.3.4
+	 */
+	public static File createTempFile(String name) {
+		try {
+			var parts = name.split(".");
+			var sub = (parts.length >= 1) ? parts[parts.length - 1] : null;
+			return File.createTempFile(name, sub);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Attempts to create a temporary file with a random name.
+	 * 
+	 * @return The created file, if successfully made
+	 * @since 2.3.4
+	 */
+	public static File createRandomTempFile() {
+		return createTempFile(UUID.randomUUID().toString());
+	}
+	
+	/**
+	 * Attempts to create the given directory or clear it if it already exists.
+	 * 
+	 * @param dir The dir to create or clear
+	 * @return True if successful
+	 * @since 2.3.4
+	 */
+	public static boolean createOrClearDirectory(File dir) {
+		if (dir == null) return false;
+		if (!dir.exists()) return dir.mkdirs();
+		return clearDirectory(dir);
+	}
+	
+	/**
 	 * Returns a list of all of the non-directory files within the given
 	 * directory. Note: This method does not extract files from internal
 	 * directories it finds. Instead, it simply extracts the top-level
@@ -96,6 +166,192 @@ public class EFileUtil {
 			t.printStackTrace();
 			return null;
 		}
+	}
+	
+	/**
+	 * Attempts to find a matching file of the given name within the given
+	 * 'startDir'.
+	 * <p>
+	 * NOTE: This method does not recursively search through the given
+	 * 'startDir' only its top level elements.
+	 * 
+	 * @param startDir The directory to search in
+	 * @param toFind The name of a file to find
+	 * 
+	 * @return The found File or null
+	 * 
+	 * @since 2.3.4
+	 */
+	public static File findFile(File startDir, String toFind) {
+		return findFile(startDir, new File(toFind));
+	}
+	
+	/**
+	 * Attempts to find the 'toFind' file within the given 'startDir'.
+	 * <p>
+	 * NOTE: This method does not recursively search through the given
+	 * 'startDir' only its top level elements.
+	 * 
+	 * @param startDir The directory to search in
+	 * @param toFind   A file to find
+	 * 
+	 * @return The found File or null
+	 * 
+	 * @since 2.3.4
+	 */
+	public static File findFile(File startDir, File toFind) {
+		// can't find anything if either is null
+		if (startDir == null || toFind == null) return null;
+		// check for self-find condition
+		if (startDir.equals(toFind)) return startDir;
+		// if the 'startDir' is not a dir, then this won't work either
+		if (!startDir.isDirectory()) return null;
+		
+		final var contents = startDir.listFiles();
+		final int size = contents.length;
+		
+		for (int i = 0; i < size; i++) {
+			final File f = contents[i];
+			
+			// check equivalence based on file name
+			if (f.getName().equals(toFind.getName())) return f;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Attempts to find a matching file of the given name within the given
+	 * 'startDir' recursively.
+	 * 
+	 * @param startDir The directory to search in
+	 * @param toFind The name of a file to find
+	 * 
+	 * @return The found File or null
+	 * 
+	 * @since 2.3.4
+	 */
+	public static File findFileRecursive(File startDir, String toFind) {
+		return findFileRecursive(startDir, new File(toFind));
+	}
+	
+	/**
+	 * Attempts to find the 'toFind' file within the given 'startDir'
+	 * recursively.
+	 * 
+	 * @param startDir The directory to search in
+	 * @param toFind   A file to find
+	 * 
+	 * @return The found File or null
+	 * 
+	 * @since 2.3.4
+	 */
+	public static File findFileRecursive(File startDir, File toFind) {
+		// can't find anything if either is null
+		if (startDir == null || toFind == null) return null;
+		// check for self-find condition
+		if (startDir.equals(toFind)) return startDir;
+		// if the 'startDir' is not a dir, then this won't work either
+		if (!startDir.isDirectory()) return null;
+		
+		final var contents = startDir.listFiles();
+		final int size = contents.length;
+		
+		for (int i = 0; i < size; i++) {
+			final File f = contents[i];
+			
+			if (f.isDirectory()) {
+				// check the directory for a match
+				if (f.getName().equals(toFind.getName())) return f;
+				// if no match, search recursively
+				final File recursiveFind = findFileRecursive(f, toFind);
+				
+				// check if we've found the file
+				if (recursiveFind != null) {
+					return recursiveFind;
+				}
+			}
+			// check equivalence based on file name
+			else if (f.getName().equals(toFind.getName())) {
+				return f;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Attempts to find the 'toFind' file within the given 'startDir'.
+	 * <p>
+	 * NOTE: This method does not recursively search through the given
+	 * 'startDir' only its top level elements.
+	 * 
+	 * @param startDir The directory to search in
+	 * @param toFind   A file to find
+	 * 
+	 * @return The found File or null
+	 * 
+	 * @since 2.3.4
+	 */
+	public static File findFile(File startDir, Predicate<? super File> condition) {
+		// can't find anything if either is null
+		if (startDir == null || condition == null) return null;
+		// if the startDir isn't actually a dir, check if it matches the given predicate
+		if (!startDir.isDirectory() && !condition.test(startDir)) return null;
+		
+		final var contents = startDir.listFiles();
+		final int size = contents.length;
+		
+		for (int i = 0; i < size; i++) {
+			final File f = contents[i];
+			
+			// check if current file matches predicate
+			if (condition.test(f)) return f;
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Attempts to find the 'toFind' file within the given 'startDir' recursively.
+	 * 
+	 * @param startDir The directory to search in
+	 * @param toFind   A file to find
+	 * 
+	 * @return The found File or null
+	 * 
+	 * @since 2.3.4
+	 */
+	public static File findFileRecursive(File startDir, Predicate<? super File> condition) {
+		// can't find anything if either is null
+		if (startDir == null || condition == null) return null;
+		// if the startDir isn't actually a dir, check if it matches the given predicate
+		if (!startDir.isDirectory() && !condition.test(startDir)) return null;
+		
+		final var contents = startDir.listFiles();
+		final int size = contents.length;
+		
+		for (int i = 0; i < size; i++) {
+			final File f = contents[i];
+			
+			if (f.isDirectory()) {
+				// check the directory for a match
+				if (condition.test(f)) return f;
+				// if no match, search recursively
+				final File recursiveFind = findFileRecursive(f, condition);
+				
+				// check if we've found the file
+				if (recursiveFind != null) {
+					return recursiveFind;
+				}
+			}
+			// check equivalence based on file name
+			else if (condition.test(f)) {
+				return f;
+			}
+		}
+		
+		return null;
 	}
 	
 	/**
