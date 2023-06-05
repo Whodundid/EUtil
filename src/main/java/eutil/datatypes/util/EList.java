@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.EmptyStackException;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -43,10 +44,6 @@ public interface EList<E> extends List<E>, Deque<E> {
 	static <E> EList<E> newList(Stream<E> stream) { return new EArrayList<>(stream); }
 	
 	void ensureCapacity(int size);
-	
-	default List<E> toList() {
-		return (List<E>) this;
-	}
 	
 	/**
 	 * Returns true if each object specified is within this list. Returns false
@@ -830,6 +827,53 @@ public interface EList<E> extends List<E>, Deque<E> {
 	 */
 	default void remove(E... objects) {
 		for (E o : objects) remove(o);
+	}
+	
+	//================
+	// Helper Methods
+	//================
+	
+	/**
+	 * Creates a new list containing shallow copies of the contents of this
+	 * list and then returns it.
+	 * 
+	 * @return A shallow copy of this list
+	 * @since 2.3.5
+	 */
+	default EList<E> copy() {
+		return EList.of(this);
+	}
+	
+	/**
+	 * Wraps this list into a new unmodifiable list instance and returns it.
+	 * 
+	 * @return An unmodifiable version of this list
+	 * @since 2.3.5
+	 */
+	default EList<E> toUnmodifiableList() {
+		return EList.unmodifiableList(this);
+	}
+	
+	/**
+	 * Up-casts this EList as a standard Java Collections List.
+	 * <p>
+	 * Effectively, the returned object is still an EList at its base, but it
+	 * is just presented as a Java Collections List.
+	 * 
+	 * @return A List version of this EList.
+	 */
+	default List<E> toList() {
+		return (List<E>) this;
+	}
+	
+	/**
+	 * Takes the values of this EList and places them in a set.
+	 * 
+	 * @return A hash set containing the elements of this list
+	 * @since 2.3.5
+	 */
+	default Set<E> toSet() {
+		return new HashSet<E>(this);
 	}
 	
 	//================

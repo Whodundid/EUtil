@@ -224,6 +224,10 @@ public class ENumUtil {
 		return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	}
 	
+	public static double distance_squared(double x1, double y1, double x2, double y2) {
+		return (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+	}
+	
 	/** Returns the Cartesian distance between two points within storage boxes. (the distance formula) */
 	public static double getDistance(Box2<Double, Double> point1, Box2<Double, Double> point2) {
 		if (EUtil.anyNull(point1, point2)) return Double.NaN;

@@ -96,6 +96,9 @@ public enum EColors {
 		name = nameIn;
 	}
 	
+	// 255.0F but in decimal form
+	public static final float F_255 = 0.0039215686274509803921568627451f;
+	
 	//------------------------------------------------------------------
 	
 	// \u222e == contour integral symbol
@@ -166,7 +169,7 @@ public enum EColors {
 	
 	/** Modifies the given color's brightness values. New brightness values should be between 0 and 255 inclusively. */
 	public static int changeBrightness(int color, int br) {
-		float factor = (float) br / 255f;
+		float factor = (float) br * F_255;
 		int a = (color >> 24) & 0xff;
 		int r = (int) (((color >> 16) & 0xFF) * factor);
 		int g = (int) (((color >> 8) & 0xFF) * factor);
@@ -217,17 +220,17 @@ public enum EColors {
 	}
 	
 	public static Vec3f convertToVec3f(int color) {
-		float r = (int) ((color >> 16) & 0xff) / 0xff;
-		float g = (int) ((color >> 8) & 0xff) / 0xff;
-		float b = (int) (color & 0xff) / 0xff;
+		float r = (int) ((color >> 16) & 0xff) * F_255;
+		float g = (int) ((color >> 8) & 0xff) * F_255;
+		float b = (int) (color & 0xff) * F_255;
 		return new Vec3f(r, g, b);
 	}
 	
 	public static Vec4f convertToVec4f(int color) {
-		float a = ((color >> 24) & 0xff) / 0xff;
-		float r = (int) ((color >> 16) & 0xff) / 0xff;
-		float g = (int) ((color >> 8) & 0xff) / 0xff;
-		float b = (int) (color & 0xff) / 0xff;
+		float a = ((color >> 24) & 0xff) * F_255;
+		float r = (int) ((color >> 16) & 0xff) * F_255;
+		float g = (int) ((color >> 8) & 0xff) * F_255;
+		float b = (int) (color & 0xff) * F_255;
 		return new Vec4f(a, r, g, b);
 	}
 	

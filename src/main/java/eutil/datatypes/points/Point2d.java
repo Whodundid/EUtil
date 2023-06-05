@@ -29,4 +29,9 @@ public class Point2d {
 	public void setX(double xIn) { x = xIn; }
 	public void setY(double yIn) { y = yIn; }
 	
+	public void set(double xIn, double yIn) {
+		x = xIn;
+		y = yIn;
+	}
+	
 }

@@ -29,4 +29,23 @@ public class Point2i {
 	public void setX(int xIn) { x = xIn; }
 	public void setY(int yIn) { y = yIn; }
 	
+	public void set(int xIn, int yIn) {
+		x = xIn;
+		y = yIn;
+	}
+	
+	public void set(Point2i pointIn) {
+		x = pointIn.x;
+		y = pointIn.y;
+	}
+	
+	public boolean compare(Point2i pointIn) {
+		if (pointIn == null) return false;
+		return compare(pointIn.x, pointIn.y);
+	}
+	
+	public boolean compare(int xIn, int yIn) {
+		return x == xIn && y == yIn;
+	}
+	
 }
