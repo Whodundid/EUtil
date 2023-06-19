@@ -53,7 +53,7 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
 	/** Returns true if this box's A or B value matches the given obj. */
 	public boolean contains(Object obj) {
 		if (obj == null) return a == null || b == null;
-		return isAnyEqual(obj, a, b);
+		return anyMatch(obj, a, b);
 	}
 	
 	/** Returns true if this box's A value matches the given object. */

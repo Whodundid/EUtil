@@ -47,16 +47,16 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 2.4.0
+ *  @version 2.5.0
  */
 public class EUtil {
 	
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "2.4.0";
+	public static final String version = "2.5.0";
 	/** The EUtil library version date String. */
-	public static final String versionDate = "6/4/2023";
+	public static final String versionDate = "6/18/2023";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -146,6 +146,7 @@ public class EUtil {
 	/**
 	 * Returns true if the given objects are equal to each other, this method also
 	 * accounts for null objects.
+	 * @since 1.0.0
 	 */
 	public static boolean isEqual(Object a, Object b) {
 		return (a != null) ? a.equals(b) : b == null;
@@ -154,6 +155,7 @@ public class EUtil {
 	/**
 	 * Returns true if the given objects are not equal to each other, this
 	 * method also accounts for null objects.
+	 * @since 1.0.0
 	 */
 	public static boolean isNotEqual(Object a, Object b) {
 		return (a != null) ? !a.equals(b) : b != null;
@@ -170,11 +172,53 @@ public class EUtil {
 	 * 
 	 * @since 1.4.1
 	 */
-	public static boolean isAnyEqual(Object obj, Object... toCheck) {
+	public static <E> boolean anyMatch(E obj, E... toCheck) {
 		if (toCheck.length == 0) return false;
 		for (var o : toCheck)
 			if (isEqual(obj, o)) return true;
 		return false;
+	}
+	
+	/**
+	 * Returns the first object in 'toCheck' that matches the given 'obj' or
+	 * just the given 'obj' if none matched.
+	 * 
+	 * @param <E>     The object type
+	 * @param obj     The base object to compare against
+	 * @param toCheck The set of objects to find a match within
+	 * 
+	 * @return The first matching object in 'toCheck' that is equal to the
+	 *         given base object
+	 * 
+	 * @since 2.5.0
+	 */
+	public static <E> E findMatch(E obj, E... toCheck) {
+		final int size = toCheck.length;
+		for (int i = 0; i < size; i++)
+			if (isEqual(obj, toCheck[i])) return toCheck[i];
+		return obj;
+	}
+	
+	/**
+	 * Returns the first object in 'toCheck' that matches the given 'obj' or
+	 * the 'defaultVal' if none matched.
+	 * 
+	 * @param <E>        The object type
+	 * @param obj        The base object to compare against
+	 * @param defaultVal A value returned in the event that none of the given
+	 *                   'toCheck' values match the object
+	 * @param toCheck    The set of objects to find a match within
+	 * 					
+	 * @return The first matching object in 'toCheck' that is equal to the
+	 *         given base object
+	 * 		
+	 * @since 2.5.0
+	 */
+	public static <E> E findMatchWithDefault(E obj, E defaultVal, E... toCheck) {
+		final int size = toCheck.length;
+		for (int i = 0; i < size; i++)
+			if (isEqual(obj, toCheck[i])) return toCheck[i];
+		return defaultVal;
 	}
 	
 	/**
@@ -507,7 +551,7 @@ public class EUtil {
 	/** Converts a typed-array to a Stream. */
 	public static <E> Stream<E> stream(E... vals) { return Arrays.stream(vals); }
 	/** Converts a typed-array to a Stream that filters out null objects. */
-	public static <E> Stream<E> filterNull(E... vals) { return stream(vals).filter(notNull); }
+	public static <E> Stream<E> filterNull(E... vals) { return stream(vals).filter(NOT_NULL); }
 	
 	/** Converts a typed-array to a Stream then performs the given filter. */
 	public static <E> Stream<E> filterA(Predicate<? super E> filter, E... vals) { return stream(vals).filter(filter); }
@@ -532,7 +576,7 @@ public class EUtil {
 	/** Converts a typed-Collection to a Stream then performs the given filter. */
 	public static <E> Stream<E> filter(Collection<E> list, Predicate<? super E> filter) { return list.stream().filter(filter); }
 	/** Converts a typed-Collection to a Stream that filters out null objects. */
-	public static <E> Stream<E> filterNull(Collection<E> list) { return list.stream().filter(notNull); }
+	public static <E> Stream<E> filterNull(Collection<E> list) { return list.stream().filter(NOT_NULL); }
 	/** Converts a typed-Collection to a Stream that filters out null objects then performs the given filter. */
 	public static <E> Stream<E> filterNull(Collection<E> list, Predicate<? super E> filter) { return filterNull(list).filter(filter); }
 	/** Converts a typed-Collection to a Stream that maps each object to the specified type. */
@@ -559,7 +603,7 @@ public class EUtil {
 	/** Converts a typed-Array to a Stream then performs the given filter. */
 	public static <E> Stream<E> filter(E[] arr, Predicate<? super E> filter) { return stream(arr).filter(filter); }
 	/** Converts a typed-Array to a Stream that filters out null objects then performs the given filter. */
-	public static <E> Stream<E> filterNull(E[] arr, Predicate<? super E> filter) { return stream(arr).filter(filter.and(notNull)); }
+	public static <E> Stream<E> filterNull(E[] arr, Predicate<? super E> filter) { return stream(arr).filter(filter.and(NOT_NULL)); }
 	/** Converts a typed-Array to a Stream that maps each object to the specified type. */
 	public static <E, T> Stream<T> map(E[] arr, Function<? super E, ? extends T> mapper) { return stream(arr).map(mapper); }
 	/** Performs a forEach loop on each element. */

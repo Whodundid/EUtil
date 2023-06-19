@@ -21,6 +21,24 @@ import eutil.strings.EStringUtil;
  */
 public class ENumUtil {
 	
+	//===========
+	// Constants
+	//===========
+	
+	public static final byte BYTE_MIN = Byte.MIN_VALUE;
+	public static final short SHORT_MIN = Short.MIN_VALUE;
+	public static final int INT_MIN = Integer.MIN_VALUE;
+	public static final long LONG_MIN = Long.MIN_VALUE;
+	public static final float FLOAT_MIN = Float.MIN_VALUE;
+	public static final double DOUBLE_MIN = Double.MIN_VALUE;
+	
+	public static final byte BYTE_MAX = Byte.MAX_VALUE;
+	public static final short SHORT_MAX = Short.MAX_VALUE;
+	public static final int INT_MAX = Integer.MAX_VALUE;
+	public static final long LONG_MAX = Long.MAX_VALUE;
+	public static final float FLOAT_MAX = Float.MAX_VALUE;
+	public static final double DOUBLE_MAX = Double.MAX_VALUE;
+	
 	//=================
 	// Clamp Functions
 	//=================
@@ -53,6 +71,34 @@ public class ENumUtil {
 	public static Number max(Number a, Number b) { return (a.doubleValue() > b.doubleValue()) ? a : b; }
 	/** Returns the lower of the given two numbers. */
 	public static Number min(Number a, Number b) { return (a.doubleValue() < b.doubleValue()) ? a : b; }
+	
+	public static byte max(byte a, byte b) { return(a>b)?a:b; }
+	public static short max(short a, short b) { return(a>b)?a:b; }
+	public static int max(int a, int b) { return(a>b)?a:b; }
+	public static long max(long a, long b) { return(a>b)?a:b; }
+	public static float max(float a, float b) { return(a>b)?a:b; }
+	public static double max(double a, double b) { return(a>b)?a:b; }
+	
+	public static byte min(byte a, byte b) { return(a<b)?a:b; }
+	public static short min(short a, short b) { return(a<b)?a:b; }
+	public static int min(int a, int b) { return(a<b)?a:b; }
+	public static long min(long a, long b) { return(a<b)?a:b; }
+	public static float min(float a, float b) { return(a<b)?a:b; }
+	public static double min(double a, double b) { return(a<b)?a:b; }
+	
+	public static byte highest(byte... nums) { var h=BYTE_MIN;var l=nums.length;for(int i=0;i<l;i++)h=max(h,nums[i]);return h; }
+	public static short highest(short... nums) { var h=SHORT_MIN;var l=nums.length;for(int i=0;i<l;i++)h=max(h,nums[i]);return h; }
+	public static int highest(int... nums) { var h=INT_MIN;var l=nums.length;for(int i=0;i<l;i++)h=max(h,nums[i]);return h; }
+	public static long highest(long... nums) { var h=LONG_MIN;var l=nums.length;for(int i=0;i<l;i++)h=max(h,nums[i]);return h; }
+	public static float highest(float... nums) { var h=FLOAT_MIN;var l=nums.length;for(int i=0;i<l;i++)h=max(h,nums[i]);return h; }
+	public static double highest(double... nums) { var h=DOUBLE_MIN;var l=nums.length;for(int i=0;i<l;i++)h=max(h,nums[i]);return h; }
+	
+	public static byte lowest(byte... nums) { var h=BYTE_MAX;var l=nums.length;for(int i=0;i<l;i++)h=min(h,nums[i]);return h; }
+	public static short lowest(short... nums) { var h=SHORT_MAX;var l=nums.length;for(int i=0;i<l;i++)h=min(h,nums[i]);return h; }
+	public static int lowest(int... nums) { var h=INT_MAX;var l=nums.length;for(int i=0;i<l;i++)h=min(h,nums[i]);return h; }
+	public static long lowest(long... nums) { var h=LONG_MAX;var l=nums.length;for(int i=0;i<l;i++)h=min(h,nums[i]);return h; }
+	public static float lowest(float... nums) { var h=FLOAT_MAX;var l=nums.length;for(int i=0;i<l;i++)h=min(h,nums[i]);return h; }
+	public static double lowest(double... nums) { var h=DOUBLE_MAX;var l=nums.length;for(int i=0;i<l;i++)h=min(h,nums[i]);return h; }
 	
 	//==================================================================
 	// Fast Math : Apache Commons Math 3.6.1 : Directly Mapped : et al.

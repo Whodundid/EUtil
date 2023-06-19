@@ -25,7 +25,19 @@ public final class EReflectionUtil {
 	// Methods
 	//---------
 	
-	public static void invoke(Object obj, String methodName, Object... paramsAndArgs) throws Exception {
+	public static <E> E invoke(Object obj, String methodName, Object... paramsAndArgs) {
+		try { return invoke_unsafe(obj, methodName, paramsAndArgs); }
+		catch (Exception e) { e.printStackTrace(); }
+		return null;
+	}
+	
+	public static <E> E invoke(Object obj, String methodName, Class[] params, Object[] args) {
+		try { return invoke_unsafe(obj, methodName, params, args); }
+		catch (Exception e) { e.printStackTrace(); }
+		return null;
+	}
+	
+	public static <E> E invoke_unsafe(Object obj, String methodName, Object... paramsAndArgs) throws Exception {
 		if (paramsAndArgs.length % 2 == 0) {
 			Class[] params = new Class[paramsAndArgs.length / 2];
 			Object[] args = new Object[params.length];
@@ -35,16 +47,22 @@ public final class EReflectionUtil {
 				args[i] = paramsAndArgs[i++];
 			}
 			
-			invoke(obj, methodName, params, args);
+			return (E) invoke_unsafe(obj, methodName, params, args);
 		}
+		
+		return null;
 	}
 	
-	public static void invoke(Object obj, String methodName, Class[] params, Object[] args) throws Exception {
-		if (obj == null) return;
+	public static <E> E invoke_unsafe(Object obj, String methodName, Class[] params, Object[] args) throws Exception {
+		if (obj == null) return null;
 		Method m = findMethod(obj.getClass(), methodName);
-		m.setAccessible(true);
-		m.invoke(obj, args);
-		m.setAccessible(false);
+		// check if we have access up front -- static methods shouldn't pass an object
+		boolean couldAccessBefore = m.canAccess(EModifier.isStatic(m) ? null : obj);
+		// hack in for just a second
+		if (!couldAccessBefore) m.setAccessible(true);
+		var o = m.invoke(obj, args);
+		if (!couldAccessBefore) m.setAccessible(false);
+		return (E) o;
 	}
 	
 	//--------

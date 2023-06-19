@@ -1,6 +1,6 @@
 package eutil.reflection;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
 
@@ -14,10 +14,19 @@ import eutil.strings.EStringBuilder;
  */
 public class EModifier {
 	
+	//========
+	// Fields
+	//========
+	
 	private final int m;
 	private final String toString;
 	
+	//==============
+	// Constructors
+	//==============
+	
 	public EModifier(Member m) { this(m.getModifiers()); }
+	public EModifier(Class<?> c) { this(c.getModifiers()); }
 	public EModifier(int mods) {
 		m = mods;
 		
@@ -80,26 +89,54 @@ public class EModifier {
 	}
 	
 	public static EModifier of(Member m) { return new EModifier(m); }
+	public static EModifier of(Class<?> c) { return new EModifier(c); }
+	public static EModifier of(Executable m) { return new EModifier(m); }
 	public static EModifier of(int mods) { return new EModifier(mods); }
 	
 	//-------------------------------
 	// Static Helper Methods - 1.6.0
 	//-------------------------------
 	
-	public static boolean isPublic(Field f) { return (f.getModifiers() & Modifier.PUBLIC) != 0; }
-	public static boolean isPrivate(Field f) { return (f.getModifiers() & Modifier.PRIVATE) != 0; }
-	public static boolean isProtected(Field f) { return (f.getModifiers() & Modifier.PROTECTED) != 0; }
-	public static boolean isStatic(Field f) { return (f.getModifiers() & Modifier.STATIC) != 0; }
-	public static boolean isFinal(Field f) { return (f.getModifiers() & Modifier.FINAL) != 0; }
-	public static boolean isSynchronized(Field f) { return (f.getModifiers() & Modifier.SYNCHRONIZED) != 0; }
-	public static boolean isVolatile(Field f) { return (f.getModifiers() & Modifier.VOLATILE) != 0; }
-	public static boolean isTransient(Field f) { return (f.getModifiers() & Modifier.TRANSIENT) != 0; }
-	public static boolean isNative(Field f) { return (f.getModifiers() & Modifier.NATIVE) != 0; }
-	public static boolean isInterface(Field f) { return (f.getModifiers() & Modifier.INTERFACE) != 0; }
-	public static boolean isAbstract(Field f) { return (f.getModifiers() & Modifier.ABSTRACT) != 0; }
-	public static boolean isStrict(Field f) { return (f.getModifiers() & Modifier.STRICT) != 0; }
+	public static boolean isPublic(Member f) { return Modifier.isPublic(f.getModifiers()); }
+	public static boolean isPublic(Class<?> c) { return Modifier.isPublic(c.getModifiers()); }
 	
-	public static boolean publicFinal(Field f) { return isPublic(f) && isFinal(f); }
-	public static boolean publicStatic(Field f) { return isPublic(f) && isStatic(f); }
+	public static boolean isPrivate(Member f) { return Modifier.isPrivate(f.getModifiers()); }
+	public static boolean isPrivate(Class<?> c) { return Modifier.isPrivate(c.getModifiers()); }
+	
+	public static boolean isProtected(Member f) { return Modifier.isProtected(f.getModifiers()); }
+	public static boolean isProtected(Class<?> c) { return Modifier.isProtected(c.getModifiers()); }
+	
+	public static boolean isStatic(Member f) { return Modifier.isStatic(f.getModifiers()); }
+	public static boolean isStatic(Class<?> c) { return Modifier.isStatic(c.getModifiers()); }
+	
+	public static boolean isFinal(Member f) { return Modifier.isFinal(f.getModifiers()); }
+	public static boolean isFinal(Class<?> c) { return Modifier.isFinal(c.getModifiers()); }
+	
+	public static boolean isSynchronized(Member f) { return Modifier.isSynchronized(f.getModifiers()); }
+	public static boolean isSynchronized(Class<?> c) { return Modifier.isSynchronized(c.getModifiers()); }
+	
+	public static boolean isVolatile(Member f) { return Modifier.isVolatile(f.getModifiers()); }
+	public static boolean isVolatile(Class<?> c) { return Modifier.isVolatile(c.getModifiers()); }
+	
+	public static boolean isTransient(Member f) { return Modifier.isTransient(f.getModifiers()); }
+	public static boolean isTransient(Class<?> c) { return Modifier.isTransient(c.getModifiers()); }
+	
+	public static boolean isNative(Member f) { return Modifier.isNative(f.getModifiers()); }
+	public static boolean isNative(Class<?> c) { return Modifier.isNative(c.getModifiers()); }
+	
+	public static boolean isInterface(Member f){ return Modifier.isInterface(f.getModifiers()); }
+	public static boolean isInterface(Class<?> c) { return Modifier.isInterface(c.getModifiers()); }
+	
+	public static boolean isAbstract(Member f) { return Modifier.isAbstract(f.getModifiers()); }
+	public static boolean isAbstract(Class<?> c) { return Modifier.isAbstract(c.getModifiers()); }
+	
+	public static boolean isStrict(Member f) { return Modifier.isStrict(f.getModifiers()); }
+	public static boolean isStrict(Class<?> c) { return Modifier.isStrict(c.getModifiers()); }
+	
+	public static boolean publicFinal(Member f) { return isPublic(f) && isFinal(f); }
+	public static boolean publicFinal(Class<?> c) { return isPublic(c) && isFinal(c); }
+	
+	public static boolean publicStatic(Member f) { return isPublic(f) && isStatic(f); }
+	public static boolean publicStatic(Class<?> c) { return isPublic(c) && isStatic(c); }
 	
 }

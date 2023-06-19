@@ -42,7 +42,7 @@ public class Box3<A, B, C> {
 	
 	public boolean contains(Object obj) {
 		if (obj == null) return a == null || b == null || c == null;
-		return isAnyEqual(obj, a, b, c);
+		return anyMatch(obj, a, b, c);
 	}
 	
 	public boolean containsA(A obj) { return isEqual(a, obj); }

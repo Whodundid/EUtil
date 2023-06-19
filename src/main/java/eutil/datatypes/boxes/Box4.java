@@ -45,7 +45,7 @@ public class Box4<A, B, C, D> {
 	
 	public boolean contains(Object obj) {
 		if (obj == null) return a == null || b == null || c == null || d == null;
-		return isAnyEqual(obj, a, b, c, d);
+		return anyMatch(obj, a, b, c, d);
 	}
 	
 	public boolean containsA(A obj) { return isEqual(a, obj); }

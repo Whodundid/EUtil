@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -41,7 +42,15 @@ public class EFileUtil {
 	 * Returns true if the given file is not null and actually exists on the system.
 	 */
 	public static boolean fileExists(File f) {
-		return fileExists.test(f);
+		return FILE_EXISTS.test(f);
+	}
+	
+	/**
+	 * Returns true if the given file is not null and actually exists on the system.
+	 * @since 2.5.0
+	 */
+	public static boolean fileExists(Path f) {
+		return PATH_EXISTS.test(f);
 	}
 	
 	/**
@@ -59,6 +68,20 @@ public class EFileUtil {
 	}
 	
 	/**
+	 * Returns true if the given directory is empty.
+	 * <p>
+	 * NOTE: If the given file is null or does not actually exist,
+	 * 
+	 * @param f The directory to check
+	 * @return True if empty
+	 * @since 2.5.0
+	 */
+	public static boolean isDirectoryEmpty(Path f) {
+		if (f == null || !fileExists(f)) return false;
+		return f.toFile().length() == 0;
+	}
+	
+	/**
 	 * Returns true if the given file is a symbolic link to another file.
 	 * 
 	 * @param f The file to check
@@ -68,6 +91,18 @@ public class EFileUtil {
 	public static boolean isSymbolicLink(File f) {
 		if (f == null) return false;
 		return Files.isSymbolicLink(f.toPath());
+	}
+	
+	/**
+	 * Returns true if the given file is a symbolic link to another file.
+	 * 
+	 * @param f The file to check
+	 * @return True if a symbolic link
+	 * @since 2.5.0
+	 */
+	public static boolean isSymbolicLink(Path p) {
+		if (p == null) return false;
+		return Files.isSymbolicLink(p);
 	}
 	
 	/**
@@ -84,9 +119,86 @@ public class EFileUtil {
 		return true;
 	}
 	
+	/**
+	 * Returns true if each of the given files are not null and actually exist
+	 * on the file system.
+	 * 
+	 * @param paths The files to check
+	 * @return True if all files are not null and exist
+	 * @since 2.5.0
+	 */
+	public static boolean allFilesExist(Path... paths) {
+		if (paths.length == 0) return false;
+		for (Path p : paths)
+			if (!fileExists(p)) return false;
+		return true;
+	}
+	
 	//--------------
 	// File Helpers
 	//--------------
+	
+	/**
+	 * Returns the extension String of the given file.
+	 * 
+	 * @param fileIn The file to parse
+	 * @return The file's extension string
+	 * @since 2.5.0
+	 */
+	public static String getFileExtension(File fileIn) {
+		if (fileIn == null) return null;
+		final String fname = fileIn.getName();
+		final int index = fname.lastIndexOf('.');
+		return (index > 0) ? fname.substring(index) : fname;
+	}
+	
+	/**
+	 * Returns the extension String of the given path.
+	 * 
+	 * @param fileIn The file to parse
+	 * @return The file's extension string
+	 * @since 2.5.0
+	 */
+	public static String getFileExtension(Path pathIn) {
+		if (pathIn == null) return null;
+		final String fname = pathIn.toString();
+		final int index = fname.lastIndexOf('.');
+		return (index > 0) ? fname.substring(index) : fname;
+	}
+	
+	/**
+	 * Compares the file extension of the given file to the set of incoming
+	 * ones and returns true if any match.
+	 * 
+	 * @param fileIn     The file to check the extension of against
+	 * @param extensions The extensions to compare
+	 * 
+	 * @return True if any of the given extensions match the extension of the
+	 *         given file
+	 * 
+	 * @since 2.5.0
+	 */
+	public static boolean checkExtension(File fileIn, String... extensions) {
+		if (fileIn == null) return false;
+		return EUtil.anyMatch(getFileExtension(fileIn), extensions);
+	}
+	
+	/**
+	 * Compares the file extension of the given path to the set of incoming
+	 * ones and returns true if any match.
+	 * 
+	 * @param pathIn     The path to check the extension of against
+	 * @param extensions The extensions to compare
+	 * 
+	 * @return True if any of the given extensions match the extension of the
+	 *         given path
+	 * 
+	 * @since 2.5.0
+	 */
+	public static boolean checkExtension(Path pathIn, String... extensions) {
+		if (pathIn == null) return false;
+		return EUtil.anyMatch(getFileExtension(pathIn), extensions);
+	}
 	
 	/**
 	 * Returns the JVM working directory File.
@@ -137,6 +249,26 @@ public class EFileUtil {
 	public static boolean createOrClearDirectory(File dir) {
 		if (dir == null) return false;
 		if (!dir.exists()) return dir.mkdirs();
+		return clearDirectory(dir);
+	}
+	
+	/**
+	 * Attempts to create the given directory or clear it if it already exists.
+	 * 
+	 * @param dir The dir to create or clear
+	 * @return True if successful
+	 * @since 2.5.0
+	 */
+	public static boolean createOrClearDirectory(Path dir) {
+		if (dir == null) return false;
+		if (Files.exists(dir)) {
+			try {
+				Files.createDirectories(dir);
+			}
+			catch (Exception e) {
+				return false;
+			}
+		}
 		return clearDirectory(dir);
 	}
 	
@@ -416,6 +548,24 @@ public class EFileUtil {
 		if (!fileExists(dir)) return false;
 		if (!dir.isDirectory()) return false;
 		return clearDir_i(dir);
+	}
+	
+	/**
+	 * Recursively deletes all of the internal files and directories from a
+	 * given directory. If the given file is not a directory, no action is
+	 * performed. This function returns true on a successful deletion or false
+	 * if any error occurred while deleting.
+	 * <p>
+	 * NOTE: This function does not actually delete the parent directory itself.
+	 * 
+	 * @param dir The parent directory to be cleared
+	 * @return True if successful
+	 * @since 2.5.0
+	 */
+	public static boolean clearDirectory(Path dir) {
+		if (!fileExists(dir)) return false;
+		if (!dir.toFile().isDirectory()) return false;
+		return clearDir_i(dir.toFile());
 	}
 	
 	/** Recursively deletes all of the internal files and directories from a parent dir. */

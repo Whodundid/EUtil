@@ -123,9 +123,9 @@ public class LF<E> implements Iterable<LF.P<E>> {
 	/** Performs a filtering function across each element in the given iterable object. */
 	public LF<E> filter(Predicate<? super E> filter) { return new LF(start, by, stream().filter(filter)); }
 	/** Performs a filtering function which removes null objects within the given iterable object. */
-	public LF<E> filterNull() { return new LF(start, by, stream().filter(notNull)); }
+	public LF<E> filterNull() { return new LF(start, by, stream().filter(NOT_NULL)); }
 	/** Performs a filtering function which removes null objects as well as the specified condition within the given iterable object. */
-	public LF<E> filterNull(Predicate<? super E> filter) { return new LF(start, by, stream().filter(notNull).filter(filter)); }
+	public LF<E> filterNull(Predicate<? super E> filter) { return new LF(start, by, stream().filter(NOT_NULL).filter(filter)); }
 	
 	//---------------------------------------------------------------------------------------
 	
