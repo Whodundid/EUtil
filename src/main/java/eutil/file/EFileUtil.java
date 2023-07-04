@@ -149,7 +149,7 @@ public class EFileUtil {
 		if (fileIn == null) return null;
 		final String fname = fileIn.getName();
 		final int index = fname.lastIndexOf('.');
-		return (index > 0) ? fname.substring(index) : fname;
+		return (index > 0) ? fname.substring(index) : "";
 	}
 	
 	/**
@@ -163,7 +163,7 @@ public class EFileUtil {
 		if (pathIn == null) return null;
 		final String fname = pathIn.toString();
 		final int index = fname.lastIndexOf('.');
-		return (index > 0) ? fname.substring(index) : fname;
+		return (index > 0) ? fname.substring(index) : "";
 	}
 	
 	/**

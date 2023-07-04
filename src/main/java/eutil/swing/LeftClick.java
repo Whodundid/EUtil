@@ -1,5 +1,6 @@
 package eutil.swing;
 
+import java.awt.Component;
 import java.awt.event.MouseEvent;
 
 /**
@@ -16,12 +17,18 @@ public class LeftClick extends SimpleMouseListener {
 	}
 	
 	@Override
-	public void onLeftClick(MouseEvent e) {
+	public void onLeftPress(MouseEvent e) {
 		action.run();
 	}
 	
 	public static LeftClick of(Runnable actionIn) {
 		return new LeftClick(actionIn);
+	}
+	
+	public static LeftClick applyOn(Component c, Runnable action) {
+	    var lc = new LeftClick(action);
+	    c.addMouseListener(lc);
+	    return lc;
 	}
 	
 }

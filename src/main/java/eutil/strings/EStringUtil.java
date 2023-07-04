@@ -152,6 +152,10 @@ public final class EStringUtil {
 		return aStr.compareTo(bStr);
 	}
 	
+	//============
+	// Equals Any
+	//============
+	
 	/**
 	 * Returns true if the given string matches any of the 'toCheck' strings.
 	 * 
@@ -166,6 +170,21 @@ public final class EStringUtil {
 				return true;
 		return false;
 	}
+	
+    /**
+     * Returns true if the given string matches any of the 'toCheck' strings.
+     * 
+     * @param in The string to compare against
+     * @param toCheck The string(s) to check against
+     * @return True if any match
+     * @since 2.5.1
+     */
+    public static boolean equalsAny(String in, Collection<String> toCheck) {
+        for (var s : toCheck)
+            if (isEqual(in, s))
+                return true;
+        return false;
+    }
 	
 	/**
 	 * Returns the 'toCheck' string that matches the given string.
@@ -182,6 +201,36 @@ public final class EStringUtil {
 		return null;
 	}
 	
+	   /**
+     * Returns the 'toCheck' string that matches the given string.
+     * 
+     * @param in The string to compare against
+     * @param toCheck The string(s) to check against
+     * @return The 'toCheck' string string that matches
+     * @since 1.5.5
+     */
+    public static <E> E equalsAnyR(String in, E... toCheck) {
+        for (var s : toCheck)
+            if (isEqual(in, String.valueOf(s)))
+                return s;
+        return null;
+    }
+	
+    /**
+     * Returns the 'toCheck' object's 'toString' that matches the given string.
+     * 
+     * @param in The string to compare against
+     * @param toCheck The objects(s) to check against
+     * @return The 'toCheck' object that matches
+     * @since 2.5.1
+     */
+    public static String equalsAnyR(String in, Collection<String> toCheck) {
+        for (var s : toCheck)
+            if (isEqual(in, toString(s)))
+                return s;
+        return null;
+    }
+	
 	/**
 	 * Returns the 'toCheck' object's 'toString' that matches the given string.
 	 * 
@@ -191,28 +240,455 @@ public final class EStringUtil {
 	 * @since 1.5.5
 	 */
 	public static boolean equalsAny(String in, Object... toCheck) {
-		for (var s : toCheck) {
+		for (var s : toCheck)
 			if (isEqual(in, toString(s)))
 				return true;
-		}
 		return false;
 	}
 	
-	/**
-	 * Returns the 'toCheck' object's 'toString' that matches the given string.
-	 * 
-	 * @param in The string to compare against
-	 * @param toCheck The objects(s) to check against
-	 * @return The 'toCheck' object that matches
-	 * @since 1.5.5
-	 */
-	public static <E> E equalsAnyR(String in, E... toCheck) {
-		for (var s : toCheck) {
-			if (isEqual(in, toString(s)))
-				return s;
-		}
-		return null;
-	}
+    //=============
+    // Starts With
+    //=============
+
+    /**
+     * Returns true if the given string starts with any of the 'toCheck' strings.
+     * 
+     * @param in The string to compare against
+     * @param toCheck The string(s) to check against
+     * @return True if the given string starts with any 'toCheck' string
+     * @since 2.5.1
+     */
+    public static boolean startsWithAny(String in, String... toCheck) {
+        if (in == null) return false;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.startsWith(s)) return true;
+        return false;
+    }
+    
+    /**
+     * Returns true if the given string starts with any of the 'toCheck'
+     * strings.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The string(s) to check against
+     * 
+     * @return True if the given string starts with any of the 'toCheck'
+     *         object's 'toString' value
+     *         
+     * @since 2.5.1
+     */
+    public static boolean startsWithAny(String in, Object... toCheck) {
+        if (in == null) return false;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.startsWith(String.valueOf(s))) return true;
+        return false;
+    }
+    
+    /**
+     * Returns true if the given string starts with any of the 'toCheck'
+     * object's 'toString' values.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The string(s) to check against
+     * 
+     * @return True if the given string starts with any of the 'toCheck'
+     *         object's 'toString' value
+     *         
+     * @since 2.5.1
+     */
+    public static boolean startsWithAny(String in, Collection<?> toCheck) {
+        if (in == null) return false;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.startsWith(String.valueOf(s))) return true;
+        return false;
+    }
+    
+    /**
+     * Returns the 'toCheck' string that the given input string starts with.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The string(s) to check against
+     * 
+     * @return the 'toCheck' string that the given input string starts with
+     * 
+     * @since 2.5.1
+     */
+    public static String startsWithAnyR(String in, String... toCheck) {
+        if (in == null) return null;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.startsWith(s)) return s;
+        return null;
+    }
+    
+    /**
+     * Returns the 'toCheck' object's 'toString' value that the given input
+     * string starts with.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The string(s) to check against
+     * 
+     * @return the 'toCheck' object's 'toString' value that the given input
+     *         string starts with
+     *         
+     * @since 2.5.1
+     */
+    public static <E> E startsWithAnyR(String in, E... toCheck) {
+        if (in == null) return null;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.startsWith(String.valueOf(s))) return s;
+        return null;
+    }
+    
+    /**
+     * Returns the 'toCheck' object's 'toString' value that the given input
+     * string starts with.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The string(s) to check against
+     * 
+     * @return the 'toCheck' object's 'toString' value that the given input
+     *         string starts with
+     *         
+     * @since 2.5.1
+     */
+    public static <E> E startsWithAnyR(String in, Collection<E> toCheck) {
+        if (in == null) return null;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.startsWith(String.valueOf(s))) return s;
+        return null;
+    }
+    
+	//===========
+	// Ends With
+	//===========
+	
+    /**
+     * Returns true if the given string ends with any of the 'toCheck' strings.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The objects(s) to check against
+     * 
+     * @return True if the given string ends with any of the 'toCheck' strings
+     * 
+     * @since 2.5.1
+     */
+    public static boolean endsWithAny(String in, String... toCheck) {
+        if (in == null) return false;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.endsWith(s)) return true;
+        return false;
+    }
+    
+    /**
+     * Returns true if the given string ends with any of the 'toCheck' object's
+     * 'toString' values.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The objects(s) to check against
+     * 
+     * @return True if the given string ends with any of the 'toCheck' object's
+     *         'toString' value
+     * 
+     * @since 2.5.1
+     */
+    public static boolean endsWithAny(String in, Object... toCheck) {
+        if (in == null) return false;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.endsWith(String.valueOf(s))) return true;
+        return false;
+    }
+    
+    /**
+     * Returns true if the given string ends with any of the 'toCheck' object's
+     * 'toString' values.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The objects(s) to check against
+     * 
+     * @return True if the given string ends with any of the 'toCheck' object's
+     *         'toString' value
+     * 
+     * @since 2.5.1
+     */
+    public static boolean endsWithAny(String in, Collection<?> toCheck) {
+        if (in == null) return false;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.endsWith(String.valueOf(s))) return true;
+        return false;
+    }
+    
+    /**
+     * Returns the 'toCheck' string that the given input ends ends with.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The string(s) to check against
+     * 
+     * @return the 'toCheck' string that the given input ends ends with
+     * 
+     * @since 2.5.1
+     */
+    public static String endsWithAnyR(String in, String... toCheck) {
+        if (in == null) return null;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.endsWith(s)) return s;
+        return null;
+    }
+    
+    /**
+     * Returns the 'toCheck' object's 'toString' value that the given input
+     * string ends with.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The string(s) to check against
+     * 
+     * @return the 'toCheck' object's 'toString' value that the given input
+     *         string ends with
+     *         
+     * @since 2.5.1
+     */
+    public static <E> E endsWithAnyR(String in, E... toCheck) {
+        if (in == null) return null;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.endsWith(String.valueOf(s))) return s;
+        return null;
+    }
+    
+    /**
+     * Returns the 'toCheck' object's 'toString' value that the given input
+     * string ends with.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The string(s) to check against
+     * 
+     * @return the 'toCheck' object's 'toString' value that the given input
+     *         string ends with
+     *         
+     * @since 2.5.1
+     */
+    public static <E> E endsWithAnyR(String in, Collection<E> toCheck) {
+        if (in == null) return null;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.endsWith(String.valueOf(s))) return s;
+        return null;
+    }
+    
+	//==============
+	// Contains Any
+	//==============
+	
+    /**
+     * Returns true if the given string contains any of the 'toCheck' strings.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The objects(s) to check against
+     * 
+     * @return True if the given string contains any of the 'toCheck' strings
+     * 
+     * @since 2.5.1
+     */
+    public static boolean containsAny(String in, String... toCheck) {
+        if (in == null) return false;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.contains(s)) return true;
+        return false;
+    }
+    
+    /**
+     * Returns true if the given string contains any of the 'toCheck' object's
+     * 'toString' values.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The objects(s) to check against
+     * 
+     * @return True if the given string contains any of the 'toCheck' object's
+     *         'toString' value
+     * 
+     * @since 2.5.1
+     */
+    public static boolean containsAny(String in, Object... toCheck) {
+        if (in == null) return false;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.contains(String.valueOf(s))) return true;
+        return false;
+    }
+    
+    /**
+     * Returns true if the given string contains any of the 'toCheck' object's
+     * 'toString' values.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The objects(s) to check against
+     * 
+     * @return True if the given string contains any of the 'toCheck' object's
+     *         'toString' value
+     * 
+     * @since 2.5.1
+     */
+    public static boolean containsAny(String in, Collection<?> toCheck) {
+        if (in == null) return false;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.contains(String.valueOf(s))) return true;
+        return false;
+    }
+    
+    /**
+     * Returns the 'toCheck' string that the given input contains.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The string(s) to check against
+     * 
+     * @return the 'toCheck' string that the given input contains
+     * 
+     * @since 2.5.1
+     */
+    public static String containsAnyR(String in, String... toCheck) {
+        if (in == null) return null;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.contains(s)) return s;
+        return null;
+    }
+    
+    /**
+     * Returns the 'toCheck' object's 'toString' value that the given input
+     * string contains.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The string(s) to check against
+     * 
+     * @return the 'toCheck' object's 'toString' value that the given input
+     *         string contains
+     *         
+     * @since 2.5.1
+     */
+    public static <E> E containsAnyR(String in, E... toCheck) {
+        if (in == null) return null;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.contains(String.valueOf(s))) return s;
+        return null;
+    }
+    
+    /**
+     * Returns the 'toCheck' object's 'toString' value that the given input
+     * string contains.
+     * 
+     * @param in      The string to compare against
+     * @param toCheck The string(s) to check against
+     * 
+     * @return the 'toCheck' object's 'toString' value that the given input
+     *         string contains
+     *         
+     * @since 2.5.1
+     */
+    public static <E> E containsAnyR(String in, Collection<E> toCheck) {
+        if (in == null) return null;
+        for (var s : toCheck)
+            if (s == null) continue;
+            else if (in.contains(String.valueOf(s))) return s;
+        return null;
+    }
+    
+    //======================
+    // Starts and Ends With
+    //======================
+    
+    /**
+     * Returns true if the given input starts and ends with the given 'toCheck'
+     * string.
+     * 
+     * @param input   The input string
+     * @param toCheck The value to check for
+     * 
+     * @return true if the 'toCheck' value is at the beginning and end of the
+     *         input string
+     * 
+     * @since 2.5.1
+     */
+    public static boolean startsAndEndsWith(String input, String toCheck) {
+        if (input == null || toCheck == null) return false;
+        return input.startsWith(toCheck) && input.endsWith(toCheck);
+    }
+    
+    /**
+     * Returns true if the given input starts and ends with the given 'toCheck'
+     * object's 'toString' value.
+     * 
+     * @param input   The input string
+     * @param toCheck An object's 'toString' value to check for
+     * 
+     * @return true if the 'toCheck' object's 'toString' value is at the
+     *         beginning and end of the input string
+     *         
+     * @since 2.5.1
+     */
+    public static boolean startsAndEndsWith(String input, Object toCheck) {
+        if (input == null || toCheck == null) return false;
+        String s = String.valueOf(toCheck);
+        return input.startsWith(s) && input.endsWith(s);
+    }
+    
+    /**
+     * Returns true if the given input starts and ends with any of the given
+     * 'toCheck' strings.
+     * 
+     * @param input   The input string
+     * @param toCheck The value to check for
+     * 
+     * @return true if any of the 'toCheck' values are present at the beginning
+     *         and the end of the input string
+     *         
+     * @since 2.5.1
+     */
+    public static boolean startsAndEndsWithAny(String input, String... toCheck) {
+        if (input == null || toCheck == null) return false;
+        for (String s : toCheck) {
+            if (input.startsWith(s) && input.endsWith(s))
+                return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Returns true if the given input starts and ends with any of the given
+     * 'toCheck' strings.
+     * 
+     * @param input   The input string
+     * @param toCheck The value to check for
+     * 
+     * @return true if any of the 'toCheck' values are present at the beginning
+     *         and the end of the input string
+     *         
+     * @since 2.5.1
+     */
+    public static boolean startsAndEndsWithAny(String input, Object... toCheck) {
+        if (input == null || toCheck == null) return false;
+        for (Object s : toCheck) {
+            final String toString = String.valueOf(s);
+            if (input.startsWith(toString) && input.endsWith(toString))
+                return true;
+        }
+        return false;
+    }
+    
+	//================
+	// Longest Length
+	//================
 	
 	/**
 	 * Returns the length of the 'toString' String for each given object.

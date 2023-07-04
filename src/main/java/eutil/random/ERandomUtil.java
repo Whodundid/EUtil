@@ -36,9 +36,9 @@ public final class ERandomUtil {
 	}
 	
 	/** Returns the number from a roll within a specified inclusive range boundaries. (floats) */
-	//public static float getRoll(float min, float max) {
-	//	return ThreadLocalRandom.current().nextFloat(min, max + 1);
-	//}
+    public static float getRoll(float min, float max) {
+    	return ThreadLocalRandom.current().nextFloat(min, max + 1);
+    }
 	
 	/** Returns the number from a roll within a specified inclusive range boundaries. (doubles) */
 	public static double getRoll(double min, double max) {
