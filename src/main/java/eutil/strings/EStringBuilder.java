@@ -114,6 +114,8 @@ public class EStringBuilder implements Appendable, CharSequence {
 	public String substring(int start, int end) { return sb.substring(start, end); }
 	public IntStream chars() { return sb.chars(); }
 	public IntStream codePoints() { return sb.codePoints(); }
+	public boolean isNotEmpty() { return !isEmpty(); }
+	public boolean isNotBlank() { return !isBlank(); }
 	
 	public String[] splitA(String regex) { return sb.toString().split(regex); }
 	public EList<String> split(String regex) { return EList.of(splitA(regex)); }
@@ -139,16 +141,17 @@ public class EStringBuilder implements Appendable, CharSequence {
 	public EStringBuilder a(Object... a) { for (var o : a) sb.append(o); return this; }
 	
 	/** Shorthand 'clear' method. */
-	public EStringBuilder c() { return clear(); }
-	public EStringBuilder clear() { sb = new StringBuilder(); return this; }
-	public EStringBuilder clear(char c) { sb = new StringBuilder(String.valueOf(c)); return this; }
-	public EStringBuilder clear(String in) { sb = new StringBuilder(in); return this; }
-	public EStringBuilder clear(CharSequence in) { sb = new StringBuilder(in); return this; }
+	public String c() { return clear(); }
+	public String clear() { String r = sb.toString(); sb = new StringBuilder(); return r; }
+	public String clear(char c) { String r = sb.toString(); sb = new StringBuilder(String.valueOf(c)); return r; }
+	public String clear(String in) { String r = sb.toString(); sb = new StringBuilder(in); return r; }
+	public String clear(CharSequence in) { String r = sb.toString(); sb = new StringBuilder(in); return r; }
 	
 	public boolean contains(CharSequence in) { return sb.toString().contains(in); }
 	
 	public EStringBuilder trimRT() { sb = new StringBuilder(sb.toString().trim()); return this; }
 	public String trim() { return trimRT().toString(); }
+	public String trimClear() { String r = trim(); clear(); return r; }
 	public boolean isBlank() { return toString().trim().isEmpty(); }
 	
 	public String tempAdd(char c) { return tempAdd(String.valueOf(c)); }

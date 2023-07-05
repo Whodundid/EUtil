@@ -19,9 +19,16 @@ public class Point2d {
 		y = yIn;
 	}
 	
+	public double distance(double xIn, double yIn) {
+	    return ENumUtil.distance(x, y, xIn, yIn);
+	}
+	
 	public double distance(Point2d p) {
 		return ENumUtil.distance(x, y, p.x, p.y);
 	}
+	
+	public boolean compare(double xIn, double yIn) { return x - xIn < 0.000000000001 && y - yIn < 0.000000000001; }
+	public boolean compare(Point2d p) { return compare(p.x, p.y); }
 	
 	public double getX() { return x; }
 	public double getY() { return y; }

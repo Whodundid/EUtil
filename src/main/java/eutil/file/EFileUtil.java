@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -119,6 +120,21 @@ public class EFileUtil {
 		return true;
 	}
 	
+    /**
+     * Returns true if each of the given files are not null and actually exist
+     * on the file system.
+     * 
+     * @param files The files to check
+     * @return True if all files are not null and exist
+     * @since 2.5.2
+     */
+    public static boolean allFilesExist(Collection<File> files) {
+        if (files == null || files.isEmpty()) return false;
+        for (File f : files)
+            if (!fileExists(f)) return false;
+        return true;
+    }
+	
 	/**
 	 * Returns true if each of the given files are not null and actually exist
 	 * on the file system.
@@ -127,12 +143,27 @@ public class EFileUtil {
 	 * @return True if all files are not null and exist
 	 * @since 2.5.0
 	 */
-	public static boolean allFilesExist(Path... paths) {
+	public static boolean allPathsExist(Path... paths) {
 		if (paths.length == 0) return false;
 		for (Path p : paths)
 			if (!fileExists(p)) return false;
 		return true;
 	}
+	
+	/**
+     * Returns true if each of the given files are not null and actually exist
+     * on the file system.
+     * 
+     * @param paths The files to check
+     * @return True if all files are not null and exist
+     * @since 2.5.2
+     */
+    public static boolean allPathsExist(Collection<Path> paths) {
+        if (paths == null || paths.isEmpty()) return false;
+        for (Path p : paths)
+            if (!fileExists(p)) return false;
+        return true;
+    }
 	
 	//--------------
 	// File Helpers
