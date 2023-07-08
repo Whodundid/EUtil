@@ -37,6 +37,14 @@ public class ESimpleTimer {
 		return this;
 	}
 	
+	public ESimpleTimer startIn(long delay) {
+	    startTime = System.currentTimeMillis() + delay;
+        isCounting = true;
+        hasRun = true;
+        interrupted = false;
+        return this;
+	}
+	
 	public ESimpleTimer stop() {
 		isCounting = false;
 		interrupted = true;

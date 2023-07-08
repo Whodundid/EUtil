@@ -47,16 +47,16 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 2.5.2
+ *  @version 2.5.3
  */
 public class EUtil {
 	
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "2.5.2";
+	public static final String version = "2.5.3";
 	/** The EUtil library version date String. */
-	public static final String versionDate = "7/5/2023";
+	public static final String versionDate = "7/8/2023";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
