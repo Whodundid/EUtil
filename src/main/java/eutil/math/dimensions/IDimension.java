@@ -2,18 +2,9 @@ package eutil.math.dimensions;
 
 public abstract class IDimension<T extends Number> {
     
-    //==============
-    // Field Values
-    // ==============
-    
-    protected abstract T startX();
-    protected abstract T startY();
-    protected abstract T endX();
-    protected abstract T endY();
-    protected abstract T midX();
-    protected abstract T midY();
-    protected abstract T width();
-    protected abstract T height();
+    //===========
+    // Abstracts
+    //===========
     
     protected abstract int startX_i();
     protected abstract int startY_i();
@@ -51,6 +42,15 @@ public abstract class IDimension<T extends Number> {
     protected abstract double width_d();
     protected abstract double height_d();
     
+    public abstract T startX();
+    public abstract T startY();
+    public abstract T endX();
+    public abstract T endY();
+    public abstract T midX();
+    public abstract T midY();
+    public abstract T width();
+    public abstract T height();
+    
     public abstract void startX(Number startX);
     public abstract void startY(Number startY);
     public abstract void endX(Number endX);
@@ -64,6 +64,12 @@ public abstract class IDimension<T extends Number> {
     protected abstract float getArea_f();
     protected abstract double getArea_d();
     
+    protected abstract void reDimension();
+
+    //===========
+    // Overrides
+    //===========
+    
     @Override
     public String toString() {
         return "[startX/Y: " + startX() + ", " + startY() +
@@ -75,7 +81,6 @@ public abstract class IDimension<T extends Number> {
     // Methods
     //=========
     
-    protected abstract void reDimension();
     
     /**
      * Returns true if the Area of this dimension is bigger than the area
@@ -108,13 +113,13 @@ public abstract class IDimension<T extends Number> {
                height() == dimIn.height();
     }
     
-    public boolean contains(T xIn, T yIn) {
+    public boolean contains(Number xIn, Number yIn) {
         double x = xIn.doubleValue();
         double y = yIn.doubleValue();
         return x >= startX_d() && x <= endX_d() && y >= startY_d() && y <= endY_d();
     }
     
-    public boolean contains(T left, T top, T right, T bot) {
+    public boolean contains(Number left, Number top, Number right, Number bot) {
         double leftD = left.doubleValue();
         double topD = top.doubleValue();
         double rightD = right.doubleValue();
