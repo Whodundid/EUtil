@@ -511,4 +511,9 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
 		createdList.ensureCapacity(size);
 	}
 	
+	public static <A, B> BoxList<A, B> newList() { return new BoxList<>(); }
+	public static <A, B> BoxList<A, B> newList(A a, B b) { return new BoxList<>(a, b); }
+	public static <A, B> BoxList<A, B> newList(BoxList<A, B> existingBoxList) { return new BoxList<>(existingBoxList); }
+	
+	
 }

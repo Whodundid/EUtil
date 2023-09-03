@@ -2,6 +2,7 @@ package eutil.datatypes.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import eutil.math.ENumUtil;
 
@@ -29,6 +30,7 @@ public enum JavaDatatype {
 	NUMBER,
 	ARRAY,
 	INTERFACE,
+	LIST,
 	
 	// Special types
 	RECORD,
@@ -49,13 +51,13 @@ public enum JavaDatatype {
 	
 	/** Returns true if the given dataType is a number. */
 	public boolean isNumber() {
-		switch (this) {
-		case NUMBER: case CHAR: case BYTE: case SHORT:
-		case INT: case LONG: case FLOAT: case DOUBLE:
-			return true;
-		default:
-			return false;
-		}
+	    return this == NUMBER ||
+	           this == BYTE ||
+	           this == SHORT ||
+	           this == INT ||
+	           this == LONG ||
+	           this == FLOAT ||
+	           this == DOUBLE;
 	}
 	
 	/**
@@ -74,10 +76,10 @@ public enum JavaDatatype {
 		// If it's a number, it's standard by default
 		if (isNumber()) return true;
 		
-		switch (this) {
-		case STRING: case OBJECT: case ARRAY: case CONSTRUCTOR: case METHOD: case CLASS: case ENUM: return true;
-		default: return false;
-		}
+		return switch (this) {
+		case STRING, OBJECT, ARRAY, CONSTRUCTOR, METHOD, CLASS, ENUM -> true;
+		default -> false;
+		};
 	}
 	
 	//----------------
@@ -86,7 +88,7 @@ public enum JavaDatatype {
 	
 	/** Returns true if the given dataType is a number. */
 	public static boolean isNumber(JavaDatatype typeIn) {
-		return (typeIn != null) ? typeIn.isNumber() : false;
+		return typeIn != null && typeIn.isNumber();
 	}
 	
 	/** Returns the dataType of the given Number. If the input is null, null is returned instead. */
@@ -118,6 +120,7 @@ public enum JavaDatatype {
 		if (in instanceof Module) return MODULE;
 		if (in instanceof Number) return NUMBER;
 		if (in instanceof Class) return CLASS;
+		if (in instanceof List) return LIST;
 		
 		Class<?> c = in.getClass();
 		if (c.isRecord()) return RECORD;
@@ -137,36 +140,38 @@ public enum JavaDatatype {
 	 * 
 	 * @since 1.8.1
 	 */
-	public static JavaDatatype getDataType(Class<?> in) {
-		if (in == null) return NULL;
-		
-		if (in.isRecord()) return RECORD;
-		if (in.isArray()) return ARRAY;
-		if (in.isEnum()) return ENUM;
-		if (in.isInterface()) return INTERFACE;
-		if (in.isAnnotation()) return ANNOTATION;
-		if (in.isAssignableFrom(Module.class)) return MODULE;
-		
-		if (in.isAssignableFrom(Method.class)) {
-			Class<? extends Method> m = (Class<? extends Method>) in;
-			if (m.isAssignableFrom(Constructor.class)) return CONSTRUCTOR;
-			return METHOD;
-		}
-		
-		if (in.isAssignableFrom(Boolean.class) || in.isAssignableFrom(boolean.class)) return BOOLEAN;
-		if (in.isAssignableFrom(Byte.class) || in.isAssignableFrom(byte.class)) return BYTE;
-		if (in.isAssignableFrom(Character.class) || in.isAssignableFrom(char.class)) return CHAR;
-		if (in.isAssignableFrom(Short.class) || in.isAssignableFrom(short.class)) return SHORT;
-		if (in.isAssignableFrom(Integer.class) || in.isAssignableFrom(int.class)) return INT;
-		if (in.isAssignableFrom(Long.class) || in.isAssignableFrom(long.class)) return LONG;
-		if (in.isAssignableFrom(Float.class) || in.isAssignableFrom(float.class)) return FLOAT;
-		if (in.isAssignableFrom(Double.class) || in.isAssignableFrom(double.class)) return DOUBLE;
-		
-		if (in.isAssignableFrom(String.class)) return STRING;
-		if (in.isAssignableFrom(Number.class)) return NUMBER;
-		
-		return OBJECT;
-	}
+    public static JavaDatatype getDataType(Class<?> in) {
+        if (in == null) return NULL;
+        
+        if (in == Boolean.class || in == boolean.class) return BOOLEAN;
+        if (in == Byte.class || in == byte.class) return BYTE;
+        if (in == Character.class || in == char.class) return CHAR;
+        if (in == Short.class || in == short.class) return SHORT;
+        if (in == Integer.class || in == int.class) return INT;
+        if (in == Long.class || in == long.class) return LONG;
+        if (in == Float.class || in == float.class) return FLOAT;
+        if (in == Double.class || in == double.class) return DOUBLE;
+        
+        if (in == String.class) return STRING;
+        if (in == Number.class) return NUMBER;
+        
+        if (in.isRecord()) return RECORD;
+        if (in.isArray()) return ARRAY;
+        if (in.isEnum()) return ENUM;
+        if (in.isInterface()) return INTERFACE;
+        if (in.isAnnotation()) return ANNOTATION;
+        if (in.isAssignableFrom(Module.class)) return MODULE;
+        
+        if (in.isAssignableFrom(Method.class)) {
+            Class<Method> m = (Class<Method>) in;
+            if (m.isAssignableFrom(Constructor.class)) return CONSTRUCTOR;
+            return METHOD;
+        }
+        
+        if (List.class.isAssignableFrom(in)) return LIST;
+        
+        return OBJECT;
+    }
 	
 	public static JavaDatatype getStringDataType(String in) {
 		if (in == null || in.equals("null")) return NULL;
@@ -208,6 +213,38 @@ public enum JavaDatatype {
 		}
 		return in;
 	}
+	
+    /**
+     * Returns true if the given object is a primitive datatype.
+     * 
+     * @param in The object to check
+     * @return True if the given object is a primitive Java datatype
+     * @since 2.5.4
+     */
+	public static boolean isPrimitiveType(Object in) {
+	    if (in == null) return false;
+	    return isPrimitiveClass(in.getClass());
+	}
+	
+	/**
+	 * Returns true if the given Java class is a primitive datatype class.
+	 * 
+	 * @param in The class to check
+	 * @return True if the given class is a primitive Java datatype class
+	 * @since 2.5.4
+	 */
+    public static boolean isPrimitiveClass(Class<?> in) {
+        if (in == null) return false;
+        
+        return in == boolean.class ||
+               in == char.class ||
+               in == byte.class ||
+               in == short.class ||
+               in == int.class ||
+               in == long.class ||
+               in == float.class ||
+               in == double.class;
+    }
 	
 	//-------------------
 	// Static Converters

@@ -15,10 +15,10 @@ import java.lang.annotation.Target;
  */
 @Target({TYPE, METHOD, PACKAGE, FIELD, CONSTRUCTOR, LOCAL_VARIABLE, ANNOTATION_TYPE, MODULE})
 @Retention(RetentionPolicy.SOURCE)
-public @interface PotentiallyUnused {
+public @interface PotentiallyUnnecessary {
 	
 	/**
-	 * Describes the reason for why the code segment may not be being used.
+	 * Describes the reason for why the code segment may not actually be needed.
 	 */
 	String reason() default "";
 	

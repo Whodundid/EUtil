@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,16 +48,16 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 2.5.3
+ *  @version 2.5.4
  */
 public class EUtil {
 	
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String version = "2.5.3";
+	public static final String VERSION = "2.5.4";
 	/** The EUtil library version date String. */
-	public static final String versionDate = "7/8/2023";
+	public static final String VERSION_DATE = "9/2/2023";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -344,6 +345,71 @@ public class EUtil {
 		return (val != null) ? val : defaultVal;
 	}
 	
+    //==============
+    // Array Checks
+    //==============
+	
+	/**
+     * Returns the first member in the array that matches the given predicate. If
+     * no object matches, null is returned instead.
+     * @since 2.5.4
+     */
+    public static <E> E getFirst(E[] array, Predicate<? super E> predicate) {var p=predicate;requireNonNull(p);for(var e:array){if(p.test(e))return e;}return null;}
+    public static Boolean getFirst(boolean[] array, Predicate<Boolean> predicate) {var p=predicate;requireNonNull(p);for(var e:array){if(p.test(e))return e;}return null;}
+    public static Character getFirst(char[] array, Predicate<Character> predicate) {var p=predicate;requireNonNull(p);for(var e:array){if(p.test(e))return e;}return null;}
+    public static Byte getFirst(byte[] array, Predicate<Byte> predicate) {var p=predicate;requireNonNull(p);for(var e:array){if(p.test(e))return e;}return null;}
+    public static Short getFirst(short[] array, Predicate<Short> predicate) {var p=predicate;requireNonNull(p);for(var e:array){if(p.test(e))return e;}return null;}
+    public static Integer getFirst(int[] array, Predicate<Integer> predicate) {var p=predicate;requireNonNull(p);for(var e:array){if(p.test(e))return e;}return null;}
+    public static Long getFirst(long[] array, Predicate<Long> predicate) {var p=predicate;requireNonNull(p);for(var e:array){if(p.test(e))return e;}return null;}
+    public static Float getFirst(float[] array, Predicate<Float> predicate) {var p=predicate;requireNonNull(p);for(var e:array){if(p.test(e))return e;}return null;}
+    public static Double getFirst(double[] array, Predicate<Double> predicate) {var p=predicate;requireNonNull(p);for(var e:array){if(p.test(e))return e;}return null;}
+    
+    /**
+     * Returns the first member in the array that matches the given predicate. If no
+     * object matches, the default value is returned instead.
+     * @since 2.5.4
+     */
+    public static <E> E getFirst(E[] array, Predicate<? super E> predicate, E defaultVal) {var val=getFirst(array,predicate);return(val!=null)?val:defaultVal;}
+    public static Boolean getFirst(boolean[] array, Predicate<Boolean> predicate, Boolean defaultVal) {var val=getFirst(array,predicate);return(val!=null)?val:defaultVal;}
+    public static Character getFirst(char[] array, Predicate<Character> predicate, Character defaultVal) {var val=getFirst(array,predicate);return(val!=null)?val:defaultVal;}
+    public static Byte getFirst(byte[] array, Predicate<Byte> predicate, Byte defaultVal) {var val=getFirst(array,predicate);return(val!=null)?val:defaultVal;}
+    public static Short getFirst(short[] array, Predicate<Short> predicate, Short defaultVal) {var val=getFirst(array,predicate);return(val!=null)?val:defaultVal;}
+    public static Integer getFirst(int[] array, Predicate<Integer> predicate, Integer defaultVal) {var val=getFirst(array,predicate);return(val!=null)?val:defaultVal;}
+    public static Long getFirst(long[] array, Predicate<Long> predicate, Long defaultVal) {var val=getFirst(array,predicate);return(val!=null)?val:defaultVal;}
+    public static Float getFirst(float[] array, Predicate<Float> predicate, Float defaultVal) {var val=getFirst(array,predicate);return(val!=null)?val:defaultVal;}
+    public static Double getFirst(double[] array, Predicate<Double> predicate, Double defaultVal) {var val=getFirst(array,predicate);return(val!=null)?val:defaultVal;}
+    
+    
+    /**
+     * Returns the last member in the array that matches the given predicate. If no
+     * object matches, null is returned.
+     * @since 2.5.4
+     */
+    public static <E> E getLast(E[] array, Predicate<? super E> predicate) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return null;}
+    public static Boolean getLast(boolean[] array, Predicate<Boolean> predicate) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return null;}
+    public static Character getLast(char[] array, Predicate<Character> predicate) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return null;}
+    public static Byte getLast(byte[] array, Predicate<Byte> predicate) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return null;}
+    public static Short getLast(short[] array, Predicate<Short> predicate) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return null;}
+    public static Integer getLast(int[] array, Predicate<Integer> predicate) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return null;}
+    public static Long getLast(long[] array, Predicate<Long> predicate) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return null;}
+    public static Float getLast(float[] array, Predicate<Float> predicate) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return null;}
+    public static Double getLast(double[] array, Predicate<Double> predicate) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return null;}
+    
+    /**
+     * Returns the last member in the array that matches the given predicate. If not
+     * object matches, the default value is returned instead.
+     * @since 2.5.4
+     */
+    public static <E> E getLast(E[] array, Predicate<? super E> predicate, E defaultVal) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return defaultVal;}
+    public static Boolean getLast(boolean[] array, Predicate<Boolean> predicate, Boolean defaultVal) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return defaultVal;}
+    public static Character getLast(char[] array, Predicate<Character> predicate, Character defaultVal) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return defaultVal;}
+    public static Byte getLast(byte[] array, Predicate<Byte> predicate, Byte defaultVal) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return defaultVal;}
+    public static Short getLast(short[] array, Predicate<Short> predicate, Short defaultVal) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return defaultVal;}
+    public static Integer getLast(int[] array, Predicate<Integer> predicate, Integer defaultVal) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return defaultVal;}
+    public static Long getLast(long[] array, Predicate<Long> predicate, Long defaultVal) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return defaultVal;}
+    public static Float getLast(float[] array, Predicate<Float> predicate, Float defaultVal) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return defaultVal;}
+    public static Double getLast(double[] array, Predicate<Double> predicate, Double defaultVal) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return defaultVal;}
+	
 	//------------
 	// Stack Util
 	//------------
@@ -394,7 +460,7 @@ public class EUtil {
 	 * @param in  The given Stack
 	 * @return A list containing the items in the given Stack
 	 */
-	public static <E> EList<E> toList(Stack<E> in) {
+	public static <E> EList<E> toList(Deque<E> in) {
 		EList<E> list = EList.newList();
 		if (in != null) {
 			var it = in.iterator();
@@ -449,15 +515,15 @@ public class EUtil {
 	public static String toString(Enumeration<?> e, String separator) { return EStringUtil.toString(e, separator); }
 	public static String toString(Map<?, ?> e, String separator) { return EStringUtil.toString(e, separator); }
 	
-	public static Object[] toObjArr(boolean[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
-	public static Object[] toObjArr(byte[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
-	public static Object[] toObjArr(char[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
-	public static Object[] toObjArr(int[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
-	public static Object[] toObjArr(short[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
-	public static Object[] toObjArr(long[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
-	public static Object[] toObjArr(float[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
-	public static Object[] toObjArr(double[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
-	public static <E> Object[] toObjArr(E[] e) { Object[] a = new Object[e.length]; for (int i = 0; i < e.length; i++) { a[i] = e[i]; } return a; }
+	public static Object[] toObjArr(boolean[] e) { Object[] a = new Object[e.length]; System.arraycopy(e, 0, a, 0, a.length); return a; }
+	public static Object[] toObjArr(byte[] e) { Object[] a = new Object[e.length]; System.arraycopy(e, 0, a, 0, a.length); return a; }
+	public static Object[] toObjArr(char[] e) { Object[] a = new Object[e.length]; System.arraycopy(e, 0, a, 0, a.length); return a; }
+	public static Object[] toObjArr(int[] e) { Object[] a = new Object[e.length]; System.arraycopy(e, 0, a, 0, a.length); return a; }
+	public static Object[] toObjArr(short[] e) { Object[] a = new Object[e.length]; System.arraycopy(e, 0, a, 0, a.length); return a; }
+	public static Object[] toObjArr(long[] e) { Object[] a = new Object[e.length]; System.arraycopy(e, 0, a, 0, a.length); return a; }
+	public static Object[] toObjArr(float[] e) { Object[] a = new Object[e.length]; System.arraycopy(e, 0, a, 0, a.length); return a; }
+	public static Object[] toObjArr(double[] e) { Object[] a = new Object[e.length]; System.arraycopy(e, 0, a, 0, a.length); return a; }
+	public static <E> Object[] toObjArr(E[] e) { Object[] a = new Object[e.length]; System.arraycopy(e, 0, a, 0, a.length); return a; }
 	
 	public static void printArray(boolean[] arr) { System.out.println(toString(arr)); }
 	public static void printArray(byte[] arr) { System.out.println(toString(arr)); }
@@ -519,7 +585,7 @@ public class EUtil {
 	 * @return List<E> The reversed list.
 	 */
 	public static <E> List<E> reverseList(List<E> in) {
-		if (in == null) return null;
+		if (in == null) return EList.newList();
 		Collections.reverse(in);
 		return in;
 	}
@@ -528,7 +594,7 @@ public class EUtil {
 	// Lambda Helpers
 	//----------------
 	
-	public static long length(Iterable itr) { return itr.spliterator().getExactSizeIfKnown(); }
+	public static long length(Iterable<?> itr) { return itr.spliterator().getExactSizeIfKnown(); }
 	
 	//-------------------------
 	// Array Stream Operations
@@ -630,8 +696,8 @@ public class EUtil {
 	 *  finally collects the filtered data into the specified Collector. */
 	public static <E, R, A> R filterInto(Collection<E> listIn, Predicate<? super E> filter, Collector<? super E, A, R> collector) { return filter(listIn, filter).collect(collector); }
 	
-	public static <E, A> EList<E> filterAsList(E[] arrIn, Predicate<? super E> filter) { return filterA(filter, arrIn).collect(EList.toEList()); }
-	public static <E, A> EList<E> filterAsList(Collection<E> listIn, Predicate<? super E> filter) { return filter(listIn, filter).collect(EList.toEList()); }
+	public static <E> EList<E> filterAsList(E[] arrIn, Predicate<? super E> filter) { return filterA(filter, arrIn).collect(EList.toEList()); }
+	public static <E> EList<E> filterAsList(Collection<E> listIn, Predicate<? super E> filter) { return filter(listIn, filter).collect(EList.toEList()); }
 	
 	//-----------------------
 	// Map Stream Operations
@@ -700,7 +766,7 @@ public class EUtil {
 			r.put(e.getKey(), e.getValue());
 		}
 		return r;
-	};
+	}
 	
 	//---------------
 	// Array forEach

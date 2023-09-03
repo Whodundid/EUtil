@@ -42,9 +42,9 @@ public final class EReflectionUtil {
 			Class[] params = new Class[paramsAndArgs.length / 2];
 			Object[] args = new Object[params.length];
 			
-			for (int i = 0; i < paramsAndArgs.length;) {
-				params[i] = (Class) paramsAndArgs[i++];
-				args[i] = paramsAndArgs[i++];
+			for (int i = 0; i < paramsAndArgs.length; i++) {
+				params[i] = (Class) paramsAndArgs[i];
+				args[i] = paramsAndArgs[i + 1];
 			}
 			
 			return (E) invoke_unsafe(obj, methodName, params, args);
@@ -55,7 +55,7 @@ public final class EReflectionUtil {
 	
 	public static <E> E invoke_unsafe(Object obj, String methodName, Class[] params, Object[] args) throws Exception {
 		if (obj == null) return null;
-		Method m = findMethod(obj.getClass(), methodName);
+		Method m = findMethod(obj.getClass(), methodName, params);
 		// check if we have access up front -- static methods shouldn't pass an object
 		boolean couldAccessBefore = m.canAccess(EModifier.isStatic(m) ? null : obj);
 		// hack in for just a second
@@ -85,14 +85,13 @@ public final class EReflectionUtil {
 		f.setAccessible(true);
 		Object o = f.get(obj);
 		f.setAccessible(false);
-		return (E) o;
+		return asClass.cast(o);
 	}
 	
 	/** Attempts to return a corresponding constructor from the given name and class parameters from the given object's class hierarchy. */
-	public static Constructor getConstructor(Object obj, Class... parameters) throws Exception {
+	public static Constructor<?> getConstructor(Object obj, Class... parameters) throws Exception {
 		if (obj == null) return null;
-		Constructor c = findConstructor(obj.getClass(), parameters);
-		return c;
+		return findConstructor(obj.getClass(), parameters);
 	}
 	
 	/** Attempts to set the value of a field of the given name from the object's immediate fields. */
@@ -112,14 +111,32 @@ public final class EReflectionUtil {
 		f.setAccessible(true);
 		Object o = f.get(obj);
 		f.setAccessible(false);
-		return (E) asClass.cast(o);
+		return asClass.cast(o);
 	}
 	
 	/** Attempts to return a corresponding constructor from the given name and class parameters from the given object's immediate constructors. */
-	public static Constructor getDeclaredConstructor(Object obj, String constructorName, Class... parameters) throws Exception {
+	public static Constructor<?> getDeclaredConstructor(Object obj, Class... parameters) throws Exception {
 		if (obj == null) return null;
-		Constructor c = obj.getClass().getDeclaredConstructor(parameters);
-		return c;
+		return obj.getClass().getDeclaredConstructor(parameters);
+	}
+	
+    /**
+     * Finds and returns a method under the given name with the given
+     * parameters on the given class object.
+     * 
+     * @param obj        The object to find the method on
+     * @param methodName The name of the method to find
+     * @param parameters The parameters of the method to find
+     * 
+     * @return A method matching the given search criteria on the given
+     *         object
+     * 
+     * @throws Exception Thrown if an error occurs while attempting to
+     *                   find the method
+     */
+	public static Method getDeclaredMethod(Object obj, String methodName, Class<?>... parameters) throws Exception {
+	    if (obj == null) return null;
+	    return obj.getClass().getDeclaredMethod(methodName, parameters);
 	}
 	
 	/** Returns true if the given object actually has a field of the given name in its class hierarchy. */
@@ -140,11 +157,10 @@ public final class EReflectionUtil {
 	public static boolean hasConstructor(Object obj, Class... parameters) {
 		if (obj == null) return false;
 		try {
-			Constructor c = findConstructor(obj.getClass(), parameters);
+			Constructor<?> c = findConstructor(obj.getClass(), parameters);
 			return c != null;
 		}
-		catch (NullPointerException e) {}
-		catch (NoSuchMethodException e) {}
+		catch (NullPointerException | NoSuchMethodException e) {}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -154,7 +170,7 @@ public final class EReflectionUtil {
 	public static boolean assignableFrom(Field f, Class<?> c) { return assignableFrom(f, null, c); }
 	public static boolean assignableFrom(Field f, Object obj, Class<?> c) {
 		Object o = forceGet(f, obj);
-		return (c != null && o != null) ? c.isAssignableFrom(o.getClass()) : false;
+		return c != null && o != null && c.isAssignableFrom(o.getClass());
 	}
 	
 	public static boolean isNull(Field f) { return isNull(f, null); }
@@ -181,7 +197,7 @@ public final class EReflectionUtil {
 	//-------------------
 	
 	/** Attempts to find a field of the given name by recursively checking the declared fields of each super class of its object hierarchy. */
-	protected static Field findField(Class c, String fieldName) throws Exception {
+	protected static Field findField(Class<?> c, String fieldName) throws Exception {
 		Field f = null;
 		
 		while (c != null && f == null) {
@@ -203,7 +219,7 @@ public final class EReflectionUtil {
 	}
 	
 	/** Attempts to find a field of the given name by recursively checking the declared fields of each super class of its object hierarchy. */
-	protected static Method findMethod(Class c, String methodName, Class... params) throws Exception {
+	protected static Method findMethod(Class<?> c, String methodName, Class... params) throws Exception {
 		Method m = null;
 		
 		while (c != null && m == null) {
@@ -225,28 +241,29 @@ public final class EReflectionUtil {
 	}
 	
 	
-	protected static Constructor findConstructor(Class c, Class... parameters) throws Exception {
-		if (c == null) throw new NullPointerException("The original class is null!");
-		Class original = c;
-		Constructor f = null;
-		
-		while (c != null && f == null) {
-			try {
-				f = c.getDeclaredConstructor(parameters);
-			}
-			catch (NoSuchMethodException e) {}
-			catch (Exception e) { throw e; }
-			c = c.getSuperclass();
-		}
-		
-		if (f == null) {
-			if (c != null) throw new NoSuchMethodException(c.getSimpleName());
-			else throw new NullPointerException("The class '" + original + "' does " +
-											   "not have a constructor with the given parameters: [" +
-											   EUtil.asList(parameters) + "]!");
-		}
-		
-		return f;
-	}
+    protected static Constructor<?> findConstructor(Class<?> c, Class... parameters) throws Exception {
+        if (c == null) throw new NullPointerException("The original class is null!");
+        Class<?> original = c;
+        Constructor<?> f = null;
+        
+        while (c != null && f == null) {
+            try {
+                f = c.getDeclaredConstructor(parameters);
+            }
+            catch (NoSuchMethodException e) {}
+            catch (Exception e) {
+                throw e;
+            }
+            c = c.getSuperclass();
+        }
+        
+        if (f == null) {
+            throw new NullPointerException("The class '" + original + "' does " +
+                "not have a constructor with the given parameters: [" +
+                EUtil.asList(parameters) + "]!");
+        }
+        
+        return f;
+    }
 	
 }

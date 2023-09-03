@@ -6,7 +6,7 @@ package eutil.math.dimensions;
  * @author Hunter Bragg
  * @since 1.9
  */
-public non-sealed class Dimension_f implements IDimension {
+public class Dimension_f extends IDimension<Float> {
 	
 	//========
 	// Fields
@@ -33,8 +33,8 @@ public non-sealed class Dimension_f implements IDimension {
 		endY = endYIn;
 		width = endXIn - startXIn;
 		height = endYIn - startYIn;
-		midX = getMidX();
-		midY = getMidY();
+		midX = midX_f();
+		midY = midY_f();
 	}
 	
 	public Dimension_f(Dimension_f dimIn) {
@@ -44,44 +44,42 @@ public non-sealed class Dimension_f implements IDimension {
 		endY = dimIn.endY;
 		width = endX - startX;
 		height = endY - startY;
-		midX = getMidX();
-		midY = getMidY();
+		midX = midX_f();
+		midY = midY_f();
 	}
 	
-	public Dimension_f(Dimension_d dimIn) {
-		startX = (float) dimIn.startX;
-		startY = (float) dimIn.startY;
-		endX = (float) dimIn.endX;
-		endY = (float) dimIn.endY;
+	public Dimension_f(IDimension<?> dimIn) {
+		startX = dimIn.startX_f();
+		startY = dimIn.startY_f();
+		endX = dimIn.endX_f();
+		endY = dimIn.endY_f();
 		width = endX - startX;
 		height = endY - startY;
-		midX = getMidX();
-		midY = getMidY();
-	}
-	
-	public Dimension_f(Dimension_i dimIn) {
-		startX = (float) dimIn.startX;
-		startY = (float) dimIn.startY;
-		endX = (float) dimIn.endX;
-		endY = (float) dimIn.endY;
-		width = endX - startX;
-		height = endY - startY;
-		midX = getMidX();
-		midY = getMidY();
+		midX = midX_f();
+		midY = midY_f();
 	}
 	
 	//===========
 	// Overrides
 	//===========
 	
-	@Override public double startX_d() { return (double) startX; }
-	@Override public double startY_d() { return (double) startY; }
-	@Override public double endX_d() { return (double) endX; }
-	@Override public double endY_d() { return (double) endY; }
-	@Override public double midX_d() { return (double) midX_f(); }
-	@Override public double midY_d() { return (double) midY_f(); }
-	@Override public double width_d() { return (double) width; }
-	@Override public double height_d() { return (double) height; }
+    @Override public Float startX() { return startX; }
+    @Override public Float startY() { return startY; }
+    @Override public Float endX() { return endX; }
+    @Override public Float endY() { return endY; }
+    @Override public Float midX() { return midX; }
+    @Override public Float midY() { return midY; }
+    @Override public Float width() { return width; }
+    @Override public Float height() { return height; }
+	
+	@Override public double startX_d() { return startX; }
+	@Override public double startY_d() { return startY; }
+	@Override public double endX_d() { return endX; }
+	@Override public double endY_d() { return endY; }
+	@Override public double midX_d() { return midX_f(); }
+	@Override public double midY_d() { return midY_f(); }
+	@Override public double width_d() { return width; }
+	@Override public double height_d() { return height; }
 	
 	@Override public float startX_f() { return startX; }
 	@Override public float startY_f() { return startY; }
@@ -92,15 +90,34 @@ public non-sealed class Dimension_f implements IDimension {
 	@Override public float width_f() { return width; }
 	@Override public float height_f() { return height; }
 	
-	@Override public long startX_i() { return (long) startX; }
-	@Override public long startY_i() { return (long) startY; }
-	@Override public long endX_i() { return (long) endX; }
-	@Override public long endY_i() { return (long) endY; }
-	@Override public long midX_i() { return (long) midX_f(); }
-	@Override public long midY_i() { return (long) midX_f(); }
-	@Override public long width_i() { return (long) width; }
-	@Override public long height_i() { return (long) height; }
+    @Override public int startX_i() { return (int) startX; }
+    @Override public int startY_i() { return (int) startY; }
+    @Override public int endX_i() { return (int) endX; }
+    @Override public int endY_i() { return (int) endY; }
+    @Override public int midX_i() { return (int) midX_f(); }
+    @Override public int midY_i() { return (int) midX_f(); }
+    @Override public int width_i() { return (int) width; }
+    @Override public int height_i() { return (int) height; }
+    
+    @Override public long startX_l() { return (long) startX; }
+    @Override public long startY_l() { return (long) startY; }
+    @Override public long endX_l() { return (long) endX; }
+    @Override public long endY_l() { return (long) endY; }
+    @Override public long midX_l() { return (long) midX_f(); }
+    @Override public long midY_l() { return (long) midX_f(); }
+    @Override public long width_l() { return (long) width; }
+    @Override public long height_l() { return (long) height; }
 	
+    /**
+     * Returns the 2D area that this dimension occupies.
+     * @since 1.6.1
+     */
+    @Override public Float getArea() { return getArea_f(); }
+    @Override protected int getArea_i() { return (int) getArea_f(); }
+    @Override protected long getArea_l() { return (long) getArea_f(); }
+    @Override protected float getArea_f() { return ((endX - startX) * (endY - startY)); }
+    @Override protected double getArea_d() { return getArea_f(); }
+    
 	@Override public void startX(Number startX) { this.startX = startX.floatValue(); }
 	@Override public void startY(Number startY) { this.startY = startY.floatValue(); }
 	@Override public void endX(Number endX) { this.endX = endX.floatValue(); }
@@ -108,10 +125,12 @@ public non-sealed class Dimension_f implements IDimension {
 	@Override public void width(Number width) { this.width = width.floatValue(); }
 	@Override public void height(Number height) { this.height = height.floatValue(); }
 	
-	@Override
-	public String toString() {
-		return "[startX/Y: " + startX + ", " + startY + "; endX/Y: " + endX + ", " + endY + "; width/Height: " + width + ", " + height + "]";
-	}
+    @Override
+    public String toString() {
+        return "[startX/Y: " + startX + ", " + startY +
+                "; endX/Y: " + endX + ", " + endY +
+                "; width/Height: " + width + ", " + height + "]";
+    }
 	
 	//=========
 	// Methods
@@ -152,209 +171,217 @@ public non-sealed class Dimension_f implements IDimension {
 		return this;
 	}
 	
-	private void reDimension() {
+	@Override
+	protected void reDimension() {
 		endX = startX + width;
 		endY = startY + height;
-		midX = getMidX();
-		midY = getMidY();
+		midX = midX_f();
+		midY = midY_f();
 	}
 	
-	/**
-	 * Expands this dimension outward in all directions by the given
-	 * amount.
-	 * 
-	 * @param amount The amount to expand outwards by
-	 * @return A modified dimension using this one as a starting point
-	 * @since 1.5.1
-	 */
-	public Dimension_f add(float amount) {
-		return new Dimension_f(startX - amount, startY - amount, endX + amount, endY + amount);
-	}
-	
-	/**
-	 * Expands this dimension outward in all directions by the given
-	 * amount.
-	 * 
-	 * @param amount The amount to expand outwards by
-	 * @return A modified dimension using this one as a starting point
-	 * @since 1.5.1
-	 */
-	public Dimension_f add(Number amount) {
-		float d = amount.floatValue();
-		return new Dimension_f(startX - d, startY - d, endX + d, endY + d);
-	}
-	
-	/**
-	 * Contracts this dimension inward by in all directions by the given
-	 * amount.
-	 * 
-	 * @param amount The amount to contract inwards by
-	 * @return A modified dimension using this one as a starting point
-	 * @since 1.5.1
-	 */
-	public Dimension_f sub(float amount) {
-		return new Dimension_f(startX + amount, startY + amount, endX - amount, endY - amount);
-	}
-	
-	/**
-	 * Contracts this dimension inward by in all directions by the given
-	 * amount.
-	 * 
-	 * @param amount The amount to contract inwards by
-	 * @return A modified dimension using this one as a starting point
-	 * @since 1.5.1
-	 */
-	public Dimension_f sub(Number amount) {
-		float d = amount.floatValue();
-		return new Dimension_f(startX + d, startY + d, endX - d, endY - d);
-	}
-	
-	/**
-	 * Returns true if this dimension contains the given x and y points.
-	 * 
-	 * @param xIn
-	 * @param yIn
-	 * 
-	 * @return true if the given x and y points are within this dimension
-	 */
-	public boolean contains(float xIn, float yIn) {
-		return xIn >= startX && xIn <= endX && yIn >= startY && yIn <= endY;
-	}
-	
-	/**
-	 * Returns true if this dimension contains the given x and y points.
-	 * 
-	 * @param xIn
-	 * @param yIn
-	 * 
-	 * @return true if the given x and y points are within this dimension
-	 */
-	public boolean contains(Number xIn, Number yIn) {
-		float x = xIn.floatValue();
-		float y = yIn.floatValue();
-		return x >= startX && x <= endX && y >= startY && y <= endY;
-	}
-	
-	public boolean contains(float left, float top, float right, float bot) {
-		if (left < right) {
-			float t = left;
-			left = right;
-			right = t;
-		}
-		
-		if (top < bot) {
-			float t = top;
-			top = bot;
-			bot = t;
-		}
-		
-		return startX < left && startY < top && endX > right && endY > bot;
-	}
-	
-	public boolean contains(Number left, Number top, Number right, Number bot) {
-		if (left.floatValue() < right.floatValue()) {
-			Number t = left;
-			left = right;
-			right = t;
-		}
-		
-		if (top.floatValue() < bot.floatValue()) {
-			Number t = top;
-			top = bot;
-			bot = t;
-		}
-		
-		return startX < left.floatValue() && startY < top.floatValue() &&
-			   endX > right.floatValue() && endY > bot.floatValue();
-	}
-	
-	public float getStartX() { return startX; }
-	public float getStartY() { return startY; }
-	public float getEndX() { return endX; }
-	public float getEndY() { return endY; }
-	public float getMidX() { return startX + (width / 2.0f); }
-	public float getMidY() { return startY + (height / 2.0f); }
-	public float getWidth() { return width; }
-	public float getHeight() { return height; }
-	
-	public Dimension_f translateHorizontal(float amount) { startX += amount; return this; }
-	public Dimension_f translateVertical(float amount) { startY += amount; return this; }
-	
-	/**
-	 * Returns the 2D area that this dimension occupies.
-	 * @since 1.6.1
-	 */
-	public float getArea() {
-		return ((endX - startX) * (endY - startY));
-	}
-	
-	/**
-	 * Returns true if this dimension's bounds at least partially contains the
-	 * given dimension's bounds.
-	 * @since 1.6.1
-	 */
-	public boolean partiallyContains(Dimension_d dimIn) {
-		return startX <= dimIn.endX &&
-			   startY <= dimIn.endY &&
-			   endX >= dimIn.startX &&
-			   endY >= dimIn.startY;
-	}
-	/**
-	 * Returns true if this dimension's bounds at least partially contains the
-	 * given dimension's bounds.
-	 * @since 1.6.1
-	 */
-	public boolean partiallyContains(Dimension_f dimIn) {
-		return startX <= dimIn.endX &&
-			   startY <= dimIn.endY &&
-			   endX >= dimIn.startX &&
-			   endY >= dimIn.startY;
-	}
-	/**
-	 * Returns true if this dimension's bounds at least partially contains the
-	 * given dimension's bounds.
-	 * @since 1.6.1
-	 */
-	public boolean partiallyContains(Dimension_i dimIn) {
-		return startX <= dimIn.endX &&
-			   startY <= dimIn.endY &&
-			   endX >= dimIn.startX &&
-			   endY >= dimIn.startY;
-	}
-	
-	/** Returns true if the given dimension is completely inside of this dimension. As in, not just partially inside. */
-	public boolean fullyContains(Dimension_d dimIn) { return startX < dimIn.startX && startY < dimIn.startY && endX > dimIn.endX && endY > dimIn.endY; }
-	/** Returns true if the given dimension is completely inside of this dimension. As in, not just partially inside. */
-	public boolean fullyContains(Dimension_f dimIn) { return startX < dimIn.startX && startY < dimIn.startY && endX > dimIn.endX && endY > dimIn.endY; }
-	/** Returns true if the given dimension is completely inside of this dimension. As in, not just partially inside. */
-	public boolean fullyContains(Dimension_i dimIn) { return startX < dimIn.startX && startY < dimIn.startY && endX > dimIn.endX && endY > dimIn.endY; }
-	
-	public boolean isGreaterThan(Dimension_d dimIn) { return startX > dimIn.startX && startY > dimIn.startY && width > dimIn.width && height > dimIn.height; }
-	public boolean isGreaterThan(Dimension_f dimIn) { return startX > dimIn.startX && startY > dimIn.startY && width > dimIn.width && height > dimIn.height; }
-	public boolean isGreaterThan(Dimension_i dimIn) { return startX > dimIn.startX && startY > dimIn.startY && width > dimIn.width && height > dimIn.height; }
-	
-	public boolean isLessThan(Dimension_d dimIn) { return startX < dimIn.startX && startY < dimIn.startY && width < dimIn.width && height < dimIn.height; }
-	public boolean isLessThan(Dimension_f dimIn) { return startX < dimIn.startX && startY < dimIn.startY && width < dimIn.width && height < dimIn.height; }
-	public boolean isLessThan(Dimension_i dimIn) { return startX < dimIn.startX && startY < dimIn.startY && width < dimIn.width && height < dimIn.height; }
-	
-	public boolean isEqualTo(Dimension_d dimIn) { return startX == dimIn.startX && startY == dimIn.startY && width == dimIn.width && height == dimIn.height; }
-	public boolean isEqualTo(Dimension_f dimIn) { return startX == dimIn.startX && startY == dimIn.startY && width == dimIn.width && height == dimIn.height; }
-	public boolean isEqualTo(Dimension_i dimIn) { return startX == dimIn.startX && startY == dimIn.startY && width == dimIn.width && height == dimIn.height; }
-	
-	//================
-	// Static Methods
-	//================
-	
-	public static Dimension_f of(float startXIn, float startYIn, float endXIn, float endYIn) {
-		return new Dimension_f(startXIn, startYIn, endXIn, endYIn);
-	}
-	
-	public static Dimension_f of(Number startXIn, Number startYIn, Number endXIn, Number endYIn) {
-		return new Dimension_f(startXIn, startYIn, endXIn, endYIn);
-	}
-	
-	public static Dimension_f of(Dimension_d in) { return new Dimension_f(in); }
-	public static Dimension_f of(Dimension_i in) { return new Dimension_f(in); }
-	public static Dimension_f of(Dimension_f in) { return new Dimension_f(in.startX, in.startY, in.endX, in.endY); }
+    /**
+     * Expands this dimension outward in all directions by the given
+     * amount.
+     * 
+     * @param amount The amount to expand outwards by
+     * 
+     * @return A modified dimension using this one as a starting point
+     * 
+     * @since 1.5.1
+     */
+    public Dimension_f add(float amount) {
+        return new Dimension_f(startX - amount, startY - amount, endX + amount, endY + amount);
+    }
+    
+    /**
+     * Expands this dimension outward in all directions by the given
+     * amount.
+     * 
+     * @param amount The amount to expand outwards by
+     * 
+     * @return A modified dimension using this one as a starting point
+     * 
+     * @since 1.5.1
+     */
+    public Dimension_f add(Number amount) {
+        float f = amount.floatValue();
+        return new Dimension_f(startX - f, startY - f, endX + f, endY + f);
+    }
+    
+    /**
+     * Contracts this dimension inward by in all directions by the given
+     * amount.
+     * 
+     * @param amount The amount to contract inwards by
+     * 
+     * @return A modified dimension using this one as a starting point
+     * 
+     * @since 1.5.1
+     */
+    public Dimension_f sub(float amount) {
+        return new Dimension_f(startX + amount, startY + amount, endX - amount, endY - amount);
+    }
+    
+    /**
+     * Contracts this dimension inward by in all directions by the given
+     * amount.
+     * 
+     * @param amount The amount to contract inwards by
+     * 
+     * @return A modified dimension using this one as a starting point
+     * 
+     * @since 1.5.1
+     */
+    public Dimension_f sub(Number amount) {
+        float f = amount.floatValue();
+        return new Dimension_f(startX + f, startY + f, endX - f, endY - f);
+    }
+    
+    public Dimension_f translateHorizontal(float amount) {
+        startX += amount;
+        return this;
+    }
+    
+    public Dimension_f translateVertical(float amount) {
+        startY += amount;
+        return this;
+    }
+    
+    /**
+     * Returns true if this dimension's bounds at least partially contains
+     * the given dimension's bounds.
+     * @since 1.6.1
+     */
+    public boolean partiallyContains(IDimension<?> dimIn) {
+        return startX <= dimIn.endX_f() &&
+               startY <= dimIn.endY_f() &&
+               endX >= dimIn.startX_f() &&
+               endY >= dimIn.startY_f();
+    }
+    
+    /**
+     * Returns true if this dimension's bounds at least partially contains
+     * the given dimension's bounds.
+     * @since 1.6.1
+     */
+    public boolean partiallyContains(Dimension_f dimIn) {
+        return startX <= dimIn.endX &&
+               startY <= dimIn.endY &&
+               endX >= dimIn.startX &&
+               endY >= dimIn.startY;
+    }
+    
+    /**
+     * Returns true if the given dimension is completely inside of this
+     * dimension. As in, not just partially inside.
+     * 
+     * @return True if the given dimension completely 'fits' inside of this
+     *         one
+     */
+    public boolean fullyContains(Dimension_f dimIn) {
+        return startX < dimIn.startX &&
+               startY < dimIn.startY &&
+               endX > dimIn.endX &&
+               endY > dimIn.endY;
+    }
+    
+    /**
+     * Returns true if the given dimension is completely inside of this
+     * dimension. As in, not just partially inside.
+     * 
+     * @return True if the given dimension completely 'fits' inside of this
+     *         one
+     */
+    public boolean fullyContains(IDimension<?> dimIn) {
+        return startX < dimIn.startX_f() &&
+               startY < dimIn.startY_f() &&
+               endX > dimIn.endX_f() &&
+               endY > dimIn.endY_f();
+    }
+    
+    /**
+     * Returns true if the Area of this dimension is bigger than the area
+     * of the given dimension.
+     * 
+     * @param dimIn The dimension to compare against
+     * 
+     * @return True if this dimension is bigger
+     */
+    public boolean isGreaterThan(Dimension_f dimIn) {
+        return getArea_f() > dimIn.getArea_f();
+    }
+    
+    /**
+     * Returns true if the Area of this dimension is bigger than the area
+     * of the given dimension.
+     * 
+     * @param dimIn The dimension to compare against
+     * 
+     * @return True if this dimension is bigger
+     */
+    @Override
+    public boolean isGreaterThan(IDimension<?> dimIn) {
+        return getArea_f() > dimIn.getArea_f();
+    }
+    
+    /**
+     * Returns true if the Area of this dimension is less than the area of
+     * the given dimension.
+     * 
+     * @param dimIn The dimension to compare against
+     * 
+     * @return True if this dimension is smaller
+     */
+    public boolean isLessThan(Dimension_f dimIn) {
+        return getArea_f() < dimIn.getArea_f();
+    }
+    
+    /**
+     * Returns true if the Area of this dimension is less than the area of
+     * the given dimension.
+     * 
+     * @param dimIn The dimension to compare against
+     * 
+     * @return True if this dimension is smaller
+     */
+    @Override
+    public boolean isLessThan(IDimension<?> dimIn) {
+        return getArea_f() < dimIn.getArea_f();
+    }
+    
+    public boolean isEqualTo(Dimension_f dimIn) {
+        return startX == dimIn.startX &&
+               startY == dimIn.startY &&
+               width == dimIn.width &&
+               height == dimIn.height;
+    }
+    
+    @Override
+    public boolean isEqualTo(IDimension<?> dimIn) {
+        return startX == dimIn.startX_f() &&
+               startY == dimIn.startY_f() &&
+               width == dimIn.width_f() &&
+               height == dimIn.height_f();
+    }
+    
+    //================
+    // Static Methods
+    //================
+    
+    public static Dimension_f of(float startXIn, float startYIn, float endXIn, float endYIn) {
+        return new Dimension_f(startXIn, startYIn, endXIn, endYIn);
+    }
+    
+    public static Dimension_f of(Number startXIn, Number startYIn, Number endXIn, Number endYIn) {
+        return new Dimension_f(startXIn, startYIn, endXIn, endYIn);
+    }
+    
+    public static Dimension_f of(Dimension_f in) {
+        return new Dimension_f(in.startX, in.startY, in.endX, in.endY);
+    }
+    
+    public static Dimension_f of(IDimension<?> in) {
+        return new Dimension_f(in.startX_f(), in.startY_f(), in.endX_f(), in.endY_f());
+    }
 	
 }
