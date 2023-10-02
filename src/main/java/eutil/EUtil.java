@@ -48,16 +48,16 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 2.5.4
+ *  @version 2.6.0
  */
 public class EUtil {
 	
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String VERSION = "2.5.4";
+	public static final String VERSION = "2.6.0";
 	/** The EUtil library version date String. */
-	public static final String VERSION_DATE = "9/2/2023";
+	public static final String VERSION_DATE = "9/8/2023";
 	/** EUtil static logger. */
 	public static final Logger logger = Logger.getLogger("EUtil");
 	
@@ -86,6 +86,48 @@ public class EUtil {
 	// Object Tests
 	//--------------
 	
+    /**
+     * Returns true if the given object is null.
+     * 
+     * @param a the object to check if null
+     * 
+     * @return True if the given object is null
+     * 
+     * @since 2.6.0
+     */
+	public static boolean anyNull(Object a) {
+	    return a == null;
+	}
+	
+    /**
+     * Returns true if either the given objects 'a' or 'b' are null.
+     * 
+     * @param a the first object to check
+     * @param b the second object to check
+     * 
+     * @return True if either object is null
+     * 
+     * @since 2.6.0
+     */
+	public static boolean anyNull(Object a, Object b) {
+	    return a == null || b == null;
+	}
+	
+    /**
+     * Returns true if either the given objects 'a', 'b' or 'c' are null.
+     * 
+     * @param a the first object to check
+     * @param b the second object to check
+     * @param c the third object to check
+     * 
+     * @return True if either object is null
+     * 
+     * @since 2.6.0
+     */
+	public static boolean anyNull(Object a, Object b, Object c) {
+	    return a == null || b == null || c == null;
+	}
+	
 	/**
 	 * Returns true if any of the given objects are null.
 	 * In the event that nothing is passed to this method, false is returned by default.
@@ -99,7 +141,49 @@ public class EUtil {
 				return true;
 		return false;
 	}
-
+	
+    /**
+     * Returns true if the given object is null.
+     * 
+     * @param a the object to check if null
+     * 
+     * @return True if the given object is null
+     * 
+     * @since 2.6.0
+     */
+	public static boolean allNull(Object a) {
+	    return a == null;
+	}
+	
+    /**
+     * Returns true if both the given objects 'a' and 'b' are null.
+     * 
+     * @param a the first object to check
+     * @param b the second object to check
+     * 
+     * @return True if both objects are null
+     * 
+     * @since 2.6.0
+     */
+	public static boolean allNull(Object a, Object b) {
+	    return a == null && b == null;
+	}
+	
+    /**
+     * Returns true if all given objects: 'a', 'b' and 'c' are null.
+     * 
+     * @param a the first object to check
+     * @param b the second object to check
+     * @param c the third object to check
+     * 
+     * @return True if all objects is null
+     * 
+     * @since 2.6.0
+     */
+	public static boolean allNull(Object a, Object b, Object c) {
+	    return a == null && b == null && c == null;
+	}
+	
 	/**
 	 * Returns true if all of the given objects are null.
 	 * In the event that nothing is passed to this method, false is returned by default.
@@ -114,6 +198,48 @@ public class EUtil {
 			if (o != null)
 				return false;
 		return true;
+	}
+	
+    /**
+     * Returns true if the given object is not null.
+     * 
+     * @param a the object to check if null
+     * 
+     * @return True if the given object is not null
+     * 
+     * @since 2.6.0
+     */
+	public static boolean notNull(Object a) {
+	    return a != null;
+	}
+	
+    /**
+     * Returns true if both given objects 'a' and 'b' are not null.
+     * 
+     * @param a the first object to check
+     * @param b the second object to check
+     * 
+     * @return True if both objects are not null
+     * 
+     * @since 2.6.0
+     */
+	public static boolean notNull(Object a, Object b) {
+	    return a != null && b != null;
+	}
+	
+    /**
+     * Returns true if all given objects: 'a', 'b' and 'c' are not null.
+     * 
+     * @param a the first object to check
+     * @param b the second object to check
+     * @param c the third object to check
+     * 
+     * @return True if all objects are not null
+     * 
+     * @since 2.6.0
+     */
+	public static boolean notNull(Object a, Object b, Object c) {
+	    return a != null && b != null && c != null;
 	}
 	
 	/**

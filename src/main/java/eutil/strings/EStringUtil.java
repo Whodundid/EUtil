@@ -117,6 +117,36 @@ public final class EStringUtil {
 		return (s.toString().isEmpty()) ? s.toString() : s.sub(0, s.l() - separator.length());
 	}
 	
+    /**
+     * Checks whether or not the given string contains any non-whitespace
+     * characters.
+     * 
+     * @param value The string to check
+     * 
+     * @return True if the given string is not null and actually contains
+     *         non-whitespace characters
+     * 
+     * @since 2.6.0
+     */
+	public static boolean isPopulated(String value) {
+	    return value != null && !value.isBlank() && !value.isEmpty();
+	}
+	
+    /**
+     * Checks whether or not the given string does not contain any
+     * non-whitespace characters.
+     * 
+     * @param value The string to check
+     * 
+     * @return True if the given string is not null and does not contain any
+     *         non-whitespace characters
+     * 
+     * @since 2.6.0
+     */
+    public static boolean isNotPopulated(String value) {
+        return value == null || value.isBlank() || value.isEmpty();
+    }
+	
 	/**
 	 * Performs 'String.compare' from the given 'a' String against the given
 	 * 'b' String.
@@ -151,6 +181,41 @@ public final class EStringUtil {
 		String bStr = toString(b);
 		return aStr.compareTo(bStr);
 	}
+	
+	   /**
+     * Performs 'String.compare' from the given 'a' String against the given
+     * 'b' String ignoring case differences.
+     * <p>
+     * Note: Both a and b must not be null.
+     * 
+     * @param a First String
+     * @param b Second String
+     * @return The 'String.compare' value from 'a' against 'b'
+     * @since 2.6.0
+     */
+    public static int compareIgnoreCase(String a, String b) {
+        EUtil.requireNonNull(a, b);
+        return a.compareToIgnoreCase(b);
+    }
+    
+    /**
+     * Converts to objects to their 'toString' equivalents and then performs
+     * 'String.compare' from the a's toString value against the b's toString
+     * value ignoring case differences.
+     * <p>
+     * Note: Both a and b must not be null.
+     * 
+     * @param a First String
+     * @param b Second String
+     * @return The 'String.compare' value from 'a' against 'b'
+     * @since 2.6.0
+     */
+    public static int compareIgnoreCase(Object a, Object b) {
+        EUtil.requireNonNull(a, b);
+        String aStr = toString(a);
+        String bStr = toString(b);
+        return aStr.compareToIgnoreCase(bStr);
+    }
 	
 	//============
 	// Equals Any
@@ -623,6 +688,24 @@ public final class EStringUtil {
     public static boolean startsAndEndsWith(String input, String toCheck) {
         if (input == null || toCheck == null) return false;
         return input.startsWith(toCheck) && input.endsWith(toCheck);
+    }
+    
+    /**
+     * Returns true if the given input starts with the given 'beginning' string
+     * and ends with the given 'end' string.
+     * 
+     * @param input     The input string
+     * @param beginning The value to check for at the beginning of the string
+     * @param end       The value to check for at the end of the string
+     * 
+     * @return true if the given string starts with and ends with the
+     *         respective 'beginning' and 'end' strings
+     *         
+     * @since 2.6.0
+     */
+    public static boolean startsAndEndsWith(String input, String beginning, String end) {
+        if (input == null || beginning == null || end == null) return false;
+        return input.startsWith(beginning) && input.endsWith(end);
     }
     
     /**

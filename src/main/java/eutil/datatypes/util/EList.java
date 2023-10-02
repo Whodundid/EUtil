@@ -1,5 +1,6 @@
 package eutil.datatypes.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
@@ -280,6 +281,43 @@ public interface EList<E> extends List<E>, Deque<E> {
 		return r;
 	}
 	
+    /**
+     * Adds a range of values from the given array into this one.
+     * <p>
+     * This method assumes that all elements from the given 'from' index are to
+     * be added.
+     * 
+     * @param in   The array to read values from
+     * @param from The starting index
+     * 
+     * @since 2.6.0
+     * 
+     * @return This list, but with values from the given array added to it.
+     */
+	default EList<E> addFrom(E[] in, int from) {
+	    return addFrom(in, from, (in != null) ? in.length : -1);
+	}
+	
+    /**
+     * Adds a range of values from the given array into this one.
+     * 
+     * @param in   The array to read values from
+     * @param from The starting index
+     * @param to   The ending index
+     * 
+     * @since 2.6.0
+     * 
+     * @return This list, but with values from the given array added to it.
+     */
+	default EList<E> addFrom(E[] in, int from, int to) {
+	    if (in != null && from >= 0) {
+            for (int i = from; i < to; i++) {
+                add(in[i]);
+            }
+        }
+        return this;
+	}
+	
 	/** Adds a range of values from a different list into this one. */
 	default EList<E> addFrom(List<E> in, int from) {
 		return addFrom(in, from, (in != null) ? in.size() : -1);
@@ -287,7 +325,11 @@ public interface EList<E> extends List<E>, Deque<E> {
 	
 	/** Adds a range of values from a different list into this one. */
 	default EList<E> addFrom(List<E> in, int from, int to) {
-		if (in != null && from >= 0) { for (int i = from; i < to; i++) { add(in.get(i)); } }
+		if (in != null && from >= 0) {
+		    for (int i = from; i < to; i++) {
+		        add(in.get(i));
+		    }
+		}
 		return this;
 	}
 	
@@ -863,7 +905,18 @@ public interface EList<E> extends List<E>, Deque<E> {
 	 * @return A List version of this EList.
 	 */
 	default List<E> toList() {
-		return (List<E>) this;
+		return this;
+	}
+	
+	/**
+	 * Internally converts this EList to an ArrayList.
+	 * <p>
+	 * NOTE: this creates a new list and copies all values.
+	 * 
+	 * @return An ArrayList built from this EList.
+	 */
+	default List<E> toArrayList() {
+	    return new ArrayList<>(this);
 	}
 	
 	/**
@@ -923,7 +976,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 	 * functionality around the given one.
 	 */
 	static <T> EList<T> wrap(List<T> listIn) {
-		return new EArrayList<>(listIn);
+		return EArrayList.wrap(listIn);
 	}
 	
 	/**
@@ -959,7 +1012,7 @@ public interface EList<E> extends List<E>, Deque<E> {
 	 * array.
 	 */
 	static <T> EList<T> of(T... vals) {
-		return new EArrayList<T>(vals);
+		return new EArrayList<>(vals);
 	}
 	
 	/** Returns a new EArrayList<T> created from values of the given list. */

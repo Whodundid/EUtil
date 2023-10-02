@@ -2,6 +2,8 @@ package eutil.lambda;
 
 import java.util.Comparator;
 
+import eutil.strings.EStringUtil;
+
 /**
  * A collection of comparison logic structures.
  * 
@@ -33,41 +35,79 @@ public final class Comparisons {
 	 * 
 	 * @since 1.5.2
 	 */
-	public static final Comparator<Byte> compareBytes = (a, b) -> Byte.compare(a, b);
+	public static final Comparator<Byte> compareBytes = Byte::compare;
 	
 	/**
 	 * Compares Shorts.
 	 * 
 	 * @since 1.5.2
 	 */
-	public static final Comparator<Short> compareShorts = (a, b) -> Short.compare(a, b);
+	public static final Comparator<Short> compareShorts = Short::compare;
 	
 	/**
 	 * Compares Integers.
 	 * 
 	 * @since 1.5.2
 	 */
-	public static final Comparator<Integer> compareInts = (a, b) -> Integer.compare(a, b);
+	public static final Comparator<Integer> compareInts = Integer::compare;
 	
 	/**
 	 * Compares Longs.
 	 * 
 	 * @since 1.5.2
 	 */
-	public static final Comparator<Long> compareLongs = (a, b) -> Long.compare(a, b);
+	public static final Comparator<Long> compareLongs = Long::compare;
 	
 	/**
 	 * Compares Floats.
 	 * 
 	 * @since 1.5.2
 	 */
-	public static final Comparator<Float> compareFloats = (a, b) -> Float.compare(a, b);
+	public static final Comparator<Float> compareFloats = Float::compare;
 	
 	/**
 	 * Compares Doubles.
 	 * 
 	 * @since 1.5.2
 	 */
-	public static final Comparator<Double> compareDoubles = (a, b) -> Double.compare(a, b);
+	public static final Comparator<Double> compareDoubles = Double::compare;
+	
+	/**
+	 * Compares Strings.
+	 * 
+	 * @since 2.6.0
+	 */
+	public static final Comparator<String> compareStrings = Comparable::compareTo;
+	
+	/**
+	 * Compares the 'toString' representation of two objects.
+	 * 
+	 * @since 2.6.0
+	 */
+	public static final Comparator<Object> compareToStrings = (a, b) -> {
+	    final String aStr = EStringUtil.toString(a);
+	    final String bStr = EStringUtil.toString(b);
+	    
+	    return aStr.compareTo(bStr);
+	};
+	
+	/**
+	 * Compares Strings ignoring case.
+	 * 
+	 * @since 2.6.0
+	 */
+	public static final Comparator<String> compareStringsIgnoreCase = String::compareToIgnoreCase;
+	
+	   /**
+     * Compares the 'toString' representation of two objects.
+     * 
+     * @since 2.6.0
+     */
+    public static final Comparator<Object> compareToStringsIgnoreCase = (a, b) -> {
+        final String aStr = EStringUtil.toString(a);
+        final String bStr = EStringUtil.toString(b);
+        
+        return aStr.compareToIgnoreCase(bStr);
+    };
 	
 }

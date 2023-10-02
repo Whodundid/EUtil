@@ -3,14 +3,20 @@ package eutil.strings;
 import java.util.stream.IntStream;
 
 import eutil.datatypes.util.EList;
+import eutil.math.ENumUtil;
 
 public class EStringBuilder implements Appendable, CharSequence {
 	
+    public static final String DEFAULT_TAB_STRING = "    ";
+    
 	//--------
 	// Fields
 	//--------
 	
 	private StringBuilder sb;
+	private String tabString = DEFAULT_TAB_STRING;
+	private String lineStart = "";
+	private int tabCount = 0;
 	
 	//--------------
 	// Constructors
@@ -112,17 +118,30 @@ public class EStringBuilder implements Appendable, CharSequence {
 	public String substring(int start) { return sb.substring(start); }
 	public CharSequence subSequence(int start, int end) { return sb.subSequence(start, end); }
 	public String substring(int start, int end) { return sb.substring(start, end); }
-	public IntStream chars() { return sb.chars(); }
-	public IntStream codePoints() { return sb.codePoints(); }
+	@Override public IntStream chars() { return sb.chars(); }
+	@Override public IntStream codePoints() { return sb.codePoints(); }
 	public boolean isNotEmpty() { return !isEmpty(); }
 	public boolean isNotBlank() { return !isBlank(); }
 	
 	public String[] splitA(String regex) { return sb.toString().split(regex); }
 	public EList<String> split(String regex) { return EList.of(splitA(regex)); }
 	
+	public byte[] getBytes() { return sb.toString().getBytes(); }
+	
 	//---------
 	// Methods
 	//---------
+	
+    /**
+     * Clears out the contents of this string builder and replaces it with the
+     * given string instead.
+     * 
+     * @since 2.6.0
+     */
+    public EStringBuilder setString(String in) {
+	    delete(0, length());
+	    return append(in);
+	}
 	
 	/** Shorthand 'substring' method. */
 	public String sub(int index) { return sb.substring(index); }
@@ -130,7 +149,7 @@ public class EStringBuilder implements Appendable, CharSequence {
 	public String sub(int start, int end) { return sb.substring(start, end); }
 	
 	/** Shorthand 'reverse' method. */
-	public EStringBuilder rev() { sb.reverse(); return this; }
+	public EStringBuilder rev() { return reverse(); }
 	
 	/** Shorthand 'length' method. */
 	public int l() { return sb.length(); }
@@ -158,7 +177,17 @@ public class EStringBuilder implements Appendable, CharSequence {
 	public String tempAdd(CharSequence cs) { return new StringBuilder(toString()).append(cs).toString(); }
 	public String tempAdd(String s) { return new StringBuilder(toString()).append(s).toString(); }
 	
-	public EStringBuilder print(Object... values) { for (var v : values) append(v); return this; }
+	public void setLineStart(String value) { lineStart = (value != null) ? value : ""; }
+	public void setTabString(String tabStringIn) { tabString = (tabStringIn != null) ? tabStringIn : ""; }
+	public void setTabCount(int value) { tabCount = value; setLineStart(tabString.repeat(tabCount)); }
+	public void incrementTabCount() { setTabCount(++tabCount); }
+	public void decrementTabCount() { setTabCount(ENumUtil.clamp(tabCount - 1, 0, tabCount)); }
+	public int getCurrentTabCount() { return tabCount; }
+	public String getTabString() { return tabString; }
+	public void resetLineStart() { lineStart = ""; }
+	public void resetTabString() { tabString = DEFAULT_TAB_STRING; }
+	
+	public EStringBuilder print(Object... values) { append(lineStart); for (var v : values) append(v); return this; }
 	public EStringBuilder println(Object... values) { print(values); append("\n"); return this; }
 	
 	public EStringBuilder setSubstringRT(int start) { sb = new StringBuilder(sb.substring(start)); return this; }
