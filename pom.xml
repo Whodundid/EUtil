@@ -4,7 +4,7 @@
 	
 	<groupId>whodundid</groupId>
 	<artifactId>EUtil</artifactId>
-	<version>2.5.4</version>
+	<version>2.6.0</version>
 	<name>eutil-library</name>
 	
 	<properties>
