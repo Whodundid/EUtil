@@ -76,6 +76,21 @@ public class ValueMap implements Iterable<Map.Entry<String, Object>> {
         return (T) internalMap.get(name);
     }
     
+    /**
+     * Removes the given key from this map and returns whatever value was
+     * currently there (if any).
+     * 
+     * @param <T>  The implementation specified datatype to return as
+     * @param name The key of the value to retrieve
+     * 
+     * @return The value under the given key
+     */
+    public <T> T delete(String name) {
+        var value = internalMap.get(name);
+        internalMap.put(name, null);
+        return (T) value;
+    }
+    
     public Map<String, Object> getInternalMap() { return internalMap; }
     
     public boolean containsKey(String key) { return internalMap.containsKey(key); }

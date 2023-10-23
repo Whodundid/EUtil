@@ -901,7 +901,7 @@ public final class EStringUtil {
 		if (in.length == 1) return r.append(in[0]).toString();
 		for (int i = 0; i < in.length; i++) {
 			Object s = in[i];
-			r.append(s, ((i + 1 < in.length) ? spacer : ""));
+			r.append(s, (((i + 1) < in.length) ? spacer : ""));
 		}
 		return r.ts();
 	}
