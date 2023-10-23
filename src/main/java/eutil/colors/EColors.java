@@ -127,6 +127,20 @@ public enum EColors {
 		return changeBrightness(intVal, val);
 	}
 	
+	/**
+	 * Modifies both the brightness and opacity of this color in one action.
+	 * 
+	 * @param brightness The brightness to set [0-255]
+	 * @param opacity The opacity to set [0-255]
+	 * 
+	 * @return The EColor's integer value with modified brightness and opacity.
+	 * 
+	 * @since 2.6.3
+	 */
+	public int brightnessOpacity(int brightness, int opacity) {
+	    return changeOpacity(brightness(brightness), opacity);
+	}
+	
 	public int mix(EColors c) { return mix(c.intVal); }
 	public int mix(int c) { return mix(intVal, c); }
 	
