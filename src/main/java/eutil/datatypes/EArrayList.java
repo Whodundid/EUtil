@@ -202,10 +202,21 @@ public class EArrayList<E> implements EList<E> {
 	//================
 	// Static Methods
 	//================
-	
-	/** Does not create a new internal list but instead wraps EArrayList functionality around the given one. */
-	public static <T> EArrayList<T> wrap(List<T> listIn) {
+    
+    /**
+     * Does not create a new internal list but instead wraps EArrayList
+     * functionality around the given one.
+     */
+    public static <T> EArrayList<T> wrap(List<T> listIn) {
 		return (listIn != null) ? new EArrayList<>(listIn) : null;
+	}
+	
+    /**
+     * Does not create a new internal list but instead wraps EArrayList
+     * functionality around the given collection.
+     */
+	public static <T> EArrayList<T> wrap(Collection<T> collectionIn) {
+	    return (collectionIn != null) ? new EArrayList<>(collectionIn) : null;
 	}
 	
 }

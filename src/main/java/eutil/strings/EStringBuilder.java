@@ -26,6 +26,10 @@ public class EStringBuilder implements Appendable, CharSequence {
 		sb = new StringBuilder();
 	}
 	
+	public EStringBuilder(Object object) {
+	    this(String.valueOf(object));
+	}
+	
 	public EStringBuilder(int capacity) {
 		sb = new StringBuilder(capacity);
 	}
