@@ -3,6 +3,8 @@ package eutil.datatypes.util;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import eutil.math.ENumUtil;
 
@@ -31,6 +33,8 @@ public enum JavaDatatype {
 	ARRAY,
 	INTERFACE,
 	LIST,
+	MAP,
+	SET,
 	
 	// Special types
 	RECORD,
@@ -121,6 +125,8 @@ public enum JavaDatatype {
 		if (in instanceof Number) return NUMBER;
 		if (in instanceof Class) return CLASS;
 		if (in instanceof List) return LIST;
+		if (in instanceof Map) return MAP;
+		if (in instanceof Set) return SET;
 		
 		Class<?> c = in.getClass();
 		if (c.isRecord()) return RECORD;
@@ -169,6 +175,8 @@ public enum JavaDatatype {
         }
         
         if (List.class.isAssignableFrom(in)) return LIST;
+        if (Map.class.isAssignableFrom(in)) return MAP;
+        if (Set.class.isAssignableFrom(in)) return SET;
         
         return OBJECT;
     }
