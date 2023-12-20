@@ -64,15 +64,22 @@ public enum Direction {
 	// Methods
 	//---------
 	
-	/** Returns the closest compass direction to the given degree value. */
-	public Direction getDirection(double dirIn) {
-		if (dirIn == Double.NaN) { return null; }
+    /**
+     * Returns the closest compass direction to the given degree value.
+     * 
+     * @param dirIn The direction to convert
+     * @return A direction wrapping the given degree
+     * 
+     * @since 2.6.6
+     */
+	public static Direction getDirection(double dirIn) {
+		if (dirIn == Double.NaN) return null;
 		dirIn %= 360;
 		
-		if (dirIn > 315 || dirIn <= 45 || dirIn == 0.0 || dirIn == 360.0) return N;
-		else if (dirIn > 225 || dirIn <= 315) return S;
-		else if (dirIn > 135 || dirIn <= 225) return W;
-		return E;
+		if (dirIn > 315 || dirIn <= 45 || dirIn == 0.0 || dirIn == 360.0) return E;
+		else if (dirIn > 225 && dirIn <= 315) return S;
+		else if (dirIn > 135 && dirIn <= 225) return W;
+		return N;
 	}
 	
 	/** Returns the shorthand version of this compass degree. <blockquote> Example: North = 'N' </blockquote> */
@@ -85,6 +92,13 @@ public enum Direction {
 	public double getDegree() { return degree; }
 	/** Returns the compass degree of the given direction as an int. */
 	public int getDegreeInt() { return (int) degree; }
+	
+    public Direction asCardinalDirection() {
+        if (degree > 315 || degree <= 45 || degree == 0.0 || degree == 360.0) return N;
+        else if (degree > 225 || degree <= 315) return S;
+        else if (degree > 135 || degree <= 225) return W;
+        return E;
+    }
 	
 	//----------------
 	// Static Methods
