@@ -71,12 +71,15 @@ public class Vec3f {
 	// Vector Math
 	//-------------
 	
-	public double multAdd() { return multAdd(this); }
-	public double mag() { return mag(this); }
-	public double dot(Vec3f vecIn) { return dot(this, vecIn); }
-	public double angle(Vec3f vecIn) { return angle(this, vecIn); }
-	public double angleDegrees(Vec3f vecIn) { return angleDegrees(this, vecIn); }
-	public Vec3f scale(double val) { return scale(this, val);  }
+	public float multAdd() { return multAdd(this); }
+	public float mag() { return mag(this); }
+	public float dot(Vec3f vecIn) { return dot(this, vecIn); }
+	public float angle(Vec3f vecIn) { return angle(this, vecIn); }
+	public float angleDegrees(Vec3f vecIn) { return angleDegrees(this, vecIn); }
+	public Vec3f scale(float val) { return scale(this, val);  }
+	/** Same as 'scale'. */
+	public Vec3f mul(float val) { return scale(this, val); }
+	public Vec3f div(float val) { return div(this, val); }
 	public Vec3f cross(Vec3f vecIn) { return cross(this, vecIn); }
 	public Vec3f add(Vec3f vecIn) { return add(this, vecIn); }
 	public Vec3f add(float x, float y, float z) { return new Vec3f(this.x + x, this.y + y, this.z + z); }
@@ -85,7 +88,7 @@ public class Vec3f {
 	public Vec3f sub(float x, float y, float z) { return new Vec3f(this.x - x, this.y - y, this.z - z); }
 	public Vec3f sub(Number x, Number y, Number z) { return new Vec3f(this.x - x.floatValue(), this.y - y.floatValue(), this.z - z.floatValue()); }
 	public Vec3f norm() { return norm(this); }
-	public double comp(Vec3f b) { return compAB(this, b); }
+	public float comp(Vec3f b) { return compAB(this, b); }
 	public Vec3f proj(Vec3f b) { return projAB(this, b); }
 
 	//---------
@@ -112,38 +115,44 @@ public class Vec3f {
 	// Static Vector Math
 	//--------------------
 	
-	public static double multAdd(Vec3f vecIn) {
+	public static float multAdd(Vec3f vecIn) {
 		Vec3f v = vecIn;
 		return v.x*v.x + v.y*v.y + v.z*v.z;
 	}
 	
 	/** Returns the magnitdue of the given Vec3f. */
-	public static double mag(Vec3f vecIn) {
-		return Math.sqrt(multAdd(vecIn));
+	public static float mag(Vec3f vecIn) {
+		return (float) Math.sqrt(multAdd(vecIn));
 	}
 	
 	/** Returns the dot product of the two given vectors. */
-	public static double dot(Vec3f vec1, Vec3f vec2) {
+	public static float dot(Vec3f vec1, Vec3f vec2) {
 		Vec3f a = vec1, b = vec2;
 		return a.x*b.x + a.y*b.y + a.z*b.z;
 	}
 	
 	/** Returns the angle of the vector in radians. */
-	public static double angle(Vec3f vec1, Vec3f vec2) {
+	public static float angle(Vec3f vec1, Vec3f vec2) {
 		Vec3f a = vec1, b = vec2;
-		return Math.acos(dot(a, b) / mag(b));
+		return (float) Math.acos(dot(a, b) / mag(b));
 	}
 	
 	/** Returns the angle of the vector in degrees */
-	public static double angleDegrees(Vec3f vec1, Vec3f vec2) {
+	public static float angleDegrees(Vec3f vec1, Vec3f vec2) {
 		Vec3f a = vec1, b = vec2;
-		return (angle(a, b) * 180) / Math.PI;
+		return (angle(a, b) * 180.0f) / (float) Math.PI;
 	}
 	
 	/** Returns the given Vec3f with each of its x, y and z multiplied by a given float value. */
-	public static Vec3f scale(Vec3f vecIn, double scaler) {
-		Vec3f v = vecIn; double s = scaler;
+	public static Vec3f scale(Vec3f vecIn, float scaler) {
+		Vec3f v = vecIn; float s = scaler;
 		return new Vec3f(v.x * s, v.y * s, v.z * s);
+	}
+	
+	/** Returns the given Vec3f with each of its x, y and z divided by a given float value. */
+	public static Vec3f div(Vec3f vecIn, float scaler) {
+	    Vec3f v = vecIn; float s = scaler;
+	    return new Vec3f(v.x / s, v.y / s, v.z / s);
 	}
 	
 	/** Returns a new Vec3f containing the cross product of the two given Vector3 objects. */
@@ -166,16 +175,16 @@ public class Vec3f {
 	
 	/** Returns the given Vec3f with normalized values. */
 	public static Vec3f norm(Vec3f vecIn) {
-		Vec3f v = vecIn; double l = mag(vecIn);
+		Vec3f v = vecIn; float l = mag(vecIn);
 		return new Vec3f(v.x / l, v.y / l, v.z / l);
 	}
 	
-	public static double compAB(Vec3f vecA, Vec3f vecB) {
+	public static float compAB(Vec3f vecA, Vec3f vecB) {
 		Vec3f a = vecA, b = vecB;
 		return dot(a, b) / mag(a);
 	}
 	
-	public static double compBA(Vec3f vecA, Vec3f vecB) {
+	public static float compBA(Vec3f vecA, Vec3f vecB) {
 		Vec3f a = vecA, b = vecB;
 		return dot(b, a) / mag(b);
 	}

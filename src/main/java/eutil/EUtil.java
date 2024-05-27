@@ -27,6 +27,7 @@ import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 import eutil.datatypes.util.EList;
+import eutil.debug.DebugToolKit;
 import eutil.file.EFileUtil;
 import eutil.strings.EStringUtil;
 
@@ -48,14 +49,14 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 2.7
+ *  @version 2.7.1
  */
 public class EUtil {
 	
 	//------------------
 	
 	/** The EUtil library version. */
-	public static final String VERSION = "2.7";
+	public static final String VERSION = "2.7.1";
 	/** The EUtil library version date String. */
 	public static final String VERSION_DATE = "12/31/2023";
 	/** EUtil static logger. */
@@ -286,6 +287,44 @@ public class EUtil {
 	 */
 	public static boolean isNotEqual(Object a, Object b) {
 		return (a != null) ? !a.equals(b) : b != null;
+	}
+	
+    /**
+     * Returns the class of the given object if it is not null.
+     * 
+     * @param  object The object to get the class of
+     * @return        The class of the object or null
+     * 
+     * @since 2.7.2
+     */
+	public static Class<?> getClassForObject(Object object) {
+	    return (object != null) ? object.getClass() : null;
+	}
+	
+    /**
+     * Returns the fully qualified class name of the given object if it is
+     * not null.
+     * 
+     * @param  object The object to get the class name of
+     * @return The fully qualified class name of the given object or null
+     * 
+     * @since 2.7.2
+     */
+	public static String getClassNameForObject(Object object) {
+	    return (object != null) ? object.getClass().getName() : null;
+	}
+	
+    /**
+     * Returns the simple class name of the given object if it is
+     * not null.
+     * 
+     * @param  object The object to get the class name of
+     * @return The simple class name of the given object or null
+     * 
+     * @since 2.7.2
+     */
+	public static String getSimpleClassNameForObject(Object object) {
+	    return (object != null) ? object.getClass().getSimpleName() : null;
 	}
 	
 	/**
@@ -920,7 +959,7 @@ public class EUtil {
 	public static <R> R forEachR(float[] arr, Consumer<? super Float> action, R returnVal) { for (float e : arr) { action.accept(e); } return returnVal; }
 	public static <R> R forEachR(double[] arr, Consumer<? super Double> action, R returnVal) { for (double e : arr) { action.accept(e); } return returnVal; }
 	
-	//if checks
+	// if checks
 	
 	/** Performs a forEach loop across each element of a given list if the given input is true and the list is not null. Returns true if the given input is true. */
 	public static <E> boolean ifForEach(boolean check, Collection<E> list, Consumer<? super E> action) { if (check && notNull(list)) { list.forEach(action); return true; } return false; }
@@ -951,11 +990,11 @@ public class EUtil {
 		return false;
 	}
 	
-	//lambda operations
+	// lambda operations
 	
 	public static <E> E lambdaDo(E obj, Consumer<? super E> action) { action.accept(obj); return obj; }
 	
-	//null checks
+	// null checks
 	
 	/** A statement that performs the following action on the given object if the object is not null. */
 	public static <E> boolean nullDo(E obj, Consumer<? super E> action) { if (notNull(obj)) { action.accept(obj); return true; } return false; }
@@ -976,13 +1015,54 @@ public class EUtil {
 	/** A statement that returns the result of a given bifunction if the given object is not null. If either input is null, the default value is returned instead. */
 	public static <E, A, R> R nullApplyR(E obj1, A obj2, BiFunction<? super E, ? super A, R> function, R defaultVal) { return (notNull(obj1, obj2)) ? function.apply(obj1, obj2) : defaultVal; }
 	
-	//repeaters
+	// repeaters
 	
 	public static <E> void repeat(Runnable func, int times) { for (int i = 0; i < times; i++) { func.run(); } }
 	public static <E> void repeat(E object, Consumer<? super E> action, int times) { for (int i = 0; i < times; i++) { action.accept(object); } }
 	public static <E, R> R repeatR(Runnable func, int times, R returnVal) { repeat(func, times); return returnVal; }
 
-	//contains
+	// index of -- since 2.7.1
+	
+	/** Returns the index of the first occurrence of the given value in the array, or -1 if not found. */
+	public static <E> int indexOf(E[] arr, E value) { for(int i=0; i<arr.length;i++)if(isEqual(arr[i],value))return i;return -1; }
+	/** Returns the index of the first occurrence of the given value in the array, or -1 if not found. */
+	public static int indexOf(boolean[] arr, boolean value) { for(int i=0; i<arr.length;i++)if(arr[i]==value)return i;return -1; }
+	/** Returns the index of the first occurrence of the given value in the array, or -1 if not found. */
+	public static int indexOf(char[] arr, char value) { for(int i=0; i<arr.length;i++)if(arr[i]==value)return i;return -1; }
+	/** Returns the index of the first occurrence of the given value in the array, or -1 if not found. */
+	public static int indexOf(byte[] arr, byte value) { for(int i=0; i<arr.length;i++)if(arr[i]==value)return i;return -1; }
+	/** Returns the index of the first occurrence of the given value in the array, or -1 if not found. */
+	public static int indexOf(short[] arr, short value) { for(int i=0; i<arr.length;i++)if(arr[i]==value)return i;return -1; }
+	/** Returns the index of the first occurrence of the given value in the array, or -1 if not found. */
+	public static int indexOf(int[] arr, int value) { for(int i=0; i<arr.length;i++)if(arr[i]==value)return i;return -1; }
+	/** Returns the index of the first occurrence of the given value in the array, or -1 if not found. */
+	public static int indexOf(long[] arr, long value) { for(int i=0; i<arr.length;i++)if(arr[i]==value)return i;return -1; }
+	/** Returns the index of the first occurrence of the given value in the array, or -1 if not found. */
+	public static int indexOf(float[] arr, float value) { for(int i=0; i<arr.length;i++)if(arr[i]==value)return i;return -1; }
+	/** Returns the index of the first occurrence of the given value in the array, or -1 if not found. */
+	public static int indexOf(double[] arr, double value) { for(int i=0; i<arr.length;i++)if(arr[i]==value)return i;return -1; }
+	
+    /**
+     * Returns the index of the first occurrence of the given value in the
+     * array, or -1 if not found.
+     * 
+     * @param iterable An iterable object to search through
+     * @param value    The value to search for within the given iterable
+     * 
+     * @return the first index of the value in the given iterable or -1 if not found
+     * 
+     * @since 2.7.1
+     */
+    public static <E> int indexOf(Iterable<E> iterable, E value) {
+	    int i = 0;
+	    for (E v : iterable) {
+	        if (isEqual(v, value)) return i;
+	        i++;
+	    }
+	    return -1;
+	}
+	
+	// contains
 	
 	public static <E> boolean contains(E[] arr, E value) { for (E e : arr) { if (isEqual(e, value)) { return true; } } return false; }
 	public static <E> boolean contains(Collection<E> arr, E value) { for (E e : arr) { if (isEqual(e, value)) { return true; } } return false; }
@@ -1229,5 +1309,44 @@ public class EUtil {
 		try { return optional.get(); }
 		catch (Throwable e) { return defaultVal; }
 	}
+	
+	//================
+	// Debug Printing
+	//================
+	
+    /**
+     * Prints the given arguments out with a spacer in between each
+     * argument.
+     * 
+     * @param objects The objects to print
+     * @since         2.7.2
+     */
+    public static void print(Object... objects) {
+        DebugToolKit.print(objects);
+    }
+    
+    /**
+     * Prints the given arguments out with a spacer in between each
+     * argument.
+     * 
+     * @param objects The objects to print
+     * @since         2.7.2
+     */
+    public static void println(Object... objects) {
+        DebugToolKit.println(objects);
+    }
+    
+    /**
+     * Introduces support for {x} argument insertion in print statements.
+     * 
+     * EX: printf("Hello {0}!", "World");
+     * 
+     * @param format The print format to use
+     * @param args   The arguments to inject into the print format
+     * @since        2.7.2
+     */
+    public static void printf(String format, Object... args) {
+        DebugToolKit.printf(format, args);
+    }
 	
 }

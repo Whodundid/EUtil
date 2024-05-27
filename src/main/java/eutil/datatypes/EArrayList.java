@@ -45,8 +45,7 @@ public class EArrayList<E> implements EList<E> {
 	/** Internal constructor used to wrap an existing list. */
 	private EArrayList(List<E> listIn) {
 		Objects.requireNonNull(listIn);
-		if (listIn instanceof ArrayList<E>) list = listIn;
-		else list = new ArrayList<>(listIn);
+		list = listIn;
 	}
 	
 	/** Creates an EArrayList from a given Iterable object. */

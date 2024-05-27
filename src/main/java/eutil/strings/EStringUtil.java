@@ -769,6 +769,70 @@ public final class EStringUtil {
         return false;
     }
     
+    //===============
+    // String Length
+    //===============
+    
+    /**
+     * Returns the string length of the given int.
+     * 
+     * @param v A int
+     * @return The number of characters in the given int.
+     * 
+     * @since 2.7.1
+     */
+    public static int strlen(int v) {
+        return String.valueOf(v).length();
+    }
+    
+    /**
+     * Returns the string length of the given long.
+     * 
+     * @param v A long
+     * @return The number of characters in the given long.
+     * 
+     * @since 2.7.1
+     */
+    public static int strlen(long v) {
+        return String.valueOf(v).length();
+    }
+    
+    /**
+     * Returns the string length of the given float.
+     * 
+     * @param v A float
+     * @return The number of characters in the given float.
+     * 
+     * @since 2.7.1
+     */
+    public static int strlen(float v) {
+        return String.valueOf(v).length();
+    }
+    
+    /**
+     * Returns the string length of the given double.
+     * 
+     * @param v A double
+     * @return The number of characters in the given double.
+     * 
+     * @since 2.7.1
+     */
+    public static int strlen(double v) {
+        return String.valueOf(v).length();
+    }
+    
+    /**
+     * Returns the string length of the 'toString' value of the given object.
+     * 
+     * @param v An Object
+     * @return The number of characters in the given object.
+     * 
+     * @since 2.7.1
+     */
+    public static int strlen(Object v) {
+        return (v != null) ? String.valueOf(v).length() : 0;
+    }
+    
 	//================
 	// Longest Length
 	//================

@@ -352,6 +352,15 @@ public interface EList<E> extends List<E>, Deque<E> {
         return this;
     }
     
+    /** Swaps the values at the given indexes. */
+    default EList<E> swapf(int indexA, int indexB) {
+        E temp = get(indexA);
+        set(indexA, get(indexB));
+        set(indexB, temp);
+        
+        return this;
+    }
+    
     /** Returns true if there is only a single element in this list. */
     default boolean hasOne() {
         return size() == 1;
@@ -971,6 +980,7 @@ public interface EList<E> extends List<E>, Deque<E> {
      * functionality around the given one.
      */
     static <T> EList<T> wrap(List<T> listIn) {
+        if (listIn instanceof EList<T> e) return e;
         return EArrayList.wrap(listIn);
     }
     
@@ -1000,6 +1010,22 @@ public interface EList<E> extends List<E>, Deque<E> {
      */
     static <T> EList<T> unmodifiableList(List<T> listIn) {
         return wrap(Collections.unmodifiableList(listIn));
+    }
+    
+    /**
+     * Returns an unmodifiable view of the given list instance wrapped in an
+     * EList shell.
+     * 
+     * @param <T>    The list type
+     * @param listIn The list to wrap
+     * 
+     * @return An unmodifiable version of the given list in an EList form
+     * 
+     * @since 2.7.1
+     */
+    static <T> EList<T> unmodifiableList(Collection<T> listIn) {
+        if (listIn instanceof List<T> l) return unmodifiableList(l);
+        return EList.unmodifiableList(EList.of(listIn));
     }
     
     /**

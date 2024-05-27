@@ -27,22 +27,26 @@ public final class ERandomUtil {
 	
 	/** Returns the number from a roll within a specified inclusive range boundaries. (ints) */
 	public static int getRoll(int min, int max) {
+	    if (min == max) return min;
 		return ThreadLocalRandom.current().nextInt(min, ENumUtil.clamp(max + 1, max, Integer.MAX_VALUE));
 	}
 	
 	/** Returns the number from a roll within a specified inclusive range boundaries. (longs) */
 	public static long getRoll(long min, long max) {
+	    if (min == max) return min;
 		return ThreadLocalRandom.current().nextLong(min, ENumUtil.clamp(max + 1, max, Long.MAX_VALUE));
 	}
 	
 	/** Returns the number from a roll within a specified inclusive range boundaries. (floats) */
     public static float getRoll(float min, float max) {
-    	return ThreadLocalRandom.current().nextFloat(min, max + 1);
+        if (min == max) return min;
+    	return ThreadLocalRandom.current().nextFloat(min, max);
     }
 	
 	/** Returns the number from a roll within a specified inclusive range boundaries. (doubles) */
 	public static double getRoll(double min, double max) {
-		return ThreadLocalRandom.current().nextDouble(min, ENumUtil.clamp(max, max, Double.MAX_VALUE));
+	    if (min == max) return min;
+		return ThreadLocalRandom.current().nextDouble(min, max);
 	}
 	
 	/**

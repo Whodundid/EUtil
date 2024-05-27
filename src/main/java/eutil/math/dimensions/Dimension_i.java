@@ -17,6 +17,7 @@ public class Dimension_i extends IDimension<Integer> {
     public int startY = 0, endY = 0;
     public int midX = 0, midY = 0;
     public int width = 0, height = 0;
+    public int halfWidth = 0, halfHeight = 0;
     
     //==============
     // Constructors
@@ -26,41 +27,24 @@ public class Dimension_i extends IDimension<Integer> {
         this(0, 0, 0, 0);
     }
     
-    public Dimension_i(Number startXIn, Number startYIn, Number endXIn, Number endYIn) {
-        this(startXIn.intValue(), startYIn.intValue(), endXIn.intValue(), endYIn.intValue());
+    public Dimension_i(Number startX, Number startY, Number endX, Number endY) {
+        this(startX.intValue(), startY.intValue(), endX.intValue(), endY.intValue());
     }
     
-    public Dimension_i(int startXIn, int startYIn, int endXIn, int endYIn) {
-        startX = startXIn;
-        startY = startYIn;
-        endX = endXIn;
-        endY = endYIn;
-        width = endXIn - startXIn;
-        height = endYIn - startYIn;
-        midX = midX_i();
-        midY = midY_i();
+    public Dimension_i(int startX, int startY, int endX, int endY) {
+        setDimensions(startX, startY, endX, endY);
+    }
+    
+    public Dimension_i(int[] dimensionArray) {
+        setDimensions(dimensionArray);
     }
     
     public Dimension_i(Dimension_i dimIn) {
-        startX = dimIn.startX;
-        startY = dimIn.startY;
-        endX = dimIn.endX;
-        endY = dimIn.endY;
-        width = endX - startX;
-        height = endY - startY;
-        midX = midX_i();
-        midY = midY_i();
+        setDimensions(dimIn.startX, dimIn.startY, dimIn.endX, dimIn.endY);
     }
     
     public Dimension_i(IDimension<?> dimIn) {
-        startX = dimIn.startX_i();
-        startY = dimIn.startY_i();
-        endX = dimIn.endX_i();
-        endY = dimIn.endY_i();
-        width = endX - startX;
-        height = endY - startY;
-        midX = midX_i();
-        midY = midY_i();
+        setDimensions(dimIn.startX_i(), dimIn.startY_i(), dimIn.endX_i(), dimIn.endY_i());
     }
     
     //===========
@@ -80,8 +64,8 @@ public class Dimension_i extends IDimension<Integer> {
     @Override public int startY_i() { return startY; }
     @Override public int endX_i() { return endX; }
     @Override public int endY_i() { return endY; }
-    @Override public int midX_i() { return startX + (width >> 1); }
-    @Override public int midY_i() { return startY + (height >> 1); }
+    @Override public int midX_i() { return midX; }
+    @Override public int midY_i() { return midX; }
     @Override public int width_i() { return width; }
     @Override public int height_i() { return height; }
     
@@ -89,8 +73,8 @@ public class Dimension_i extends IDimension<Integer> {
     @Override public long startY_l() { return startY; }
     @Override public long endX_l() { return endX; }
     @Override public long endY_l() { return endY; }
-    @Override public long midX_l() { return midX_i(); }
-    @Override public long midY_l() { return midX_i(); }
+    @Override public long midX_l() { return midX; }
+    @Override public long midY_l() { return midX; }
     @Override public long width_l() { return width; }
     @Override public long height_l() { return height; }
     
@@ -98,8 +82,8 @@ public class Dimension_i extends IDimension<Integer> {
     @Override public float startY_f() { return startY; }
     @Override public float endX_f() { return endX; }
     @Override public float endY_f() { return endY; }
-    @Override public float midX_f() { return midX_i(); }
-    @Override public float midY_f() { return midY_i(); }
+    @Override public float midX_f() { return midX; }
+    @Override public float midY_f() { return midY; }
     @Override public float width_f() { return width; }
     @Override public float height_f() { return height; }
     
@@ -107,10 +91,17 @@ public class Dimension_i extends IDimension<Integer> {
     @Override public double startY_d() { return startY; }
     @Override public double endX_d() { return endX; }
     @Override public double endY_d() { return endY; }
-    @Override public double midX_d() { return midX_i(); }
-    @Override public double midY_d() { return midY_i(); }
+    @Override public double midX_d() { return midX; }
+    @Override public double midY_d() { return midY; }
     @Override public double width_d() { return width; }
     @Override public double height_d() { return height; }
+    
+    @Override public void startX(Number startX) { this.startX = startX.intValue(); }
+    @Override public void startY(Number startY) { this.startY = startY.intValue(); }
+    @Override public void endX(Number endX) { this.endX = endX.intValue(); }
+    @Override public void endY(Number endY) { this.endY = endY.intValue(); }
+    @Override public void width(Number width) { this.width = width.intValue(); }
+    @Override public void height(Number height) { this.height = height.intValue(); }
     
     /**
      * Returns the 2D area that this dimension occupies.
@@ -122,40 +113,65 @@ public class Dimension_i extends IDimension<Integer> {
     @Override protected float getArea_f() { return getArea_i(); }
     @Override protected double getArea_d() { return getArea_i(); }
     
-    @Override public void startX(Number startX) { this.startX = startX.intValue(); }
-    @Override public void startY(Number startY) { this.startY = startY.intValue(); }
-    @Override public void endX(Number endX) { this.endX = endX.intValue(); }
-    @Override public void endY(Number endY) { this.endY = endY.intValue(); }
-    @Override public void width(Number width) { this.width = width.intValue(); }
-    @Override public void height(Number height) { this.height = height.intValue(); }
-    
     //=========
     // Methods
     //=========
     
-    public Dimension_i move(int changeX, int changeY) {
-        startX += changeX;
-        startY += changeY;
-        reDimension();
+    public Dimension_i setArea(int newX, int newY, int newWidth, int newHeight) {
+        startX = newX;
+        startY = newY;
+        width = newWidth;
+        height = newHeight;
+        endX = startX + width;
+        endY = startY + height;
+        halfWidth = width / 2;
+        halfHeight = height / 2;
+        midX = startX + halfWidth;
+        midY = startY + halfHeight;
         return this;
     }
     
     public Dimension_i setPosition(int newX, int newY) {
         startX = newX;
         startY = newY;
-        reDimension();
+        endX = startX + width;
+        endY = startY + height;
         return this;
     }
     
     public Dimension_i setWidth(int newWidth) {
         width = newWidth;
-        reDimension();
+        endX = startX + width;
+        halfWidth = width / 2;
+        midX = startX + halfWidth;
         return this;
     }
     
     public Dimension_i setHeight(int newHeight) {
         height = newHeight;
-        reDimension();
+        endY = startY + height;
+        halfHeight = height / 2;
+        midY = startY + halfHeight;
+        return this;
+    }
+    
+    public Dimension_i setDimensions(int[] dimensionArray) {
+        if (dimensionArray.length != 4) throw new IllegalArgumentException("The given dimension array length != 4");
+        setDimensions(dimensionArray[0], dimensionArray[1], dimensionArray[2], dimensionArray[3]);
+        return this;
+    }
+    
+    public Dimension_i setDimensions(int startXIn, int startYIn, int endXIn, int endYIn) {
+        startX = startXIn;
+        startY = startYIn;
+        endX = endXIn;
+        endY = endYIn;
+        width = endXIn - startXIn;
+        height = endYIn - startYIn;
+        halfWidth = width / 2;
+        halfHeight = height / 2;
+        midX = startX + halfWidth;
+        midY = startY + halfHeight;
         return this;
     }
     
@@ -163,44 +179,58 @@ public class Dimension_i extends IDimension<Integer> {
     protected void reDimension() {
         endX = startX + width;
         endY = startY + height;
-        midX = midX_i();
-        midY = midY_i();
+        halfWidth = width / 2;
+        halfHeight = height / 2;
+        midX = startX + halfWidth;
+        midY = startY + halfHeight;
     }
     
     public Dimension_i expand(int amount) {
-        Dimension_i d = new Dimension_i(this);
-        d.startX -= amount;
-        d.startY -= amount;
-        d.endX += amount;
-        d.endY += amount;
-        d.width += (amount * 2);
-        d.height += (amount * 2);
-        return d;
+        startX -= amount;
+        startY -= amount;
+        endX += amount;
+        endY += amount;
+        width += (amount * 2);
+        height += (amount * 2);
+        halfWidth += amount;
+        halfHeight += amount;
+        return this;
     }
     
     public Dimension_i contract(int amount) {
-        Dimension_i d = new Dimension_i(this);
-        d.startX += amount;
-        d.startY += amount;
-        d.endX -= amount;
-        d.endY -= amount;
-        d.width -= (amount * 2);
-        d.height -= (amount * 2);
-        return d;
+        startX += amount;
+        startY += amount;
+        endX -= amount;
+        endY -= amount;
+        width -= (amount * 2);
+        height -= (amount * 2);
+        halfWidth -= amount;
+        halfHeight -= amount;
+        return this;
     }
     
-    public Dimension_i moveDim(int x, int y) {
-        Dimension_i d = new Dimension_i(this);
-        d.startX += x;
-        d.startY += y;
-        d.endX = d.startX + d.width;
-        d.endY = d.startY + d.height;
+    public Dimension_i translate(int changeX, int changeY) {
+        startX += changeX;
+        startY += changeY;
+        endX += changeX;
+        endY += changeY;
+        return this;
+    }
+    
+    public Dimension_i translateHorizontal(int amount) {
+        startX += amount;
+        endX += amount;
+        return this;
+    }
+    
+    public Dimension_i translateVertical(int amount) {
+        startY += amount;
+        endY += amount;
         return this;
     }
     
     /**
-     * Expands this dimension outward in all directions by the given
-     * amount.
+     * Expands this dimension outward in all directions by the given amount.
      * 
      * @param amount The amount to expand outwards by
      * 
@@ -213,8 +243,7 @@ public class Dimension_i extends IDimension<Integer> {
     }
     
     /**
-     * Expands this dimension outward in all directions by the given
-     * amount.
+     * Expands this dimension outward in all directions by the given amount.
      * 
      * @param amount The amount to expand outwards by
      * 
@@ -256,19 +285,9 @@ public class Dimension_i extends IDimension<Integer> {
         return new Dimension_i(startX + i, startY + i, endX - i, endY - i);
     }
     
-    public Dimension_i translateHorizontal(int amount) {
-        startX += amount;
-        return this;
-    }
-    
-    public Dimension_i translateVertical(int amount) {
-        startY += amount;
-        return this;
-    }
-    
     /**
-     * Returns true if this dimension's bounds at least partially contains
-     * the given dimension's bounds.
+     * Returns true if this dimension's bounds at least partially contains the
+     * given dimension's bounds.
      * @since 1.6.1
      */
     public boolean partiallyContains(IDimension<?> dimIn) {
@@ -279,48 +298,37 @@ public class Dimension_i extends IDimension<Integer> {
     }
     
     /**
-     * Returns true if this dimension's bounds at least partially contains
-     * the given dimension's bounds.
+     * Returns true if this dimension's bounds at least partially contains the
+     * given dimension's bounds.
      * @since 1.6.1
      */
     public boolean partiallyContains(Dimension_i dimIn) {
-        return startX <= dimIn.endX &&
-               startY <= dimIn.endY &&
-               endX >= dimIn.startX &&
-               endY >= dimIn.startY;
+        return startX <= dimIn.endX && startY <= dimIn.endY && endX >= dimIn.startX && endY >= dimIn.startY;
     }
     
     /**
      * Returns true if the given dimension is completely inside of this
      * dimension. As in, not just partially inside.
      * 
-     * @return True if the given dimension completely 'fits' inside of this
-     *         one
+     * @return True if the given dimension completely 'fits' inside of this one
      */
     public boolean fullyContains(Dimension_i dimIn) {
-        return startX < dimIn.startX &&
-               startY < dimIn.startY &&
-               endX > dimIn.endX &&
-               endY > dimIn.endY;
+        return startX < dimIn.startX && startY < dimIn.startY && endX > dimIn.endX && endY > dimIn.endY;
     }
     
     /**
      * Returns true if the given dimension is completely inside of this
      * dimension. As in, not just partially inside.
      * 
-     * @return True if the given dimension completely 'fits' inside of this
-     *         one
+     * @return True if the given dimension completely 'fits' inside of this one
      */
     public boolean fullyContains(IDimension<?> dimIn) {
-        return startX < dimIn.startX_i() &&
-               startY < dimIn.startY_i() &&
-               endX > dimIn.endX_i() &&
-               endY > dimIn.endY_i();
+        return startX < dimIn.startX_i() && startY < dimIn.startY_i() && endX > dimIn.endX_i() && endY > dimIn.endY_i();
     }
     
     /**
-     * Returns true if the Area of this dimension is bigger than the area
-     * of the given dimension.
+     * Returns true if the Area of this dimension is bigger than the area of
+     * the given dimension.
      * 
      * @param dimIn The dimension to compare against
      * 
@@ -331,8 +339,8 @@ public class Dimension_i extends IDimension<Integer> {
     }
     
     /**
-     * Returns true if the Area of this dimension is bigger than the area
-     * of the given dimension.
+     * Returns true if the Area of this dimension is bigger than the area of
+     * the given dimension.
      * 
      * @param dimIn The dimension to compare against
      * 
@@ -344,8 +352,8 @@ public class Dimension_i extends IDimension<Integer> {
     }
     
     /**
-     * Returns true if the Area of this dimension is less than the area of
-     * the given dimension.
+     * Returns true if the Area of this dimension is less than the area of the
+     * given dimension.
      * 
      * @param dimIn The dimension to compare against
      * 
@@ -356,8 +364,8 @@ public class Dimension_i extends IDimension<Integer> {
     }
     
     /**
-     * Returns true if the Area of this dimension is less than the area of
-     * the given dimension.
+     * Returns true if the Area of this dimension is less than the area of the
+     * given dimension.
      * 
      * @param dimIn The dimension to compare against
      * 
@@ -369,10 +377,7 @@ public class Dimension_i extends IDimension<Integer> {
     }
     
     public boolean isEqualTo(Dimension_i dimIn) {
-        return startX == dimIn.startX &&
-               startY == dimIn.startY &&
-               width == dimIn.width &&
-               height == dimIn.height;
+        return startX == dimIn.startX && startY == dimIn.startY && width == dimIn.width && height == dimIn.height;
     }
     
     @Override
