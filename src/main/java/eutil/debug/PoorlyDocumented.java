@@ -15,13 +15,13 @@ import java.lang.annotation.Target;
  * @since 2.2.0
  */
 @Target({TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE, ANNOTATION_TYPE,
-	     PACKAGE, TYPE_PARAMETER, TYPE_USE, MODULE, RECORD_COMPONENT})
+         PACKAGE, TYPE_PARAMETER, TYPE_USE, MODULE, RECORD_COMPONENT})
 @Retention(RetentionPolicy.SOURCE)
 public @interface PoorlyDocumented {
-	
-	/**
-	 * Describes the reason for why the code is actually poorly documented.
-	 */
-	String value() default "";
-	
+    
+    /**
+     * Describes the reason for why the code is actually poorly documented.
+     */
+    String value() default "";
+    
 }

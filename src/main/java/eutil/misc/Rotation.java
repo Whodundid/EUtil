@@ -9,20 +9,20 @@ import eutil.random.ERandomUtil;
  * @since 1.0.0
  */
 public enum Rotation {
-	
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT;
-	
-	/**
-	 * Returns a random rotation. 
-	 * 
-	 * @return Rotation
-	 * @since 1.1
-	 */
-	public static Rotation random() {
-		return values()[ERandomUtil.getRoll(0, values().length - 1)];
-	}
-	
+    
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT;
+    
+    /**
+     * Returns a random rotation. 
+     * 
+     * @return Rotation
+     * @since 1.1
+     */
+    public static Rotation random() {
+        return values()[ERandomUtil.getRoll(0, values().length - 1)];
+    }
+    
 }

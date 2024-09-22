@@ -10,19 +10,19 @@ import java.beans.PropertyChangeListener;
  */
 public class ChangeListener implements PropertyChangeListener {
 
-	protected Runnable action;
-	
-	public ChangeListener(Runnable actionIn) {
-		action = actionIn;
-	}
-	
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		action.run();
-	}
-	
-	public static ChangeListener of(Runnable actionIn) {
-		return new ChangeListener(actionIn);
-	}
-	
+    protected Runnable action;
+    
+    public ChangeListener(Runnable actionIn) {
+        action = actionIn;
+    }
+    
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        action.run();
+    }
+    
+    public static ChangeListener of(Runnable actionIn) {
+        return new ChangeListener(actionIn);
+    }
+    
 }

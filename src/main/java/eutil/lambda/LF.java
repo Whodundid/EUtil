@@ -66,146 +66,146 @@ import eutil.datatypes.EArrayList;
  */
 public class LF<E> implements Iterable<LF.P<E>> {
 
-	private int curIndex = 0;
-	private int start = 0, by = 0, size = 0;
-	private final EArrayList<P<E>> productions = new EArrayList<>();
-	
-	//---------------------------------------------------------------------------------------
-	
-	private LF(int startIn, int byIn, Iterable<E> dataIn) { this(startIn, byIn, dataIn.iterator()); }
-	private LF(int startIn, int byIn, Stream<E> dataIn) { this(startIn, byIn, dataIn.iterator()); }
-	
-	private LF(int startIn, int byIn, Iterator<E> it) {
-		if (it == null || start < 0 || by < 0) { return; }
-		start = startIn;
-		by = byIn;
-		
-		while (curIndex < start && it.hasNext()) {
-			curIndex++;
-			it.next();
-		}
-		
-		while (it.hasNext()) {
-			productions.add(new P(curIndex++, it.next()));
-			int i = 1;
-			while (i < by && it.hasNext()) {
-				i++;
-				curIndex++;
-				it.next();
-			}
-		}
-		
-		size = productions.size();
-	}
-	
-	//---------------------------------------------------------------------------------------
-	
-	@Override public Iterator<P<E>> iterator() { return new Itr(); }
-	
-	//---------------------------------------------------------------------------------------
-	
-	/** Isolates the elements from the production list. */
-	private Stream<E> stream() { return productions.stream().map(d -> d.element); }
-	
-	//---------------------------------------------------------------------------------------
-	
-	/** Generates an Iterable containing lambda productions for the given iterable object. */
-	public static <E> LF<E> of(Iterable<E> dataIn) { return new LF(0, 1, dataIn); }
-	/** Generates an Iterable containing lambda productions for the given typed array. */
-	public static <E> LF<E> of(E... dataIn) { return new LF(0, 1, new EArrayList(dataIn)); }
-	/** Generates an Iterable containing lambda productions for the given iterable object. Furthermore, this specifies the starting index. */
-	public static <E> LF<E> of(int start, Iterable<E> dataIn) { return new LF(start, 1, dataIn); }
-	/** Generates an Iterable containing lambda productions for the given iterable object. Furthermore, this specifies the starting index as well as the increment amount. */
-	public static <E> LF<E> of(int start, int by, Iterable<E> dataIn) { return new LF(start, by, dataIn); }
-	
-	/** Performs a mapping function across each element in the given iterable object. */
-	public <T> LF<T> map(Function<? super E, ? extends T> mapper) { return new LF(start, by, stream().map(mapper)); }
-	/** Performs a filtering function across each element in the given iterable object. */
-	public LF<E> filter(Predicate<? super E> filter) { return new LF(start, by, stream().filter(filter)); }
-	/** Performs a filtering function which removes null objects within the given iterable object. */
-	public LF<E> filterNull() { return new LF(start, by, stream().filter(NOT_NULL)); }
-	/** Performs a filtering function which removes null objects as well as the specified condition within the given iterable object. */
-	public LF<E> filterNull(Predicate<? super E> filter) { return new LF(start, by, stream().filter(NOT_NULL).filter(filter)); }
-	
-	//---------------------------------------------------------------------------------------
-	
-	/** A single production from a given FE (for each) structure containing both an index and an object. */
-	public static class P<E> {
-		
-		/** The index of this element. */
-		public final int index;
-		/** The element itself. */
-		public final E element;
-		
-		/** Private to prevent outside instantiation. */
-		private P(int indexIn, E objectIn) {
-			index = indexIn;
-			element = objectIn;
-		}
-		
-		@Override
-		public String toString() {
-			return index + " : " + element;
-		}
-		
-		@Override
-		/** Overriding equals so that the comparison is against the element instead of this production. */
-		public boolean equals(Object obj) {
-			return EUtil.isEqual(element, obj);
-		}
-		
-		/** Returns this production's element. */
-		public E get() { return element; }
-		
-		/** Returns true if this production's element is null. */
-		public boolean isNull() { return element == null; }
-		
-	}
-	
-	//---------------------------------------------------------------------------------------
-	
-	private class Itr implements Iterator<P<E>> {
-		
-		private int cur, last;
-		
-		//--------------
-		// Constructors
-		//--------------
-		
-		Itr() {}
-		
-		//-----------
-		// Overrides
-		//-----------
-		
-		@Override
-		public boolean hasNext() { return cur != productions.size(); }
-		
-		@Override
-		public P<E> next() {
-			int i = cur;
-			if (i >= size) throw new NoSuchElementException();
-			Object[] elementData = productions.toArray();
-			if (i >= elementData.length) throw new ConcurrentModificationException();
-			cur = i + 1;
-			return (P<E>) elementData[last = i];
-		}
-		
-		@Override
-		public void forEachRemaining(Consumer action) {
-			Objects.requireNonNull(action);
-			int i = cur;
-			if (i < size) {
-				Object[] elementData = productions.toArray();
-				if (i >= elementData.length) throw new ConcurrentModificationException();
-				for (; i < size; i++) {
-					P<E> p = (P<E>) elementData[i];
-					action.accept((E) p.element);
-				}
-				cur = i;
-				last = i - 1;
-			}
-		}
-	}
-	
+    private int curIndex = 0;
+    private int start = 0, by = 0, size = 0;
+    private final EArrayList<P<E>> productions = new EArrayList<>();
+    
+    //---------------------------------------------------------------------------------------
+    
+    private LF(int startIn, int byIn, Iterable<E> dataIn) { this(startIn, byIn, dataIn.iterator()); }
+    private LF(int startIn, int byIn, Stream<E> dataIn) { this(startIn, byIn, dataIn.iterator()); }
+    
+    private LF(int startIn, int byIn, Iterator<E> it) {
+        if (it == null || start < 0 || by < 0) { return; }
+        start = startIn;
+        by = byIn;
+        
+        while (curIndex < start && it.hasNext()) {
+            curIndex++;
+            it.next();
+        }
+        
+        while (it.hasNext()) {
+            productions.add(new P(curIndex++, it.next()));
+            int i = 1;
+            while (i < by && it.hasNext()) {
+                i++;
+                curIndex++;
+                it.next();
+            }
+        }
+        
+        size = productions.size();
+    }
+    
+    //---------------------------------------------------------------------------------------
+    
+    @Override public Iterator<P<E>> iterator() { return new Itr(); }
+    
+    //---------------------------------------------------------------------------------------
+    
+    /** Isolates the elements from the production list. */
+    private Stream<E> stream() { return productions.stream().map(d -> d.element); }
+    
+    //---------------------------------------------------------------------------------------
+    
+    /** Generates an Iterable containing lambda productions for the given iterable object. */
+    public static <E> LF<E> of(Iterable<E> dataIn) { return new LF(0, 1, dataIn); }
+    /** Generates an Iterable containing lambda productions for the given typed array. */
+    public static <E> LF<E> of(E... dataIn) { return new LF(0, 1, new EArrayList(dataIn)); }
+    /** Generates an Iterable containing lambda productions for the given iterable object. Furthermore, this specifies the starting index. */
+    public static <E> LF<E> of(int start, Iterable<E> dataIn) { return new LF(start, 1, dataIn); }
+    /** Generates an Iterable containing lambda productions for the given iterable object. Furthermore, this specifies the starting index as well as the increment amount. */
+    public static <E> LF<E> of(int start, int by, Iterable<E> dataIn) { return new LF(start, by, dataIn); }
+    
+    /** Performs a mapping function across each element in the given iterable object. */
+    public <T> LF<T> map(Function<? super E, ? extends T> mapper) { return new LF(start, by, stream().map(mapper)); }
+    /** Performs a filtering function across each element in the given iterable object. */
+    public LF<E> filter(Predicate<? super E> filter) { return new LF(start, by, stream().filter(filter)); }
+    /** Performs a filtering function which removes null objects within the given iterable object. */
+    public LF<E> filterNull() { return new LF(start, by, stream().filter(NOT_NULL)); }
+    /** Performs a filtering function which removes null objects as well as the specified condition within the given iterable object. */
+    public LF<E> filterNull(Predicate<? super E> filter) { return new LF(start, by, stream().filter(NOT_NULL).filter(filter)); }
+    
+    //---------------------------------------------------------------------------------------
+    
+    /** A single production from a given FE (for each) structure containing both an index and an object. */
+    public static class P<E> {
+        
+        /** The index of this element. */
+        public final int index;
+        /** The element itself. */
+        public final E element;
+        
+        /** Private to prevent outside instantiation. */
+        private P(int indexIn, E objectIn) {
+            index = indexIn;
+            element = objectIn;
+        }
+        
+        @Override
+        public String toString() {
+            return index + " : " + element;
+        }
+        
+        @Override
+        /** Overriding equals so that the comparison is against the element instead of this production. */
+        public boolean equals(Object obj) {
+            return EUtil.isEqual(element, obj);
+        }
+        
+        /** Returns this production's element. */
+        public E get() { return element; }
+        
+        /** Returns true if this production's element is null. */
+        public boolean isNull() { return element == null; }
+        
+    }
+    
+    //---------------------------------------------------------------------------------------
+    
+    private class Itr implements Iterator<P<E>> {
+        
+        private int cur, last;
+        
+        //--------------
+        // Constructors
+        //--------------
+        
+        Itr() {}
+        
+        //-----------
+        // Overrides
+        //-----------
+        
+        @Override
+        public boolean hasNext() { return cur != productions.size(); }
+        
+        @Override
+        public P<E> next() {
+            int i = cur;
+            if (i >= size) throw new NoSuchElementException();
+            Object[] elementData = productions.toArray();
+            if (i >= elementData.length) throw new ConcurrentModificationException();
+            cur = i + 1;
+            return (P<E>) elementData[last = i];
+        }
+        
+        @Override
+        public void forEachRemaining(Consumer action) {
+            Objects.requireNonNull(action);
+            int i = cur;
+            if (i < size) {
+                Object[] elementData = productions.toArray();
+                if (i >= elementData.length) throw new ConcurrentModificationException();
+                for (; i < size; i++) {
+                    P<E> p = (P<E>) elementData[i];
+                    action.accept((E) p.element);
+                }
+                cur = i;
+                last = i - 1;
+            }
+        }
+    }
+    
 }

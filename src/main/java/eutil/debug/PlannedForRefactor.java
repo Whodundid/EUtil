@@ -16,22 +16,22 @@ import java.lang.annotation.Target;
  * @since 2.2.0
  */
 @Target({TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE,
-	     ANNOTATION_TYPE, PACKAGE, TYPE_PARAMETER, TYPE_USE, MODULE, RECORD_COMPONENT})
+         ANNOTATION_TYPE, PACKAGE, TYPE_PARAMETER, TYPE_USE, MODULE, RECORD_COMPONENT})
 @Retention(RetentionPolicy.CLASS)
 public @interface PlannedForRefactor {
 
-	/**
-	 * Used to specify the date of which this code segment was 
-	 * 
-	 * @return The discovered date
-	 */
-	String since() default "";
-	
-	/**
-	 * The underlying reason for why the specified code segment will be changed.
-	 * 
-	 * @return The reason that this code segment will eventually be refactored
-	 */
-	String reason() default "";
-	
+    /**
+     * Used to specify the date of which this code segment was 
+     * 
+     * @return The discovered date
+     */
+    String since() default "";
+    
+    /**
+     * The underlying reason for why the specified code segment will be changed.
+     * 
+     * @return The reason that this code segment will eventually be refactored
+     */
+    String reason() default "";
+    
 }

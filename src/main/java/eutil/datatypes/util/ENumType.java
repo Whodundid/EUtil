@@ -9,16 +9,16 @@ package eutil.datatypes.util;
  * @since 1.0.0
  */
 public enum ENumType {
-	
-	// Standard Java number datatypes
-	BYTE,
-	SHORT,
-	INTEGER,
-	LONG,
-	FLOAT,
-	DOUBLE,
-	
-	/** Exclusively used to represent a non-number value. */
-	NULL;
-	
+    
+    // Standard Java number datatypes
+    BYTE,
+    SHORT,
+    INTEGER,
+    LONG,
+    FLOAT,
+    DOUBLE,
+    
+    /** Exclusively used to represent a non-number value. */
+    NULL;
+    
 }

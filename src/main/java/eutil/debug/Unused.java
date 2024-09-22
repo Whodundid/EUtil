@@ -16,12 +16,12 @@ import java.lang.annotation.Target;
 @Target({TYPE, FIELD, METHOD, CONSTRUCTOR, LOCAL_VARIABLE, MODULE})
 @Retention(RetentionPolicy.SOURCE)
 public @interface Unused {
-	
-	/**
-	 * Describes the reason for why the code segment is not being used.
-	 * 
-	 * @since 1.8.0
-	 */
-	String reason() default "";
-	
+    
+    /**
+     * Describes the reason for why the code segment is not being used.
+     * 
+     * @since 1.8.0
+     */
+    String reason() default "";
+    
 }
