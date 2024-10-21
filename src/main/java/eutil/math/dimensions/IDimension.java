@@ -72,9 +72,9 @@ public abstract class IDimension<T extends Number> {
     
     @Override
     public String toString() {
-        return "[startX/Y: " + startX() + ", " + startY() +
-               "; endX/Y: " + endX() + ", " + endY() +
-               "; width/Height: " + width() + ", " + height() + "]";
+        return "[X:(" + startX() + ", " + endX() +
+               ") Y:(" + startY() + ", " + endY() +
+               "} W/H:(" + width() + ", " + height() + ")]";
     }
     
     //=========
@@ -116,7 +116,7 @@ public abstract class IDimension<T extends Number> {
     public boolean contains(Number xIn, Number yIn) {
         double x = xIn.doubleValue();
         double y = yIn.doubleValue();
-        return x >= startX_d() && x <= endX_d() && y >= startY_d() && y <= endY_d();
+        return x >= startX_d() && x < endX_d() && y >= startY_d() && y < endY_d();
     }
     
     public boolean contains(Number left, Number top, Number right, Number bot) {

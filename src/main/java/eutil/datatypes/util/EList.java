@@ -326,8 +326,24 @@ public interface EList<E> extends List<E>, Deque<E> {
         return this;
     }
     
-    default E getRandom() { return (isEmpty()) ? null : get(ERandomUtil.getRoll(0, size() - 1)); }
+    /**
+     * Returns an object at a randomly chosen index within this list's bounds.
+     * <p>
+     * If this list is empy, then null is returned instead.
+     * 
+     * @return A random object from this list
+     */
+    default E getRandom() {
+        return (isEmpty()) ? null : get(ERandomUtil.getRoll(0, size() - 1));
+    }
     
+    /**
+     * Removes an object at random from this list.
+     * <p>
+     * If this list is empty, then null is returned instead.
+     * 
+     * @return An object randomly removed from this list
+     */
     default E removeRandom() {
         return (isEmpty()) ? null : remove(ERandomUtil.getRoll(0, size() - 1));
     }
@@ -340,10 +356,12 @@ public interface EList<E> extends List<E>, Deque<E> {
     
     /** Swaps the values at the given indexes. */
     default EList<E> swap(int indexA, int indexB) {
-        if (indexA < 0 || indexA >= size()) throw new IndexOutOfBoundsException("Index: " + indexA + ", Size: " +
-                                                                                size());
-        if (indexB < 0 || indexA >= size()) throw new IndexOutOfBoundsException("Index: " + indexB + ", Size: " +
-                                                                                size());
+        if (indexA < 0 || indexA >= size()) {
+            throw new IndexOutOfBoundsException("Index: " + indexA + ", Size: " + size());
+        }
+        if (indexB < 0 || indexA >= size()) {
+            throw new IndexOutOfBoundsException("Index: " + indexB + ", Size: " + size());
+        }
         
         E temp = get(indexA);
         set(indexA, get(indexB));
@@ -870,6 +888,25 @@ public interface EList<E> extends List<E>, Deque<E> {
      */
     default void remove(E... objects) {
         for (E o : objects) remove(o);
+    }
+    
+    /**
+     * Retrieves the element specified while also removing it from this list.
+     * <p>
+     * If this list does not contain the specified object, null is returned
+     * instead.
+     * 
+     * @param object The object to remove
+     * 
+     * @return The removed object
+     * 
+     * @since 2.8
+     */
+    default E getAndRemove(E object) {
+        int index = indexOf(object);
+        if (index == -1) return null;
+        E value = remove(index);
+        return value;
     }
     
     //================
