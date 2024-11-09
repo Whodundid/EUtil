@@ -6,11 +6,14 @@ import org.apache.commons.math3.util.FastMath;
 
 public class Vec1f {
     
-    public float x = 0L;
+    //========
+    // Fields
+    //========
     
-    //--------------
+    public float x = 0L;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     /** Creates a new Vec1f with 0L for x. */
     public Vec1f() { this(0L); }
@@ -33,15 +36,14 @@ public class Vec1f {
         this.x = vecIn.x;
     }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
-    @Override public String toString() { return "<" + x + ">"; }
-    
-    //---------
+    @Override public String toString() { return "<" + x + ">"; }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /** Sets each value in this Vec2i to 0. */
     public Vec1f clear() { set(0L); return this; }
@@ -66,10 +68,6 @@ public class Vec1f {
         return new float[] { x };
     }
     
-    //-------------
-    // Vector Math
-    //-------------
-    
     public Vec1f scale(float val) { return scale(this, val); }
     public Vec1f add(Vec1f vecIn) { return add(this, vecIn); }
     public Vec1f sub(Vec1f vecIn) { return sub(this, vecIn); }
@@ -82,17 +80,15 @@ public class Vec1f {
     public float distance(float point) {
         final float dx = point - x;
         return FastMath.abs(dx);
-    }
-
-    //---------
+    }    
+    //=========
     // Getters
-    //---------
+    //=========
     
-    public float getX() { return x; }
-    
-    //---------
+    public float getX() { return x; }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     public Vec1f set(Vec1f vecIn) { set(vecIn.x); return this; }
     public Vec1f set(Vec2i vecIn) { set(vecIn.x); return this; }
@@ -102,9 +98,9 @@ public class Vec1f {
     
     public Vec1f setX(float xIn) { x = xIn; return this; }
     
-    //--------------------
+    //====================
     // Static Vector Math
-    //--------------------
+    //====================
     
     /** Returns the given Vec1f with each of its x value multiplied by a given float value. */
     public static Vec1f scale(Vec1f vecIn, float val) {

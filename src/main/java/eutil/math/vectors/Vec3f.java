@@ -14,12 +14,15 @@ import static eutil.EUtil.*;
  * @since 1.0.0
  */
 public class Vec3f {
-
-    public float x = 0.0f, y = 0.0f, z = 0.0f;
     
-    //--------------
+    //===========
+    // Overrides
+    //===========
+    
+    public float x = 0.0f, y = 0.0f, z = 0.0f;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public Vec3f() {}
     public Vec3f(Vec3f vecIn) { nullDo(vecIn, v -> set(v.x, v.y, v.z)); }
@@ -27,15 +30,14 @@ public class Vec3f {
     public Vec3f(Number n) { set(n, n, n); }
     public Vec3f(Number x, Number y, Number z) { set(x, y, z); }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
-    @Override public String toString() { return "<" + x + ", " + y + ", " + z + ">"; }
-    
-    //---------
+    @Override public String toString() { return "<" + x + ", " + y + ", " + z + ">"; }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /** Sets each value in this Vec3f to 0. */
     public Vec3f clear() { set(0.0, 0.0, 0.0); return this; }
@@ -67,10 +69,6 @@ public class Vec3f {
     /** Returns true if this Vec3fs z is equal to the given value. */
     public boolean compareZ(float zIn) { return z == zIn; }
     
-    //-------------
-    // Vector Math
-    //-------------
-    
     public float multAdd() { return multAdd(this); }
     public float mag() { return mag(this); }
     public float dot(Vec3f vecIn) { return dot(this, vecIn); }
@@ -89,19 +87,17 @@ public class Vec3f {
     public Vec3f sub(Number x, Number y, Number z) { return new Vec3f(this.x - x.floatValue(), this.y - y.floatValue(), this.z - z.floatValue()); }
     public Vec3f norm() { return norm(this); }
     public float comp(Vec3f b) { return compAB(this, b); }
-    public Vec3f proj(Vec3f b) { return projAB(this, b); }
-
-    //---------
+    public Vec3f proj(Vec3f b) { return projAB(this, b); }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     public float getX() { return x; }
     public float getY() { return y; }
-    public float getZ() { return z; }
-    
-    //---------
+    public float getZ() { return z; }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     public Vec3f set(Vec3f vecIn) { return set(vecIn.x, vecIn.y, vecIn.z); }
     public Vec3f set(Vec3i vecIn) { return set(vecIn.x, vecIn.y, vecIn.z); }
@@ -111,9 +107,9 @@ public class Vec3f {
     public Vec3f setY(float yIn) { y = yIn; return this; }
     public Vec3f setZ(float zIn) { z = zIn; return this; }
     
-    //--------------------
+    //====================
     // Static Vector Math
-    //--------------------
+    //====================
     
     public static float multAdd(Vec3f vecIn) {
         Vec3f v = vecIn;

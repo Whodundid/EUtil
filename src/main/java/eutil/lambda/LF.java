@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import eutil.EUtil;
 import eutil.datatypes.EArrayList;
+import eutil.datatypes.util.EList;
 
 /**
  * A Java implementation of a sudo-Lambda-For loop structure.
@@ -42,7 +43,7 @@ import eutil.datatypes.EArrayList;
  * // Basic Lambda-For demonstrating that each production contains both the loop's index as well as the corresponding element.
  * //--------------------------------------------------------------------------------------------------------------------------
  * 
- * for (FE.P<String> s : FE.of(words))
+ * for (var s : LF.of(words)) {
  *     System.out.println("[index: " + s.index + " : element: " + s.element + "]");
  * }
  * 
@@ -52,7 +53,7 @@ import eutil.datatypes.EArrayList;
  * // This Lambda-For will produce the string length for each word.
  * //---------------------------------------------------------------
  * 
- * for (FE.P<\Integer> i : FE.of(words).map(w -> w.length())) {
+ * for (var i : LF.of(words).map(w -> w.length())) {
  *     System.out.println(i);
  * }
  * 
@@ -64,13 +65,27 @@ import eutil.datatypes.EArrayList;
  * @see Iterable
  * @since 1.1.0
  */
-public class LF<E> implements Iterable<LF.P<E>> {
-
+public class LF<E> implements Iterable<LF.Production<E>> {
+    
+    static {
+        var l = EList.of("dog", "cat", "lizzard");
+        
+        for (var p : LF.of(l)) {
+            System.out.println(p.element);
+        }
+    }
+    
+    //========
+    // Fields
+    //========
+    
     private int curIndex = 0;
     private int start = 0, by = 0, size = 0;
-    private final EArrayList<P<E>> productions = new EArrayList<>();
+    private final EList<Production<E>> productions = EList.newList();
     
-    //---------------------------------------------------------------------------------------
+    //==============
+    // Constructors
+    //==============
     
     private LF(int startIn, int byIn, Iterable<E> dataIn) { this(startIn, byIn, dataIn.iterator()); }
     private LF(int startIn, int byIn, Stream<E> dataIn) { this(startIn, byIn, dataIn.iterator()); }
@@ -86,7 +101,7 @@ public class LF<E> implements Iterable<LF.P<E>> {
         }
         
         while (it.hasNext()) {
-            productions.add(new P(curIndex++, it.next()));
+            productions.add(new Production(curIndex++, it.next()));
             int i = 1;
             while (i < by && it.hasNext()) {
                 i++;
@@ -100,7 +115,7 @@ public class LF<E> implements Iterable<LF.P<E>> {
     
     //---------------------------------------------------------------------------------------
     
-    @Override public Iterator<P<E>> iterator() { return new Itr(); }
+    @Override public Iterator<Production<E>> iterator() { return new Itr(); }
     
     //---------------------------------------------------------------------------------------
     
@@ -130,7 +145,7 @@ public class LF<E> implements Iterable<LF.P<E>> {
     //---------------------------------------------------------------------------------------
     
     /** A single production from a given FE (for each) structure containing both an index and an object. */
-    public static class P<E> {
+    public static class Production<E> {
         
         /** The index of this element. */
         public final int index;
@@ -138,14 +153,14 @@ public class LF<E> implements Iterable<LF.P<E>> {
         public final E element;
         
         /** Private to prevent outside instantiation. */
-        private P(int indexIn, E objectIn) {
+        private Production(int indexIn, E objectIn) {
             index = indexIn;
             element = objectIn;
         }
         
         @Override
         public String toString() {
-            return index + " : " + element;
+            return String.valueOf(element);
         }
         
         @Override
@@ -162,33 +177,33 @@ public class LF<E> implements Iterable<LF.P<E>> {
         
     }
     
-    //---------------------------------------------------------------------------------------
+    //==================
+    // Internal Classes
+    //==================
     
-    private class Itr implements Iterator<P<E>> {
+    private class Itr implements Iterator<Production<E>> {
+        
+        //========
+        // Fields
+        //========
         
         private int cur, last;
         
-        //--------------
-        // Constructors
-        //--------------
-        
-        Itr() {}
-        
-        //-----------
+        //===========
         // Overrides
-        //-----------
+        //===========
         
         @Override
         public boolean hasNext() { return cur != productions.size(); }
         
         @Override
-        public P<E> next() {
+        public Production<E> next() {
             int i = cur;
             if (i >= size) throw new NoSuchElementException();
             Object[] elementData = productions.toArray();
             if (i >= elementData.length) throw new ConcurrentModificationException();
             cur = i + 1;
-            return (P<E>) elementData[last = i];
+            return (Production<E>) elementData[last = i];
         }
         
         @Override
@@ -199,7 +214,7 @@ public class LF<E> implements Iterable<LF.P<E>> {
                 Object[] elementData = productions.toArray();
                 if (i >= elementData.length) throw new ConcurrentModificationException();
                 for (; i < size; i++) {
-                    P<E> p = (P<E>) elementData[i];
+                    Production<E> p = (Production<E>) elementData[i];
                     action.accept((E) p.element);
                 }
                 cur = i;

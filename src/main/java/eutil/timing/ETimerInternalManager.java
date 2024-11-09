@@ -15,25 +15,24 @@ import java.util.concurrent.TimeUnit;
  */
 class ETimerInternalManager {
     
-    //---------------
+    //===============
     // Static Fields
-    //---------------
+    //===============
     
     /** The primary thread executor. */
     private static ScheduledExecutorService scheduler;
     /** The actively running ETimers. */
-    private static Map<ETimer, Integer> activeTimers = new ConcurrentHashMap<>();
-    
-    //--------------
+    private static Map<ETimer, Integer> activeTimers = new ConcurrentHashMap<>();    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     /** Hide Constructor */
     private ETimerInternalManager() {}
     
-    //------------------
+    //==================
     // Internal Methods
-    //------------------
+    //==================
     
     /**
      * Schedules a timer to be executed once.
@@ -110,9 +109,9 @@ class ETimerInternalManager {
         activeTimers.clear();
     }
     
-    //------------------
+    //==================
     // Internal Classes
-    //------------------
+    //==================
     
     /**
      * Wraps an ETimer to internally keep track of when the timer ends.

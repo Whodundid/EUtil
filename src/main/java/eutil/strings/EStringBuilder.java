@@ -9,18 +9,17 @@ public class EStringBuilder implements Appendable, CharSequence {
     
     public static final String DEFAULT_TAB_STRING = "    ";
     
-    //--------
+    //========
     // Fields
-    //--------
+    //========
     
     private StringBuilder sb;
     private String tabString = DEFAULT_TAB_STRING;
     private String lineStart = "";
-    private int tabCount = 0;
-    
-    //--------------
+    private int tabCount = 0;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public EStringBuilder() {
         sb = new StringBuilder();
@@ -60,18 +59,18 @@ public class EStringBuilder implements Appendable, CharSequence {
         return of(arguments).toString();
     }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
     @Override
     public String toString() {
         return sb.toString();
     }
     
-    //-----------------
+    //=================
     // Wrapped Methods
-    //-----------------
+    //=================
     
     public EStringBuilder append(Object obj) { return append(String.valueOf(obj)); }
     public EStringBuilder append(String str) { sb.append(str); return this; }
@@ -130,11 +129,10 @@ public class EStringBuilder implements Appendable, CharSequence {
     public String[] splitA(String regex) { return sb.toString().split(regex); }
     public EList<String> split(String regex) { return EList.of(splitA(regex)); }
     
-    public byte[] getBytes() { return sb.toString().getBytes(); }
-    
-    //---------
+    public byte[] getBytes() { return sb.toString().getBytes(); }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /**
      * Clears out the contents of this string builder and replaces it with the
@@ -201,4 +199,5 @@ public class EStringBuilder implements Appendable, CharSequence {
     
     /** Returns the internally wrapped StringBuilder. */
     public StringBuilder getSB() { return sb; }
+    
 }

@@ -6,11 +6,14 @@ import org.apache.commons.math3.util.FastMath;
 
 public class Vec1d {
     
-    public double x = 0L;
+    //========
+    // Fields
+    //========
     
-    //--------------
+    public double x = 0L;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     /** Creates a new Vec1d with 0L for x. */
     public Vec1d() { this(0L); }
@@ -33,15 +36,14 @@ public class Vec1d {
         this.x = vecIn.x;
     }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
-    @Override public String toString() { return "<" + x + ">"; }
-    
-    //---------
+    @Override public String toString() { return "<" + x + ">"; }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /** Sets each value in this Vec2i to 0. */
     public Vec1d clear() { set(0L); return this; }
@@ -66,10 +68,6 @@ public class Vec1d {
         return new double[] { x };
     }
     
-    //-------------
-    // Vector Math
-    //-------------
-    
     public Vec1d scale(double val) { return scale(this, val); }
     public Vec1d add(Vec1d vecIn) { return add(this, vecIn); }
     public Vec1d sub(Vec1d vecIn) { return sub(this, vecIn); }
@@ -82,17 +80,15 @@ public class Vec1d {
     public double distance(double point) {
         final double dx = point - x;
         return FastMath.abs(dx);
-    }
-
-    //---------
+    }    
+    //=========
     // Getters
-    //---------
+    //=========
     
-    public double getX() { return x; }
-    
-    //---------
+    public double getX() { return x; }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     public Vec1d set(Vec1d vecIn) { set(vecIn.x); return this; }
     public Vec1d set(Vec2i vecIn) { set(vecIn.x); return this; }
@@ -102,9 +98,9 @@ public class Vec1d {
     
     public Vec1d setX(double xIn) { x = xIn; return this; }
     
-    //--------------------
+    //====================
     // Static Vector Math
-    //--------------------
+    //====================
     
     /** Returns the given Vec1d with each of its x value multiplied by a given double value. */
     public static Vec1d scale(Vec1d vecIn, double val) {

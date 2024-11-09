@@ -13,9 +13,9 @@ import eutil.datatypes.EArrayList;
  */
 public class ETimer {
     
-    //--------
+    //========
     // Fields
-    //--------
+    //========
     
     /** The user defined name of this timer. */
     protected String timerName;
@@ -38,11 +38,10 @@ public class ETimer {
     protected ScheduledFuture<?> managed = null;
     
     /** The set of listeners that will receive notifications when this timer is either stopped or finishes. */
-    protected EArrayList<ETimerListener> listeners = new EArrayList<>();
-    
-    //--------------
+    protected EArrayList<ETimerListener> listeners = new EArrayList<>();    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public ETimer() { this(null, 0l); }
     public ETimer(long countdownIn) { this(null, countdownIn); }
@@ -61,19 +60,19 @@ public class ETimer {
         addListeners(listeners);
     }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
     @Override
     public String toString() {
         if (timerName != null) return timerName;
         return super.toString();
     }
-
-    //------------------
+    
+    //==================
     // Internal Methods
-    //------------------
+    //==================
     
     /**
      * The runnable task that will actually notify the ETimer once completed.
@@ -117,11 +116,10 @@ public class ETimer {
      */
     protected void cancelTask() {
         ETimerInternalManager.onTaskEnd(this, false);
-    }
-    
-    //---------
+    }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /**
      * Adds an object(s) that will receive an update once this ETimer has
@@ -221,11 +219,10 @@ public class ETimer {
         finished = false;
         startTime = -1;
         finishTime = -1;
-    }
-    
-    //---------
+    }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     /**
      * Returns a copy of the current list of objects that will receive a
@@ -265,11 +262,10 @@ public class ETimer {
      */
     public long getStartTime() {
         return startTime;
-    }
-    
-    //---------
+    }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     /**
      * Sets the running duration of this timer.
@@ -287,11 +283,10 @@ public class ETimer {
      */
     public void setTimerName(String nameIn) {
         timerName = nameIn;
-    }
-    
-    //----------------
+    }    
+    //================
     // Static Methods
-    //----------------
+    //================
     
     /**
      * Returns true if any of the given timers are actively counting down.

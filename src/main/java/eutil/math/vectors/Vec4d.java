@@ -13,12 +13,15 @@ import static eutil.EUtil.*;
  * @since 1.2.1
  */
 public class Vec4d {
-
-    public double x = 0.0, y = 0.0, z = 0.0, w = 0.0;
     
-    //--------------
+    //========
+    // Fields
+    //========
+    
+    public double x = 0.0, y = 0.0, z = 0.0, w = 0.0;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public Vec4d() {}
     public Vec4d(Vec4d vecIn) { nullDo(vecIn, v -> set(v.x, v.y, v.z, 0.0)); }
@@ -29,15 +32,14 @@ public class Vec4d {
     public Vec4d(Number x, Number y, Number z) { set(x, y, z, 0.0); }
     public Vec4d(Number x, Number y, Number z, Number w) { set(x, y, z, w); }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
-    @Override public String toString() { return "<" + x + ", " + y + ", " + z + ", " + w + ">"; }
-    
-    //---------
+    @Override public String toString() { return "<" + x + ", " + y + ", " + z + ", " + w + ">"; }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /** Sets each value in this Vec3d to 0. */
     public Vec4d clear() { set(0.0, 0.0, 0.0, 0.0); return this; }
@@ -64,20 +66,18 @@ public class Vec4d {
     public boolean compareZ(double zIn) { return z == zIn; }
     
     /** Returns true if this Vec3ds z is equal to the given value. */
-    public boolean compareW(double aIn) { return w == aIn; }
-
-    //---------
+    public boolean compareW(double aIn) { return w == aIn; }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     public double getX() { return x; }
     public double getY() { return y; }
     public double getZ() { return z; }
-    public double getW() { return w; }
-    
-    //---------
+    public double getW() { return w; }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     public Vec4d set(Vec4d vecIn, double wIn) { return set(vecIn.x, vecIn.y, vecIn.z, wIn); }
     public Vec4d set(Vec3i vecIn, double wIn) { return set(vecIn.x, vecIn.y, vecIn.z, wIn); }

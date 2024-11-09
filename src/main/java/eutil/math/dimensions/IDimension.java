@@ -64,8 +64,7 @@ public abstract class IDimension<T extends Number> {
     protected abstract float getArea_f();
     protected abstract double getArea_d();
     
-    protected abstract void reDimension();
-
+    protected abstract void reDimension();    
     //===========
     // Overrides
     //===========
@@ -75,8 +74,7 @@ public abstract class IDimension<T extends Number> {
         return "[X:(" + startX() + ", " + endX() +
                ") Y:(" + startY() + ", " + endY() +
                "} W/H:(" + width() + ", " + height() + ")]";
-    }
-    
+    }    
     //=========
     // Methods
     //=========

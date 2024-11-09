@@ -19,11 +19,10 @@ public final class EReflectionUtil {
     // prevent instantiation
     private EReflectionUtil() {}
     
-    //----------------------------
-    
-    //---------
+    //----------------------------    
+    //=========
     // Methods
-    //---------
+    //=========
     
     public static <E> E invoke(Object obj, String methodName, Object... paramsAndArgs) {
         try { return invoke_unsafe(obj, methodName, paramsAndArgs); }
@@ -65,9 +64,9 @@ public final class EReflectionUtil {
         return (E) o;
     }
     
-    //--------
+    //========
     // Fields
-    //--------
+    //========
     
     /** Attempts to set the value of a field of the given name from the given object's class hierarchy. */
     public static void setField(Object obj, String fieldName, Object value) throws Exception {
@@ -192,9 +191,9 @@ public final class EReflectionUtil {
         }
     }
     
-    //-------------------
-    // Protected Methods
-    //-------------------
+    //=========================
+    // Internal Helper Methods
+    //=========================
     
     /** Attempts to find a field of the given name by recursively checking the declared fields of each super class of its object hierarchy. */
     protected static Field findField(Class<?> c, String fieldName) throws Exception {

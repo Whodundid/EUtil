@@ -13,8 +13,7 @@ import eutil.EUtil;
  * @author Hunter Bragg
  * @since 2.7
  */
-public record Result<T>(T value, String reason) {
-    
+public record Result<T>(T value, String reason) {    
     //==============
     // Constructors
     //==============
@@ -37,8 +36,7 @@ public record Result<T>(T value, String reason) {
     public Result(T value, String reason) {
         this.value = value;
         this.reason = reason;
-    }
-    
+    }    
     //=========
     // Methods
     //=========
@@ -50,8 +48,7 @@ public record Result<T>(T value, String reason) {
         
         Result<?> r = (Result<?>) o;
         return EUtil.isEqual(value, r.value) && EUtil.isEqual(reason, r.reason);
-    }
-    
+    }    
     //================
     // Static Methods
     //================

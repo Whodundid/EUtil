@@ -10,15 +10,18 @@ import java.sql.Date;
  * @since 1.0.1
  */
 public class EDate implements Comparable<EDate> {
-
+    
+    //========
+    // Fields
+    //========
+    
     private EDateFormat format;
     private final int month;
     private final int day;
-    private final int year;
-    
-    //--------------
+    private final int year;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public EDate() { this(EDateTime.getMonth(), EDateTime.getDay(), EDateTime.getYear(), EDateFormat.MDY); }
     public EDate(EDateFormat formatIn) { this(EDateTime.getMonth(), EDateTime.getDay(), EDateTime.getYear(), formatIn); }
@@ -64,9 +67,9 @@ public class EDate implements Comparable<EDate> {
         year = y;
     }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
     @Override
     public int compareTo(EDate d) {
@@ -81,11 +84,10 @@ public class EDate implements Comparable<EDate> {
     @Override
     public String toString() {
         return (format == EDateFormat.MDY) ? (month + "/" + day + "/" + year) : (day + "/" + month + "/" + year);
-    }
-    
-    //---------
+    }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     public String getDayName() {
         return EStringUtil.capitalFirst(Date.valueOf(year + "-" + month + "-" + day).toLocalDate().getDayOfWeek().toString().toLowerCase());
@@ -121,28 +123,26 @@ public class EDate implements Comparable<EDate> {
     public EDate setFormat(EDateFormat formatIn) {
         format = (formatIn != null) ? formatIn : EDateFormat.MDY;
         return this;
-    }
-    
-    //---------
+    }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     public int getDay() { return day; }
     public int getMonth() { return month; }
     public int getYear() { return year; }
     /** Returns whether this date is represented as a 'MM/DD/YYYY' or 'DD/MM/YYYY' format. */
-    public EDateFormat getFormat() { return format; }
-    
-    //----------------
+    public EDateFormat getFormat() { return format; }    
+    //================
     // Static Methods
-    //----------------
+    //================
     
     public static EDate of(String dateString) { return new EDate(dateString); }
     public static EDate of(String dateString, EDateFormat format) { return new EDate(dateString, format); }
     
-    //------------------
+    //==================
     // EDateFormat Enum
-    //------------------
+    //==================
     
     public static enum EDateFormat {
         /** Month-Day-Year */

@@ -6,11 +6,14 @@ import org.apache.commons.math3.util.FastMath;
 
 public class Vec1i {
     
-    public long x = 0L;
+    //========
+    // Fields
+    //========
     
-    //--------------
+    public long x = 0L;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     /** Creates a new Vec1i with 0L for x. */
     public Vec1i() { this(0L); }
@@ -33,15 +36,14 @@ public class Vec1i {
         this.x = vecIn.x;
     }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
-    @Override public String toString() { return "<" + x + ">"; }
-    
-    //---------
+    @Override public String toString() { return "<" + x + ">"; }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /** Sets each value in this Vec2i to 0. */
     public Vec1i clear() { set(0L); return this; }
@@ -66,10 +68,6 @@ public class Vec1i {
         return new long[] { x };
     }
     
-    //-------------
-    // Vector Math
-    //-------------
-    
     public Vec1i scale(long val) { return scale(this, val); }
     public Vec1i add(Vec1i vecIn) { return add(this, vecIn); }
     public Vec1i sub(Vec1i vecIn) { return sub(this, vecIn); }
@@ -82,17 +80,15 @@ public class Vec1i {
     public long distance(long point) {
         final long dx = point - x;
         return FastMath.abs(dx);
-    }
-
-    //---------
+    }    
+    //=========
     // Getters
-    //---------
+    //=========
     
-    public long getX() { return x; }
-    
-    //---------
+    public long getX() { return x; }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     public Vec1i set(Vec1i vecIn) { set(vecIn.x); return this; }
     public Vec1i set(Vec2i vecIn) { set(vecIn.x); return this; }
@@ -102,9 +98,9 @@ public class Vec1i {
     
     public Vec1i setX(long xIn) { x = xIn; return this; }
     
-    //--------------------
+    //====================
     // Static Vector Math
-    //--------------------
+    //====================
     
     /** Returns the given Vec1i with each of its x value multiplied by a given long value. */
     public static Vec1i scale(Vec1i vecIn, long val) {

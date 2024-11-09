@@ -9,13 +9,16 @@ import eutil.datatypes.util.EList;
 import eutil.math.ENumUtil;
 
 public class EStack<E> implements EList<E> {
-
-    private EList<E> elements = EList.newList();
-    private int maxSize;
     
-    //--------------
+    //========
+    // Fields
+    //========
+    
+    private EList<E> elements = EList.newList();
+    private int maxSize;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public EStack() {}
     
@@ -27,30 +30,14 @@ public class EStack<E> implements EList<E> {
     
     public EStack(E... dataIn) {
         for (E e : dataIn) elements.add(e);
-    }
-    
-    //-----------
+    }    
+    //===========
     // Overrides
-    //-----------
+    //===========
     
     public E get(int index) { return elements.get(index); }
     public int size() { return elements.size(); }
     public boolean addAll(Collection<? extends E> c) { return elements.addAll(c); }
-    
-    //---------
-    // Methods
-    //---------
-    
-    public EStack<E> setMaxSize(int val) {
-        maxSize = val = ENumUtil.clamp(val, 0, Integer.MAX_VALUE);
-        // remove each element after the size limit
-        if (val < elements.size()) {
-            for (int i = val; i < elements.size(); i++) {
-                elements.remove(i);
-            }
-        }
-        return this;
-    }
     
     @Override
     public boolean addAll(int index, Collection<? extends E> c) {
@@ -58,7 +45,7 @@ public class EStack<E> implements EList<E> {
         return true;
     }
     
-    @Override public EStack<E> reverse() { return new EStack(elements.reverse()); }
+    @Override public EStack<E> reversed() { return new EStack(elements.reversed()); }
     @Override public boolean isEmpty() { return elements.isEmpty(); }
     @Override public boolean contains(Object o) { return elements.contains(o); }
     @Override public Iterator<E> iterator() { return elements.iterator(); }
@@ -78,6 +65,20 @@ public class EStack<E> implements EList<E> {
     @Override public ListIterator<E> listIterator() { return elements.listIterator(); }
     @Override public ListIterator<E> listIterator(int index) { return elements.listIterator(index); }
     @Override public List<E> subList(int fromIndex, int toIndex) { return elements.subList(fromIndex, toIndex); }
-    @Override public void ensureCapacity(int size) { elements.ensureCapacity(size); }
+    @Override public void ensureCapacity(int size) { elements.ensureCapacity(size); }    
+    //=========
+    // Methods
+    //=========
+    
+    public EStack<E> setMaxSize(int val) {
+        maxSize = val = ENumUtil.clamp(val, 0, Integer.MAX_VALUE);
+        // remove each element after the size limit
+        if (val < elements.size()) {
+            for (int i = val; i < elements.size(); i++) {
+                elements.remove(i);
+            }
+        }
+        return this;
+    }
     
 }

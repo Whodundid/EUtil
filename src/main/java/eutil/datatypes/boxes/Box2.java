@@ -15,12 +15,15 @@ import eutil.EUtil;
  */
 public class Box2<A, B> implements Comparable<Box2<A, B>> {
     
-    private A a;
-    private B b;
+    //========
+    // Fields
+    //========
     
-    //--------------
+    private A a;
+    private B b;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     /** Creates a new Box2 comprised of null values. */
     public Box2() { this(null, null); }
@@ -29,9 +32,9 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
     /** Creates a new Box2 from a given Box2's values. */
     public Box2(Box2<A, B> boxIn) { a = boxIn.a; b = boxIn.b; }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
     @Override
     public String toString() {
@@ -41,11 +44,10 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
     @Override
     public int compareTo(Box2<A, B> o) {
         return (a instanceof Comparable c) ? c.compareTo(b) : 0;
-    }
-    
-    //---------
+    }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /** Sets this box's A and B values to null. */
     public Box2<A, B> clear() { a = null; b = null; return this; }
@@ -94,20 +96,18 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
      */
     public boolean allNull() {
         return EUtil.allNull(a, b);
-    }
-    
-    //---------
+    }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     /** Returns the A value on this box. */
     public A getA() { return a; }
     /** Returns the B value on this box. */
-    public B getB() { return b; }
-    
-    //---------
+    public B getB() { return b; }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     /** Sets this box's values to the values of another box. */
     public Box2<A, B> set(Box2<A, B> boxIn) {
@@ -121,11 +121,10 @@ public class Box2<A, B> implements Comparable<Box2<A, B>> {
     /** Sets this box's A value to the given object. */
     public Box2<A, B> setA(A obj) { a = obj; return this; }
     /** Sets this box's B value to the given object. */
-    public Box2<A, B> setB(B obj) { b = obj; return this; }
-    
-    //----------------
+    public Box2<A, B> setB(B obj) { b = obj; return this; }    
+    //================
     // Static Methods
-    //----------------
+    //================
     
     /** Returns true if both boxes have the same contents. NOTE: returns false if either box (or both) is null.*/
     public static boolean compare(Box2<?, ?> box1, Box2<?, ?> box2) {

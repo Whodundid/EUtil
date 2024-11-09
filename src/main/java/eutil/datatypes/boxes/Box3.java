@@ -15,28 +15,30 @@ import eutil.EUtil;
  * @since 1.0.1
  */
 public class Box3<A, B, C> {
-
+    
+    //========
+    // Fields
+    //========
+    
     public A a;
     public B b;
-    public C c;
-    
-    //--------------
+    public C c;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public Box3() { this(null, null, null); }
     public Box3(A aIn, B bIn, C cIn) { set(aIn, bIn, cIn); }
     public Box3(Box3<A, B, C> box) { nullDo(box, b -> set(b.a, b.b, b.c)); }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
-    @Override public String toString() { return "[" + a + ", " + b + ", " + c + "]"; }
-    
-    //---------
+    @Override public String toString() { return "[" + a + ", " + b + ", " + c + "]"; }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     public Box3<A, B, C> clear() { return set(null, null, null); }
     
@@ -84,11 +86,10 @@ public class Box3<A, B, C> {
      */
     public boolean allNull() {
         return EUtil.allNull(a, b, c);
-    }
-    
-    //---------
+    }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     public A getA() { return a; }
     public B getB() { return b; }
@@ -96,11 +97,10 @@ public class Box3<A, B, C> {
     
     public Box2<A, B> getAB() { return new Box2<A, B>(a, b); }
     public Box2<A, C> getAC() { return new Box2<A, C>(a, c); }
-    public Box2<B, C> getBC() { return new Box2<B, C>(b, c); }
-    
-    //---------
+    public Box2<B, C> getBC() { return new Box2<B, C>(b, c); }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     public Box3<A, B, C> set(Box3<A, B, C> boxIn) { return nullDoR(boxIn, b -> set(b.a, b.b, b.c), this); }
     public Box3<A, B, C> set(A aIn, B bIn, C cIn) {

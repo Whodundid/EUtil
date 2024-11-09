@@ -13,8 +13,7 @@ public class Point3i {
     // Fields
     //========
     
-    public int x, y, z;
-    
+    public int x, y, z;    
     //==============
     // Constructors
     //==============
@@ -24,8 +23,7 @@ public class Point3i {
         x = xIn;
         y = yIn;
         z = zIn;
-    }
-    
+    }    
     //===========
     // Overrides
     //===========
@@ -33,8 +31,7 @@ public class Point3i {
     @Override
     public String toString() {
         return "[" + x + ", " + y + ", " + z + "]";
-    }
-    
+    }    
     //=========
     // Methods
     //=========
@@ -52,16 +49,14 @@ public class Point3i {
     }
     public boolean compare(Point3i p) {
         return compare(p.x, p.y, p.z);
-    }
-    
+    }    
     //=========
     // Getters
     //=========
     
     public int getX() { return x; }
     public int getY() { return y; }
-    public int getZ() { return z; }
-    
+    public int getZ() { return z; }    
     //=========
     // Setters
     //=========

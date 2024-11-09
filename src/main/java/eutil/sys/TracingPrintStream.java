@@ -12,7 +12,7 @@ import java.io.PrintStream;
  * @since 1.0.0
  */
 public class TracingPrintStream extends PrintStream {
-
+    
     //========
     // Fields
     //========
@@ -29,8 +29,7 @@ public class TracingPrintStream extends PrintStream {
     /** True if primitive value outputs will also be traced. */
     private static boolean tracePrimitives = true;
     /** True if empty line outputs will also be traced. */
-    private static boolean traceEmptyLines = false;
-    
+    private static boolean traceEmptyLines = false;    
     //==============
     // Constructors
     //==============
@@ -42,8 +41,7 @@ public class TracingPrintStream extends PrintStream {
      */
     private TracingPrintStream(PrintStream stream) {
         super(stream);
-    }
-
+    }    
     //===========
     // Overrides
     //===========
@@ -71,7 +69,7 @@ public class TracingPrintStream extends PrintStream {
     public PrintStream printf(String format, Object... args) {
         return format(getPrefix() + format, args);
     }
-
+    
     //=========================
     // Internal Helper Methods
     //=========================
@@ -89,8 +87,7 @@ public class TracingPrintStream extends PrintStream {
         else if (elem.getClassName().startsWith("java.lang.Throwable")) elem = elems[BASE_DEPTH + 4];
         
         return "[" + elem.getClassName() + ":" + elem.getMethodName() + ":" + elem.getLineNumber() + "]: " + ((print) ? x : "");
-    }
-
+    }    
     //================
     // Static Methods
     //================

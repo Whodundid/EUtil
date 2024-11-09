@@ -24,12 +24,15 @@ import eutil.datatypes.util.EList;
  */
 public class BoxList<A, B> implements EList<Box2<A, B>> {
     
-    private final EList<Box2<A, B>> createdList = EList.newList();
-    public boolean allowDuplicates = false;
+    //========
+    // Fields
+    //========
     
-    //--------------
+    private final EList<Box2<A, B>> createdList = EList.newList();
+    public boolean allowDuplicates = false;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     /** Creates a new BoxList that does allow duplicate object entries. */
     public BoxList() { this(true); }
@@ -54,9 +57,9 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
         holderIn.forEach(s -> add(s.getA(), s.getB()));
     }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
     @Override
     public Iterator<Box2<A, B>> iterator() {
@@ -71,11 +74,10 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
         }
         r.append("]");
         return r.toString();
-    }
-    
-    //---------
+    }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     public Stream<Box2<A, B>> stream() { return createdList.stream(); }
     
@@ -145,7 +147,16 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     // Methods : Adders
     //------------------
     
-    public boolean add() { return add(null, null); }
+    /**
+     * Adds a box with null values to this box list.
+     * <p>
+     * Equivalent to calling add((A) null, (B) null);
+     * 
+     * @return True if successful
+     */
+    public boolean addEmpty() {
+        return add((A) null, (B) null);
+    }
     
     /** Creates a new StorageBox with the given A and B values and then adds it to the end of this holder. */
     public boolean add(A a, B b) {
@@ -262,11 +273,10 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
             }
         }
         return returnList;
-    }
-    
-    //---------
+    }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     /** Returns the box at the specified point number. */
     public Box2<A, B> get(int pointNumber) { return createdList.get(pointNumber); }
@@ -330,11 +340,10 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
             if (box.compare(a, b)) return box;
         }
         return null;
-    }
-    
-    //---------
+    }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     public Box2<A, B> setA(int index, A obj) { return createdList.get(index).setA(obj); }
     public Box2<A, B> setB(int index, B obj) { return createdList.get(index).setB(obj); }
@@ -353,11 +362,10 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
         Box2<A, B> box = getBoxWithA(obj);
         if (box != null) box.setB(newVal);
         return this;
-    }
-    
-    //----------------
+    }    
+    //================
     // Static Methods
-    //----------------
+    //================
     
     /** Static method used to create a new BoxList parameterized with the given object and value types for each list.
      *  If values are to be passed, they must be passed in list objects, and each list must have the same size. If both lists
@@ -513,7 +521,7 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     
     @Override
     public EList<Box2<A, B>> reversed() {
-        return createdList.reverse();
+        return createdList.reversed();
     }
 
     public static <A, B> BoxList<A, B> newList() { return new BoxList<>(); }

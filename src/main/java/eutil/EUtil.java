@@ -49,22 +49,24 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 2.8.0
+ *  @version 3.0.0-SNAPSHOT
  */
 public class EUtil {
     
-    //------------------
+    //===============
+    // Static Fields
+    //===============
     
     /** The EUtil library version. */
-    public static final String VERSION = "2.8.0";
+    public static final String VERSION = "3.0.0-SNAPSHOT";
     /** The EUtil library version date String. */
-    public static final String VERSION_DATE = "10/12/2024";
+    public static final String VERSION_DATE = "10/22/2024";
     /** EUtil static logger. */
     public static final Logger logger = Logger.getLogger("EUtil");
     
-    //------------------
-    // Hide Constructor
-    //------------------
+    //==============
+    // Constructors
+    //==============
     
     /**
      * Hidden to prevent instantiation as EUtil is intended to be a library class
@@ -74,18 +76,18 @@ public class EUtil {
      */
     private EUtil() {}
     
-    //----------------
+    //================
     // Static Loggers
-    //----------------
+    //================
     
     public static void log(Level levelIn, String msg) { logger.log(levelIn, msg); }
     public static void info(String msg) { logger.log(Level.INFO, msg); }
     public static void error(String msg) { logger.log(Level.SEVERE, msg); }
     public static void error(String msg, Throwable throwableIn) { logger.log(Level.SEVERE, msg, throwableIn); }
     
-    //--------------
+    //==============
     // Object Tests
-    //--------------
+    //==============
     
     /**
      * Returns true if the given object is null.
@@ -435,9 +437,9 @@ public class EUtil {
         return false;
     }
     
-    //-------------
+    //=============
     // List Checks
-    //-------------
+    //=============
     
     /**
      * A statement that returns the specified 'ifTrue' value if any member within
@@ -575,9 +577,9 @@ public class EUtil {
     public static Float getLast(float[] array, Predicate<Float> predicate, Float defaultVal) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return defaultVal;}
     public static Double getLast(double[] array, Predicate<Double> predicate, Double defaultVal) {requireNonNull(predicate);for(int i=array.length;i>=0;i--){if(predicate.test(array[i]))return array[i];}return defaultVal;}
     
-    //------------
+    //============
     // Stack Util
-    //------------
+    //============
     
     /**
      * Takes in a Stack of some type and returns a new Stack whose elements are in a
@@ -634,9 +636,9 @@ public class EUtil {
         return list;
     }
     
-    //-------------
+    //=============
     // File Checks
-    //-------------
+    //=============
     
     /**
      * Returns true if the given file is not null and actually exists on the system.
@@ -646,9 +648,9 @@ public class EUtil {
         return EFileUtil.fileExists(f);
     }
     
-    //---------------
+    //===============
     // Array Helpers
-    //---------------
+    //===============
     
     //convenience mappings to StringUtil
     public static String toString(boolean[] e) { return EStringUtil.toString(e); }
@@ -665,7 +667,7 @@ public class EUtil {
     public static String toString(Enumeration<?> e) { return EStringUtil.toString(e); }
     public static String toString(Map<?, ?> e) { return EStringUtil.toString(e); }
     
-    //convenience mappings to StringUtil
+    // convenience mappings to StringUtil
     public static String toString(boolean[] e, String separator) { return EStringUtil.toString(e, separator); }
     public static String toString(byte[] e, String separator) { return EStringUtil.toString(e, separator); }
     public static String toString(char[] e, String separator) { return EStringUtil.toString(e, separator); }
@@ -755,15 +757,15 @@ public class EUtil {
         return in;
     }
     
-    //----------------
+    //================
     // Lambda Helpers
-    //----------------
+    //================
     
     public static long length(Iterable<?> itr) { return itr.spliterator().getExactSizeIfKnown(); }
     
-    //-------------------------
+    //=========================
     // Array Stream Operations
-    //-------------------------
+    //=========================
     
     /** Boxes a generic varargs of typed-objects into a typed-array. */
     public static <E> E[] asArray(E... vals) { return asList(vals).toArray(vals); }
@@ -799,10 +801,9 @@ public class EUtil {
     /** Converts a typed-array to a Stream that filters out null objects then performs the given filter and finally performs a forEach loop on each remaining element. */
     public static <E> void filterNullForEachA(Predicate<? super E> filter, Consumer<? super E> action, E... vals) { filterNull(vals).filter(filter).forEach(action); }
     
-
-    //------------------------
+    //========================
     // List Stream Operations
-    //------------------------
+    //========================
     
     /** Converts a typed-Collection to a Stream then performs the given filter. */
     public static <E> Stream<E> filter(Collection<E> list, Predicate<? super E> filter) { return list.stream().filter(filter); }
@@ -864,9 +865,9 @@ public class EUtil {
     public static <E> EList<E> filterAsList(E[] arrIn, Predicate<? super E> filter) { return filterA(filter, arrIn).collect(EList.toEList()); }
     public static <E> EList<E> filterAsList(Collection<E> listIn, Predicate<? super E> filter) { return filter(listIn, filter).collect(EList.toEList()); }
     
-    //-----------------------
+    //=======================
     // Map Stream Operations
-    //-----------------------
+    //=======================
     
     /** Converts the entries of the given map into a stream of Entry<K, V>. */
     public static <K, V> Stream<Entry<K, V>> stream(Map<K, V> map) { return map.entrySet().stream(); }
@@ -888,7 +889,7 @@ public class EUtil {
      * @param map    The incoming map
      * @param mapper The function used to map entries of <K, V> into the
      *               given 'T' type
-     *                 
+     *               
      * @return A List of type 'T' consisting of each mapped entry from the
      *         given map
      * 
@@ -933,9 +934,9 @@ public class EUtil {
         return r;
     }
     
-    //---------------
+    //===============
     // Array forEach
-    //---------------
+    //===============
     
     public static void forEach(boolean[] arr, Consumer<? super Boolean> action) { for (boolean e : arr) action.accept(e); }
     public static void forEach(byte[] arr, Consumer<? super Byte> action) { for (byte e : arr) action.accept(e); }
@@ -946,9 +947,9 @@ public class EUtil {
     public static void forEach(float[] arr, Consumer<? super Float> action) { for (float e : arr) action.accept(e); }
     public static void forEach(double[] arr, Consumer<? super Double> action) { for (double e : arr) action.accept(e); }
     
-    //-----------------------
+    //=======================
     // Array forEach Returns
-    //-----------------------
+    //=======================
     
     public static <R> R forEachR(boolean[] arr, Consumer<? super Boolean> action, R returnVal) { for (boolean e : arr) { action.accept(e); } return returnVal; }
     public static <R> R forEachR(byte[] arr, Consumer<? super Byte> action, R returnVal) { for (byte e : arr) { action.accept(e); } return returnVal; }
@@ -1086,9 +1087,9 @@ public class EUtil {
     public static <E> boolean contains(float[] arr, float x) { for (float i : arr) if (i == x) return true; return false; }
     public static <E> boolean contains(double[] arr, double x) { for (double i : arr) if (i == x) return true; return false; }
     
-    //----------------
+    //================
     // Try Statements
-    //----------------
+    //================
     
     public static boolean tryCode(Runnable func) { try { func.run(); return true; } catch (Throwable e) { e.printStackTrace(); } return false; }
     public static <R> R tryCodeR(Runnable func, R returnVal) { try { func.run(); } catch (Throwable e) { e.printStackTrace(); } return returnVal; }

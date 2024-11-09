@@ -17,8 +17,7 @@ public class ExpandableGrid<E> {
     //========
     
     private int width, height;
-    private EList<EList<E>> grid;
-    
+    private EList<EList<E>> grid;    
     //==============
     // Constructors
     //==============
@@ -35,9 +34,9 @@ public class ExpandableGrid<E> {
         setSize(widthIn, heightIn, defaultValue);
     }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
     @Override
     public String toString() {
@@ -65,11 +64,10 @@ public class ExpandableGrid<E> {
         }
         
         return sb.toString();
-    }
-    
-    //---------
+    }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     public void expand(AnchorPoint anchor, int amount) { expand(anchor, amount, null); }
     public void expand(AnchorPoint anchor, int amount, E defaultVal) {
@@ -277,8 +275,7 @@ public class ExpandableGrid<E> {
                 set(null, j, i);
             }
         }
-    }
-    
+    }    
     //=========
     // Getters
     //=========
@@ -314,8 +311,7 @@ public class ExpandableGrid<E> {
     
     public int getWidth() { return width; }
     public int getHeight() { return height; }
-    public EList<EList<E>> getInternalList() { return grid; }
-    
+    public EList<EList<E>> getInternalList() { return grid; }    
     //=========
     // Setters
     //=========
@@ -367,11 +363,10 @@ public class ExpandableGrid<E> {
                 set(in.get(y, x), y, x);
             }
         }
-    }
-    
-    //----------------
+    }    
+    //================
     // Static Methods
-    //----------------
+    //================
     
     /**
      * Returns true if the given x and y coords are within the bounds for the

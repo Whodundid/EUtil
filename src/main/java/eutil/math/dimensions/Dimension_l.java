@@ -17,8 +17,7 @@ public class Dimension_l extends IDimension<Long> {
     public long startY = 0L, endY = 0L;
     public long midX = 0L, midY = 0L;
     public long width = 0L, height = 0L;
-    public long halfWidth = 0L, halfHeight = 0L;
-    
+    public long halfWidth = 0L, halfHeight = 0L;    
     //==============
     // Constructors
     //==============
@@ -45,8 +44,7 @@ public class Dimension_l extends IDimension<Long> {
     
     public Dimension_l(IDimension<?> dimIn) {
         setDimensions(dimIn.startX_l(), dimIn.startY_l(), dimIn.endX_l(), dimIn.endY_l());
-    }
-    
+    }    
     //===========
     // Overrides
     //===========
@@ -111,8 +109,7 @@ public class Dimension_l extends IDimension<Long> {
     @Override protected int getArea_i() { return (int) getArea_l(); }
     @Override protected long getArea_l() { return ((endX - startX) * (endY - startY)); }
     @Override protected float getArea_f() { return getArea_l(); }
-    @Override protected double getArea_d() { return getArea_l(); }
-    
+    @Override protected double getArea_d() { return getArea_l(); }    
     //=========
     // Methods
     //=========
@@ -386,8 +383,7 @@ public class Dimension_l extends IDimension<Long> {
                startY == dimIn.startY_l() &&
                width == dimIn.width_l() &&
                height == dimIn.height_l();
-    }
-    
+    }    
     //================
     // Static Methods
     //================

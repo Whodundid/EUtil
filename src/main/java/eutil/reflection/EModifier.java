@@ -19,8 +19,7 @@ public class EModifier {
     //========
     
     private final int m;
-    private final String toString;
-    
+    private final String toString;    
     //==============
     // Constructors
     //==============
@@ -50,15 +49,14 @@ public class EModifier {
         toString = sb.trim();
     }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
-    @Override public String toString() { return toString; }
-    
-    //---------
+    @Override public String toString() { return toString; }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     public boolean isPublic() { return Modifier.isPublic(m); }
     public boolean isPrivate() { return Modifier.isPrivate(m); }
@@ -74,11 +72,10 @@ public class EModifier {
     public boolean isStrict() { return Modifier.isStrict(m); }
     
     public boolean publicFinal() { return isPublic() && isFinal(); }
-    public boolean publicStatic() { return isPublic() && isStatic(); }
-    
-    //----------------
+    public boolean publicStatic() { return isPublic() && isStatic(); }    
+    //================
     // Static Methods
-    //----------------
+    //================
     
     public static EModifier of(Object o) {
         if (o == null) return null;

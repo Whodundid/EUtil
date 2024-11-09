@@ -3,34 +3,34 @@ package eutil.datatypes;
 /** Immutable array of values. */
 public class Tuple {
     
-    private final Object[] values;
+    //========
+    // Fields
+    //========
     
-    //--------------
+    private final Object[] values;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public Tuple(Object... valuesIn) {
         values = valuesIn;
-    }
-    
-    //---------
+    }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     public int length() { return values.length; }
     
     public Tuple from(int start) { return from(this, start, values.length - 1); }
-    public Tuple from(int start, int end) { return from(this, start, end); }
-    
-    //---------
+    public Tuple from(int start, int end) { return from(this, start, end); }    
+    //=========
     // Getters
-    //---------
+    //=========
     
-    public Object get(int i) { return values[i]; }
-    
-    //----------------
+    public Object get(int i) { return values[i]; }    
+    //================
     // Static Methods
-    //----------------
+    //================
     
     public static Tuple from(Tuple in, int start) { return from(in, start, in.length() - 1); }
     public static Tuple from(Tuple in, int start, int end) {

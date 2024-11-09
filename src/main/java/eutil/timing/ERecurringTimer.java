@@ -10,11 +10,10 @@ package eutil.timing;
  * @author Hunter Bragg
  * @since 1.7.1
  */
-public class ERecurringTimer extends ETimer {
-    
-    //--------------
+public class ERecurringTimer extends ETimer {    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public ERecurringTimer() { this(null, 0l); }
     public ERecurringTimer(long countdownIn) { this(null, countdownIn); }
@@ -33,9 +32,9 @@ public class ERecurringTimer extends ETimer {
         addListeners(listeners);
     }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
     @Override
     protected void start_internal() {

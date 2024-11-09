@@ -13,8 +13,7 @@ public class Point3d {
     // Fields
     //========
     
-    public double x, y, z;
-    
+    public double x, y, z;    
     //==============
     // Constructors
     //==============
@@ -24,8 +23,7 @@ public class Point3d {
         x = xIn;
         y = yIn;
         z = zIn;
-    }
-    
+    }    
     //===========
     // Overrides
     //===========
@@ -33,8 +31,7 @@ public class Point3d {
     @Override
     public String toString() {
         return "[" + x + ", " + y + ", " + z + "]";
-    }
-    
+    }    
     //=========
     // Methods
     //=========
@@ -52,16 +49,14 @@ public class Point3d {
     }
     public boolean compare(Point3d p) {
         return compare(p.x, p.y, p.z);
-    }
-    
+    }    
     //=========
     // Getters
     //=========
     
     public double getX() { return x; }
     public double getY() { return y; }
-    public double getZ() { return z; }
-    
+    public double getZ() { return z; }    
     //=========
     // Setters
     //=========

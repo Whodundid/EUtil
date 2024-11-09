@@ -14,7 +14,11 @@ import static eutil.EUtil.*;
  * @since 1.2.0
  */
 public class Vec2d {
-
+    
+    //========
+    // Fields
+    //========
+    
     /** 2D float vector of {0.0x, 0.0y}. */
     public static final Vec2d ZERO = new Vec2d(0.0, 0.0);
     /** 2D float vector of {Float.NaNx, Float.NaNy}. */ 
@@ -24,11 +28,10 @@ public class Vec2d {
     /** 2D float vector of {Float.NEGATIVE_INFINITYx, FLOAT.NEGATIVE_INFINITYy}. */
     public static final Vec2d NEGATIVE_INFINITY = new Vec2d(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
     
-    public double x = 0.0d, y = 0.0d;
-    
-    //--------------
+    public double x = 0.0d, y = 0.0d;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     /** Creates a new Vec2d with 0.0d for x and 0.0d for y. */
     public Vec2d() { this(0.0d, 0.0d); }
@@ -58,15 +61,14 @@ public class Vec2d {
         this.y = vecIn.y;
     }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
-    @Override public String toString() { return "<" + x + ", " + y + ">"; }
-    
-    //---------
+    @Override public String toString() { return "<" + x + ", " + y + ">"; }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /** Sets each value in this Vector3D to 0. */
     public Vec2d clear() { set(0, 0); return this; }
@@ -94,10 +96,6 @@ public class Vec2d {
         return new double[] { x, y };
     }
     
-    //-------------
-    // Vector Math
-    //-------------
-    
     public double magnitude() { return Math.sqrt(x * x + y * y); }
     public double dotProduct(Vec2d vecIn) { return Math.acos(multiplyAndAdd(vecIn) / (magnitude() * vecIn.magnitude())); }
     public double dotProductDegrees(Vec2d vecIn) { return (dotProduct(vecIn) * 180) / Math.PI; }
@@ -106,18 +104,16 @@ public class Vec2d {
     //public Vector2D cross(Vector2D vecIn) { return nullApplyR(vecIn, v -> new Vector2D(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x), null); }
     public Vec2d add(Vec2d vecIn) { return nullApplyR(vecIn, v -> new Vec2d(x + v.x, y + v.y), this); }
     public Vec2d sub(Vec2d vecIn) { return nullApplyR(vecIn, v -> new Vec2d(x - v.x, y - v.y), null); }
-    public Vec2d normalize() { return nullDoR(magnitude(), l -> { x /= l; y /= l; }, this); }
-
-    //---------
+    public Vec2d normalize() { return nullDoR(magnitude(), l -> { x /= l; y /= l; }, this); }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     public double getX() { return x; }
-    public double getY() { return y; }
-    
-    //---------
+    public double getY() { return y; }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     public Vec2d set(Vec2d vecIn) { return nullDoR(vecIn, v -> set(v.x, v.y), this); }
     public Vec2d set(Vec3i vecIn) { return nullDoR(vecIn, v -> set(v.x, v.y), this); }
@@ -127,9 +123,9 @@ public class Vec2d {
     public Vec2d setX(double xIn) { x = xIn; return this; }
     public Vec2d setY(double yIn) { y = yIn; return this; }
     
-    //--------------------
+    //====================
     // Static Vector Math
-    //--------------------
+    //====================
     
     /** Returns the magnitude of the given Vector3. */
     public static double magnitude(Vec2d vecIn) {
@@ -170,4 +166,5 @@ public class Vec2d {
     public static Vec2d normalize(Vec2d vecIn) {
         return nullDoR(vecIn, magnitude(vecIn), (v, l) -> { v.x /= l; v.y /= l; }, vecIn);
     }
+    
 }

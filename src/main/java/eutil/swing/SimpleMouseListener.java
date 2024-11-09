@@ -27,9 +27,9 @@ public class SimpleMouseListener implements MouseListener {
     public void onRightRelease(MouseEvent e) {}
     public void onMiddleRelease(MouseEvent e) {}
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
     @Override
     public void mouseClicked(MouseEvent e) {

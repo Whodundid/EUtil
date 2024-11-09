@@ -18,8 +18,7 @@ public class Dimension_d extends IDimension<Double> {
     public double startY = 0.0, endY = 0.0;
     public double midX = 0.0, midY = 0.0;
     public double width = 0.0, height = 0.0;
-    public double halfWidth = 0, halfHeight = 0;
-    
+    public double halfWidth = 0, halfHeight = 0;    
     //==============
     // Constructors
     //==============
@@ -46,8 +45,7 @@ public class Dimension_d extends IDimension<Double> {
     
     public Dimension_d(IDimension<?> dimIn) {
         setDimensions(dimIn.startX_d(), dimIn.startY_d(), dimIn.endX_d(), dimIn.endY_d());
-    }
-    
+    }    
     //===========
     // Overrides
     //===========
@@ -112,8 +110,7 @@ public class Dimension_d extends IDimension<Double> {
     @Override protected int getArea_i() { return (int) getArea_d(); }
     @Override protected long getArea_l() { return (long) getArea_d(); }
     @Override protected float getArea_f() { return (float) getArea_d(); }
-    @Override protected double getArea_d() { return ((endX - startX) * (endY - startY)); }
-    
+    @Override protected double getArea_d() { return ((endX - startX) * (endY - startY)); }    
     //=========
     // Methods
     //=========
@@ -387,8 +384,7 @@ public class Dimension_d extends IDimension<Double> {
                startY == dimIn.startY_d() &&
                width == dimIn.width_d() &&
                height == dimIn.height_d();
-    }
-    
+    }    
     //================
     // Static Methods
     //================

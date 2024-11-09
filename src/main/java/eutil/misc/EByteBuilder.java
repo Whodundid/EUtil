@@ -14,11 +14,14 @@ import eutil.datatypes.util.EList;
  */
 public class EByteBuilder {
     
-    private EList<Byte> bytes;
+    //========
+    // Fields
+    //========
     
-    //--------------
+    private EList<Byte> bytes;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public EByteBuilder() {
         bytes = EList.newList();
@@ -41,11 +44,10 @@ public class EByteBuilder {
             for (byte b : total)
                 bytes.add(b);
         }
-    }
-    
-    //---------
+    }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     public EByteBuilder a(Byte b) { return append(b.byteValue()); }
     public EByteBuilder a(byte b) { return append(b); }
@@ -62,7 +64,7 @@ public class EByteBuilder {
     }
     
     public void reverse() {
-        bytes = bytes.reverse();
+        bytes = bytes.reversed();
     }
     
     public byte[] toByteArray() {

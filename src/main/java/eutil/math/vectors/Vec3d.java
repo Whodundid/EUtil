@@ -14,12 +14,15 @@ import static eutil.EUtil.*;
  * @since 1.0.0
  */
 public class Vec3d {
-
-    public double x = 0.0, y = 0.0, z = 0.0;
     
-    //--------------
+    //========
+    // Fields
+    //========
+    
+    public double x = 0.0, y = 0.0, z = 0.0;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public Vec3d() {}
     public Vec3d(Vec3d vecIn) { nullDo(vecIn, v -> set(v.x, v.y, v.z)); }
@@ -27,15 +30,14 @@ public class Vec3d {
     public Vec3d(Number n) { set(n, n, n); }
     public Vec3d(Number x, Number y, Number z) { set(x, y, z); }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
-    @Override public String toString() { return "<" + x + ", " + y + ", " + z + ">"; }
-    
-    //---------
+    @Override public String toString() { return "<" + x + ", " + y + ", " + z + ">"; }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /** Sets each value in this Vector3D to 0. */
     public Vec3d clear() { set(0.0, 0.0, 0.0); return this; }
@@ -64,10 +66,6 @@ public class Vec3d {
     /** Returns true if this Vector3Ds z is equal to the given value. */
     public boolean compareZ(double zIn) { return z == zIn; }
     
-    //-------------
-    // Vector Math
-    //-------------
-    
     public double multAdd() { return multAdd(this); }
     public double mag() { return mag(this); }
     public double dot(Vec3d vecIn) { return dot(this, vecIn); }
@@ -79,19 +77,17 @@ public class Vec3d {
     public Vec3d sub(Vec3d vecIn) { return sub(this, vecIn); }
     public Vec3d norm() { return norm(this); }
     public double comp(Vec3d b) { return compAB(this, b); }
-    public Vec3d proj(Vec3d b) { return projAB(this, b); }
-
-    //---------
+    public Vec3d proj(Vec3d b) { return projAB(this, b); }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     public double getX() { return x; }
     public double getY() { return y; }
-    public double getZ() { return z; }
-    
-    //---------
+    public double getZ() { return z; }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     public Vec3d set(Vec3d vecIn) { return set(vecIn.x, vecIn.y, vecIn.z); }
     public Vec3d set(Vec3i vecIn) { return set(vecIn.x, vecIn.y, vecIn.z); }
@@ -101,9 +97,9 @@ public class Vec3d {
     public Vec3d setY(double yIn) { y = yIn; return this; }
     public Vec3d setZ(double zIn) { z = zIn; return this; }
     
-    //--------------------
+    //====================
     // Static Vector Math
-    //--------------------
+    //====================
     
     public static double multAdd(Vec3d vecIn) {
         Vec3d v = vecIn;

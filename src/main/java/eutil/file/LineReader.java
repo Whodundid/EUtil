@@ -20,14 +20,17 @@ import eutil.debug.Broken;
  */
 public class LineReader implements Closeable {
     
+    //========
+    // Fields
+    //========
+    
     private final BufferedReader reader;
     private long lineNum = 0;
     private boolean grabbed = false;
-    private String grabbedLine;
-    
-    //--------------
+    private String grabbedLine;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public LineReader(String pathIn) throws IOException { this(new File(pathIn), Charset.forName("UTF8")); }
     public LineReader(File pathIn) throws IOException { this(pathIn, Charset.forName("UTF8")); }
@@ -36,18 +39,17 @@ public class LineReader implements Closeable {
         reader = new BufferedReader(new FileReader(pathIn, charset));
     }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
     @Override
     public void close() throws IOException {
         if (reader != null) reader.close();
-    }
-    
-    //---------
+    }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /**
      * Returns true if this LineReader has another line to be read.
@@ -85,11 +87,10 @@ public class LineReader implements Closeable {
     @Broken(reason="The first line in a file is missed!")
     public void forEach(Consumer<? super String> action) { reader.lines().forEach(action); }
     
-    public EList<String> getAllLines() { return lines().collect(EList.toEList()); }
-    
-    //---------
+    public EList<String> getAllLines() { return lines().collect(EList.toEList()); }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     /**
      * Returns the current line's line number within the file.
@@ -107,11 +108,10 @@ public class LineReader implements Closeable {
      */
     public long getTotalLineNum() {
         return reader.lines().count();
-    }
-    
-    //----------------
+    }    
+    //================
     // Static Methods
-    //----------------
+    //================
     
     /**
      * Extracts the contents of the given file line-by-line and stores them

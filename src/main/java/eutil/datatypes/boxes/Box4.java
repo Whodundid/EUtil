@@ -16,32 +16,34 @@ import eutil.EUtil;
  * @since 1.0.1
  */
 public class Box4<A, B, C, D> {
-
+    
+    //========
+    // Fields
+    //========
+    
     public A a;
     public B b;
     public C c;
-    public D d;
-    
-    //--------------
+    public D d;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public Box4() { this(null, null, null, null); }
     public Box4(A aIn, B bIn, C cIn, D dIn) { set(aIn, bIn, cIn, dIn); }
     public Box4(Box4<A, B, C, D> box) { nullDo(box, b -> set(b.a, b.b, b.c, b.d)); }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
     @Override
     public String toString() {
         return "[" + a + ", " + b + ", " + c + ", " + d + "]";
-    }
-    
-    //---------
+    }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     public boolean contains(Object obj) {
         if (obj == null) return a == null || b == null || c == null || d == null;
@@ -89,20 +91,18 @@ public class Box4<A, B, C, D> {
      */
     public boolean allNull() {
         return EUtil.allNull(a, b, c, d);
-    }
-    
-    //---------
+    }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     public A getA() { return a; }
     public B getB() { return b; }
     public C getC() { return c; }
-    public D getD() { return d; }
-    
-    //---------
+    public D getD() { return d; }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     public Box4<A, B, C, D> set(Box4<A, B, C, D> boxIn) { return nullDoR(boxIn, o -> set(o.a, o.b, o.c, o.d), this); }
     public Box4<A, B, C, D> set(A aIn, B bIn, C cIn, D dIn) {

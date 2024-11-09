@@ -2,6 +2,10 @@ package eutil.timing;
 
 public class ESimpleTimer {
     
+    //========
+    // Fields
+    //========
+    
     /** The time (in ms) this timer was started. */
     protected long startTime;
     /** The length of time (in ms) this timer will run for. */
@@ -11,20 +15,18 @@ public class ESimpleTimer {
     /** True if the timer has ever been started. */
     protected boolean hasRun = false;
     /** True if the timer was stopped. */
-    protected boolean interrupted = false;
-    
-    //--------------
+    protected boolean interrupted = false;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public ESimpleTimer() { this(0l); }
     public ESimpleTimer(long countdownIn) {
         duration = countdownIn;
-    }
-    
-    //---------
+    }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /**
      * Resets and starts counting down this timer.
@@ -99,11 +101,10 @@ public class ESimpleTimer {
     /** Return true if this timer is actively counting down. */
     public boolean isStarted() { return isCounting; }
     /** Returns true if this timer has <u>ever</u> been started. */
-    public boolean hasEverRun() { return hasRun; }
-    
-    //---------
+    public boolean hasEverRun() { return hasRun; }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     /**
      * Sets the running duration of this timer.
@@ -114,11 +115,10 @@ public class ESimpleTimer {
      */
     public void setDuration(long durationIn) {
         duration = durationIn;
-    }
-    
-    //----------------
+    }    
+    //================
     // Static Methods
-    //----------------
+    //================
     
     /**
      * Returns true if any of the given timers are actively counting down.

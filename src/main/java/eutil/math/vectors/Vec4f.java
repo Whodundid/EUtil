@@ -13,12 +13,15 @@ import static eutil.EUtil.*;
  * @since 1.2.1
  */
 public class Vec4f {
-
-    public float x = 0.0f, y = 0.0f, z = 0.0f, w = 0.0f;
     
-    //--------------
+    //========
+    // Fields
+    //========
+    
+    public float x = 0.0f, y = 0.0f, z = 0.0f, w = 0.0f;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public Vec4f() {}
     public Vec4f(Vec4f vecIn) { nullDo(vecIn, v -> set(v.x, v.y, v.z, 0.0f)); }
@@ -29,15 +32,14 @@ public class Vec4f {
     public Vec4f(Number x, Number y, Number z) { set(x, y, z, 0.0f); }
     public Vec4f(Number x, Number y, Number z, Number w) { set(x, y, z, w); }
     
-    //-----------
+    //===========
     // Overrides
-    //-----------
+    //===========
     
-    @Override public String toString() { return "<" + x + ", " + y + ", " + z + ", " + w + ">"; }
-    
-    //---------
+    @Override public String toString() { return "<" + x + ", " + y + ", " + z + ", " + w + ">"; }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /** Sets each value in this Vec3f to 0. */
     public Vec4f clear() { set(0.0f, 0.0f, 0.0f, 0.0f); return this; }
@@ -64,20 +66,18 @@ public class Vec4f {
     public boolean compareZ(float zIn) { return z == zIn; }
     
     /** Returns true if this Vec3fs z is equal to the given value. */
-    public boolean compareW(float aIn) { return w == aIn; }
-
-    //---------
+    public boolean compareW(float aIn) { return w == aIn; }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     public float getX() { return x; }
     public float getY() { return y; }
     public float getZ() { return z; }
-    public float getW() { return w; }
-    
-    //---------
+    public float getW() { return w; }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     public Vec4f set(Vec4f vecIn, float wIn) { return set(vecIn.x, vecIn.y, vecIn.z, wIn); }
     public Vec4f set(Vec3i vecIn, float wIn) { return set(vecIn.x, vecIn.y, vecIn.z, wIn); }

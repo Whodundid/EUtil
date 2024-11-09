@@ -47,11 +47,10 @@ public enum JavaDatatype {
     VOID,
     NULL,
     
-    ;
-    
-    //---------
+    ;    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /** Returns true if the given dataType is a number. */
     public boolean isNumber() {
@@ -84,11 +83,10 @@ public enum JavaDatatype {
         case STRING, OBJECT, ARRAY, CONSTRUCTOR, METHOD, CLASS, ENUM -> true;
         default -> false;
         };
-    }
-    
-    //----------------
+    }    
+    //================
     // Static Methods
-    //----------------
+    //================
     
     /** Returns true if the given dataType is a number. */
     public static boolean isNumber(JavaDatatype typeIn) {
@@ -254,9 +252,9 @@ public enum JavaDatatype {
                in == double.class;
     }
     
-    //-------------------
+    //===================
     // Static Converters
-    //-------------------
+    //===================
     
     /**
      * Returns the datatype of the given object.

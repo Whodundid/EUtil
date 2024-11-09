@@ -10,18 +10,17 @@ import eutil.strings.EStringUtil;
  * @author Hunter Bragg
  * @since 1.1.1
  */
-public final class Comparisons {
-    
-    //--------------
+public final class Comparisons {    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     // Hide constructor
     private Comparisons() {}
     
-    //------------------
+    //==================
     // Comparison Types
-    //------------------
+    //==================
     
     /**
      * A general string length comparison.

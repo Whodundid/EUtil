@@ -555,6 +555,148 @@ public interface EList<E> extends List<E>, Deque<E> {
     }
     
     //=========
+    // Actions
+    //=========
+    
+    /**
+     * If this list contains the given 'object', then the provided 'action' is
+     * executed on the found object.
+     * <p>
+     * If list this list does not contain the given object then no action is
+     * performed.
+     * <p>
+     * NOTE: provided action must NOT be null!
+     * 
+     * @param object The object to find
+     * @param action The action to perform on the given object if found
+     * 
+     * @since 3.0.0
+     */
+    default void executeOnIfContains(E object, Consumer<? super E> action) {
+        Objects.requireNonNull(action);
+        int index = indexOf(object);
+        
+        // check if contains
+        if (index < 0) return;
+        
+        // get element
+        E o = get(index);
+        action.accept(o);
+    }
+    
+    /**
+     * Executes the given action on the object located at this list's given
+     * index.
+     * <p>
+     * If the provided index is outside of the bounds of list list, then an
+     * {@link java.lang.IndexOutOfBoundsException} is thrown instead.
+     * <p>
+     * NOTE: provided action must NOT be null!
+     * 
+     * @param index  An index within the bounds of this list
+     * @param action The action to perform
+     * 
+     * @since 3.0.0
+     */
+    default void executeOnObjectAtIndex(int index, Consumer<? super E> action) {
+        Objects.requireNonNull(action);
+        
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        
+        // get element
+        E o = get(index);
+        action.accept(o);
+    }
+    
+    /**
+     * Performs the given 'action' on all objects in this list whose class type
+     * matches the given one.
+     * <p>
+     * If this list does not contain any instances of the given class type, then
+     * no action is performed.
+     * <p>
+     * NOTE: provided action must NOT be null!
+     * 
+     * @param classType The class type to find instances for
+     * @param action    The action to perform on all instances matching the
+     *                  given class type
+     *                  
+     * @since 3.0.0
+     */
+    default void executeOnAllInstancesOf(Class<?> classType, Consumer<? super E> action) {
+        Objects.requireNonNull(classType);
+        
+        var it = iterator();
+        while (it.hasNext()) {
+            var e = it.next();
+            
+            if (classType.isInstance(e)) {
+                action.accept(e);
+            }
+        }
+    }
+    
+    /**
+     * If this list contains the given 'object', then the provided 'function' is
+     * executed on the found object and the function's result is returned.
+     * <p>
+     * If this list does not contain the given object, then no action is
+     * performed and null is returned instead.
+     * <p>
+     * NOTE: provided function must NOT be null!
+     * 
+     * @param <T>      The given function's expected return type
+     * @param object   The object to find
+     * @param function The function to perform on the given object if found
+     * 
+     * @return The computed function's result if this list contains the given
+     *             object or 'null' if not found
+     *             
+     * @sincce 3.0.0
+     */
+    default <T> T applyOnIfContains(E object, Function<? super E, T> function) {
+        Objects.requireNonNull(function);
+        int index = indexOf(object);
+        
+        // check if contains
+        if (index < 0) return null;
+        
+        // get element
+        E o = get(index);
+        return function.apply(o);
+    }
+    
+    /**
+     * Executes the given function on the object located at this list's given
+     * index and returns the function's result.
+     * <p>
+     * If the provided index is outside of the bounds of list list, then an
+     * {@link java.lang.IndexOutOfBoundsException} is thrown instead.
+     * <p>
+     * NOTE: provided function must NOT be null!
+     * 
+     * @param index    An index within the bounds of this list
+     * @param function The function to perform
+     * 
+     * @return The computed function's result on the element at the given index
+     * 
+     * @since 3.0.0
+     */
+    default <T> T applyOnObjectAtIndex(int index, Function<? super E, T> function) {
+        Objects.requireNonNull(function);
+        
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        
+        // get element
+        E o = get(index);
+        return function.apply(o);
+    }
+    
+    //=========
     // Mappers
     //=========
     
@@ -650,6 +792,7 @@ public interface EList<E> extends List<E>, Deque<E> {
      * class.
      */
     default E getFirstInstanceOf(Class<?> cIn) {
+        Objects.requireNonNull(cIn);
         for (E e : this) { if (cIn.isInstance(e)) return (E) e; }
         return null;
     }
@@ -659,6 +802,7 @@ public interface EList<E> extends List<E>, Deque<E> {
      * class.
      */
     default EList<E> getAllInstancesOf(Class<?> cIn) {
+        Objects.requireNonNull(cIn);
         EList<E> instances = EList.newList();
         for (E e : this) if (cIn.isInstance(e)) instances.add((E) e);
         return instances;
@@ -669,6 +813,7 @@ public interface EList<E> extends List<E>, Deque<E> {
      * of the given class.
      */
     default EList<E> removeAllInstancesOf(Class<?> cIn) {
+        Objects.requireNonNull(cIn);
         EList<E> toBeRemoved = EList.newList();
         for (E e : this) if (cIn.isInstance(e)) toBeRemoved.add((E) e);
         for (E e : toBeRemoved) remove(e);
@@ -680,6 +825,7 @@ public interface EList<E> extends List<E>, Deque<E> {
      * given class.
      */
     default boolean containsInstanceOf(Class<?> cIn) {
+        Objects.requireNonNull(cIn);
         for (E e : this) { if (cIn.isInstance(e)) return true; }
         return false;
     }
@@ -689,6 +835,7 @@ public interface EList<E> extends List<E>, Deque<E> {
      * given class.
      */
     default boolean containsNoInstanceOf(Class<?> cIn) {
+        Objects.requireNonNull(cIn);
         for (E e : this) { if (cIn.isInstance(e)) return false; }
         return true;
     }
@@ -698,27 +845,64 @@ public interface EList<E> extends List<E>, Deque<E> {
      * 
      * @since 1.6.0
      */
-    default EList<E> reverse() {
-        return EList.reverse(this);
+    default EList<E> reverseInPlace() {
+        reverseInPlace(this);
+        return this;
     }
     
+    /**
+     * Overriden to comply with {@link java.util.List#reversed()} interface signature.
+     * <p>
+     * {@inheritDoc}
+     * 
+     * @see java.util.List
+     */
     @Override
     default EList<E> reversed() {
-        return reverse();
+        return EList.reverse(this);
     }
     
     //=============
     // Add Methods
     //=============
     
-    default EList<E> clearThenAdd(E... e) {
+    /**
+     * Clears this list and then adds the follow values.
+     * 
+     * @param toAdd      The element to add
+     * @param additional Additional elements to add
+     * 
+     * @return This list
+     * 
+     * @since 1.0.0
+     * @since 3.0.0 Now requires at least one element be provided
+     */
+    default EList<E> clearThenAdd(E toAdd, E... additional) {
         clear();
-        return add(e);
+        return add(toAdd, additional);
     }
     
-    /** Adds each of the elements to this list. */
-    default EList<E> add(E... e) {
-        for (int i = 0; i < e.length; i++) add(e[i]);
+    /**
+     * Adds the given element as well as each additionally provided element to
+     * this list.
+     * 
+     * @param element    The element to add
+     * @param additional Additional elements to add
+     * 
+     * @return This list
+     * 
+     * @since 1.0.0
+     * @since 3.0.0 Now requires at least one element be provided
+     */
+    default EList<E> add(E element, E... additional) {
+        // add given element
+        add(element);
+        
+        // add all additional elements
+        for (int i = 0; i < additional.length; i++) {
+            add(additional[i]);
+        }
+        
         return this;
     }
     
@@ -968,8 +1152,7 @@ public interface EList<E> extends List<E>, Deque<E> {
      */
     default Set<E> toSet() {
         return new HashSet<>(this);
-    }
-    
+    }    
     //================
     // Static Methods
     //================
@@ -1006,9 +1189,27 @@ public interface EList<E> extends List<E>, Deque<E> {
         return l;
     }
     
+    /**
+     * Reverses the order of the elements in the given list in place.
+     * <p>
+     * This does not create a new collection.
+     * <p>
+     * Equivalent to calling @{link {@link java.util.Collections#reverse(List)}.
+     * 
+     * @param <E> The element type of the given EList
+     * @param listIn The list to reverse in place
+     * 
+     * @since 3.0.0
+     */
+    static void reverseInPlace(EList<?> listIn) {
+        Collections.reverse(listIn);
+    }
+    
     static <E> EList<E> reverse(EList<E> listIn) {
         EList<E> r = new EArrayList<>(listIn.size());
-        for (int i = listIn.size() - 1; i >= 0; i--) { r.add(listIn.get(i)); }
+        for (int i = listIn.size() - 1; i >= 0; i--) {
+            r.add(listIn.get(i));
+        }
         return r;
     }
     
@@ -1086,7 +1287,7 @@ public interface EList<E> extends List<E>, Deque<E> {
      * Collector implementation used to be able to convert a typed stream of
      * data into an EArrayList of the same type.
      */
-    public static <T> Collector<T, ?, EArrayList<T>> toEList() {
+    static <T> Collector<T, ?, EArrayList<T>> toEList() {
         return new ECollector<>((Supplier<List<T>>) EArrayList::new, List::add, (left, right) -> {
             left.addAll(right);
             return left;

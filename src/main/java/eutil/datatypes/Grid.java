@@ -10,17 +10,16 @@ import java.lang.reflect.Array;
  */
 public class Grid<E> {
     
-    //--------
+    //========
     // Fields
-    //--------
+    //========
     
     private int width, height;
     private E[][] data;
-    private Class<E> type;
-    
-    //--------------
+    private Class<E> type;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public Grid() {}
     public Grid(Class<E> typeIn) { type = typeIn; }
@@ -29,11 +28,10 @@ public class Grid<E> {
         height = heightIn;
         type = typeIn;
         data = (E[][]) Array.newInstance(type, width, height);
-    }
-    
-    //---------
+    }    
+    //=========
     // Methods
-    //---------
+    //=========
     
     public void build() {
         data = (E[][]) Array.newInstance(type, width, height);
@@ -43,11 +41,10 @@ public class Grid<E> {
     public Grid<E> clear() {
         data = (E[][]) Array.newInstance(type, width, height);
         return this;
-    }
-    
-    //---------
+    }    
+    //=========
     // Getters
-    //---------
+    //=========
     
     /** Returns the value at given x and y coords of array. */
     public E get(int xIn, int yIn) {
@@ -90,11 +87,10 @@ public class Grid<E> {
     /** Returns the height of tiles in this grid. */
     public int getHeight() { return height; }
     
-    public E[][] getData() { return data; }
-    
-    //---------
+    public E[][] getData() { return data; }    
+    //=========
     // Setters
-    //---------
+    //=========
     
     public void setWidth(int widthIn) { width = widthIn; }
     public void setHeight(int heightIn) { height = heightIn; }
@@ -132,11 +128,10 @@ public class Grid<E> {
                 data[i][j] = in[x][y];
             }
         }
-    }
-    
-    //----------------
+    }    
+    //================
     // Static Methods
-    //----------------
+    //================
     
     /** Returns true if the given x and y coords are within the bounds for the grid's width and height. */
     public static boolean inRange(Grid g, int xIn, int yIn) {

@@ -45,11 +45,10 @@ public enum Direction {
     /** True if this direction is a cardinal direction. */
     public final boolean cardinal;
     /** The compass degree value of this direction. */
-    public final double degree;
-    
-    //--------------
+    public final double degree;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     private Direction(String shortIn, String nameIn, boolean cardinalIn, double degreeIn) {
         identifier = shortIn;
@@ -58,11 +57,10 @@ public enum Direction {
         degree = degreeIn;
     }
     
-    //------------------------------------------------
-    
-    //---------
+    //------------------------------------------------    
+    //=========
     // Methods
-    //---------
+    //=========
     
     /**
      * Returns the closest compass direction to the given degree value.
@@ -98,11 +96,10 @@ public enum Direction {
         else if (degree > 225 || degree <= 315) return S;
         else if (degree > 135 || degree <= 225) return W;
         return E;
-    }
-    
-    //----------------
+    }    
+    //================
     // Static Methods
-    //----------------
+    //================
     
     /** Returns the compass direction related to given enum ordinal value. */
     public static Direction get(int ordinal) { return values()[ordinal]; }

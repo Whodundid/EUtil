@@ -27,12 +27,15 @@ import eutil.datatypes.util.EList;
  */
 public class EArrayList<E> implements EList<E> {
     
-    private List<E> list;
-    private boolean allowDuplicates = true;
+    //========
+    // Fields
+    //========
     
-    //--------------
+    private List<E> list;
+    private boolean allowDuplicates = true;    
+    //==============
     // Constructors
-    //--------------
+    //==============
     
     public EArrayList() {
         list = new ArrayList<>();
@@ -87,8 +90,7 @@ public class EArrayList<E> implements EList<E> {
         for (int i = from; i < to; i++) {
             add(in.get(i));
         }
-    }
-    
+    }    
     //===========
     // Overrides
     //===========
@@ -154,7 +156,7 @@ public class EArrayList<E> implements EList<E> {
     //======================
     // Collection Overrides
     //======================
-
+    
     @Override public int size() { return list.size(); }
     @Override public boolean isEmpty() { return list.isEmpty(); }
     @Override public boolean contains(Object o) { return list.contains(o); }
@@ -172,19 +174,17 @@ public class EArrayList<E> implements EList<E> {
     @Override public void clear() { list.clear(); }
     @Override public Spliterator<E> spliterator() { return list.spliterator(); }
     @Override public Stream<E> stream() { return list.stream(); }
-    @Override public Stream<E> parallelStream() { return list.parallelStream(); }
-    
+    @Override public Stream<E> parallelStream() { return list.parallelStream(); }    
     //=========
     // Getters
     //=========
-
-    /** Returns true if this list allows adding duplicate values. */
-    public boolean allowsDuplicates() { return allowDuplicates; }
     
+    /** Returns true if this list allows adding duplicate values. */
+    public boolean allowsDuplicates() { return allowDuplicates; }    
     //=========
     // Setters
     //=========
-
+    
     /** Sets whether this list will allow duplicate entries or not. If no, the list
      *  removes duplicates. */
     public EArrayList<E> setAllowDuplicates(boolean val) {
@@ -196,8 +196,7 @@ public class EArrayList<E> implements EList<E> {
             }
         }
         return this;
-    }
-    
+    }    
     //================
     // Static Methods
     //================
