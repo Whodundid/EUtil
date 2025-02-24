@@ -129,7 +129,7 @@ public final class EStringUtil {
      * @since 2.6.0
      */
     public static boolean isPopulated(String value) {
-        return value != null && !value.isBlank() && !value.isEmpty();
+        return value != null && !value.isEmpty() && !value.isBlank();
     }
     
     /**
@@ -144,7 +144,7 @@ public final class EStringUtil {
      * @since 2.6.0
      */
     public static boolean isNotPopulated(String value) {
-        return value == null || value.isBlank() || value.isEmpty();
+        return value == null || value.isEmpty() || value.isBlank();
     }
     
     /**

@@ -38,7 +38,19 @@ public final class Predicates {
     /** Checks that a given File is both not null and actually exists. */
     public static final Predicate<File> FILE_EXISTS = (f) -> f != null && f.exists();
     
-    /** Checks that a given File is both not null and actually exists. */
+    /** Checks that a given Path is both not null and actually exists. */
     public static final Predicate<Path> PATH_EXISTS = (p) -> Files.exists(p);
+    
+    /**
+     * Checks that a given File is either null or does not exist.
+     * @since 3.0.0
+     */
+    public static final Predicate<File> FILE_NOT_EXISTS = (f) -> f == null || !f.exists();
+    
+    /**
+     * Checks that a given Path is either null or does not exist.
+     * @since 3.0.0
+     */
+    public static final Predicate<File> PATH_NOT_EXISTS = (f) -> f == null || !f.exists();
     
 }

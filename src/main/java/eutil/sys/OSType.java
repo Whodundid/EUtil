@@ -1,5 +1,7 @@
 package eutil.sys;
 
+import java.nio.file.FileSystems;
+
 /**
  * An enum containing common operating system types.
  * 
@@ -36,5 +38,14 @@ public enum OSType {
     public static boolean isSolaris() { return getSystemOS() == OSType.SOLARIS; }
     /** Returns true if the current system's operating system is a type of LINUX distro. */
     public static boolean isLinux() { return getSystemOS() == OSType.LINUX; }
+    
+    /**
+     * @return The host operating system's file path separator char.
+     * 
+     * @since 3.0.0
+     */
+    public static String getSystemFileSeparator() {
+        return FileSystems.getDefault().getSeparator();
+    }
     
 }

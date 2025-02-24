@@ -49,7 +49,7 @@ import eutil.strings.EStringUtil;
  * </ul>
  *  
  *  @author Hunter Bragg
- *  @version 3.0.0-SNAPSHOT
+ *  @version 3.0.0
  */
 public class EUtil {
     
@@ -58,9 +58,9 @@ public class EUtil {
     //===============
     
     /** The EUtil library version. */
-    public static final String VERSION = "3.0.0-SNAPSHOT";
+    public static final String VERSION = "3.0.0";
     /** The EUtil library version date String. */
-    public static final String VERSION_DATE = "10/22/2024";
+    public static final String VERSION_DATE = "2/15/2025";
     /** EUtil static logger. */
     public static final Logger logger = Logger.getLogger("EUtil");
     
@@ -1090,216 +1090,6 @@ public class EUtil {
     //================
     // Try Statements
     //================
-    
-    public static boolean tryCode(Runnable func) { try { func.run(); return true; } catch (Throwable e) { e.printStackTrace(); } return false; }
-    public static <R> R tryCodeR(Runnable func, R returnVal) { try { func.run(); } catch (Throwable e) { e.printStackTrace(); } return returnVal; }
-    public static boolean tryCodeSilent(Runnable func) { try { func.run(); return true; } catch (Throwable e) {} return false; };
-    public static <R> R tryCodeSilentR(Runnable func, R returnVal) { try { func.run(); } catch (Throwable e) {} return returnVal; };
-    
-    /**
-     * Tries to run the given function on the specified object and return its
-     * result.
-     * <p>
-     * If the operation throws an error during execution, the error's
-     * stackTrace is printed and the given 'defaultValue' is returned instead.
-     * 
-     * @param <E> The type of object to run the given function on
-     * @param <R> The expected return type of the given function
-     * @param obj The Object to run the given function on
-     * @param func The Function to run on the given object
-     * @param defaultValue A value returned if any error occurs in execution
-     * @return The result of the executed function on the given object
-     * @since 1.6.3
-     */
-    public static <E, R> R tryApply(E obj, Function<E, R> func, R defaultValue) {
-        try {
-            return func.apply(obj);
-        }
-        catch (Throwable t) {
-            t.printStackTrace();
-            return defaultValue;
-        }
-    }
-    
-    /**
-     * Tries to run the given function on the specified object and return its
-     * result.
-     * <p>
-     * If the operation throws an error during execution, no stackTrace will be
-     * printed but the given 'defaultValue' will still be returned.
-     * 
-     * @param <E> The type of object to run the given function on
-     * @param <R> The expected return type of the given function
-     * @param obj The Object to run the given function on
-     * @param func The Function to run on the given object
-     * @param defaultValue A value returned if any error occurs in execution
-     * @return The result of the executed function on the given object
-     * @since 1.6.3
-     */
-    public static <E, R> R tryApplySilent(E obj, Function<E, R> func, R defaultValue) {
-        try {
-            return func.apply(obj);
-        }
-        catch (Throwable t) {
-            return defaultValue;
-        }
-    }
-    
-    public static boolean tryIfCode(boolean check, Runnable func) {
-        try {
-            if (check) {
-                func.run();
-                return true;
-            }
-        }
-        catch(Throwable e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-    
-    public static <R> R tryIfCodeR(boolean check, Runnable func, R returnVal) {
-        try {
-            if (check) func.run();
-        }
-        catch(Throwable e) {
-            e.printStackTrace();
-        }
-        return returnVal;
-    }
-    
-    /** Attempts to perform the given function and returns its result.
-     *  If either the check if false, the function call throws an error, or if the function returns null, null will be returned instead. */
-    public static <R> R tryIfCodeR(boolean check, Function<Object, R> func) {
-        R val = null;
-        if (check) { 
-            try {
-                val = func.apply(null);
-            }
-            catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
-        return val;
-    }
-    
-    /** Attempts to perform the given function and returns its result.
-     *  If either the check if false, the function call throws an error, or if the function returns null, the defaultVal will be returned instead. */
-    public static <R> R tryIfCodeR(boolean check, Function<Object, R> func, R defaultVal) {
-        R val = defaultVal;
-        if (check) { 
-            try {
-                val = func.apply(null);
-            }
-            catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
-        return val;
-    }
-    
-    /** Attempts to perform the given function on a specified object and returns its result.
-     *  If either the check if false, the function call throws an error, or if the function returns null, null will be returned instead. */
-    public static <E, R> R tryIfCodeR(boolean check, E object, Function<E, R> func) {
-        R val = null;
-        if (check) { 
-            try {
-                val = func.apply(object);
-            }
-            catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
-        return val;
-    }
-    
-    /** Attempts to perform the given function on a specified object and returns its result.
-     *  If either the check if false, the function call throws an error, or if the function returns null, the defaultVal will be returned instead. */
-    public static <E, R> R tryIfCodeR(boolean check, E object, Function<E, R> func, R defaultVal) {
-        R val = defaultVal;
-        if (check) { 
-            try {
-                val = func.apply(object);
-            }
-            catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
-        return val;
-    }
-    
-    public static <R> R tryCodeR(Runnable func, R ifPass, R ifFail) { return (tryCode(func)) ? ifPass : ifFail; }
-    public static <R> R tryIfCodeR(boolean check, Runnable func, R ifPass, R ifFail) { return (tryIfCode(check, func)) ? ifPass : ifFail; }
-    
-    public static <E> void tryDo(E obj, Consumer<? super E> action) {
-        try { action.accept(obj); }
-        catch (Throwable e) { e.printStackTrace(); }
-    }
-    
-    public static <E, A> void tryDo(E obj1, A obj2, BiConsumer<? super E, ? super A> action) {
-        try { action.accept(obj1, obj2); }
-        catch (Throwable e) { e.printStackTrace(); }
-    }
-    
-    public static <E> boolean tryNullDo(E obj, Consumer<? super E> action) {
-        boolean val = false;
-        try { val = nullDo(obj, action); }
-        catch (Throwable e) { e.printStackTrace(); }
-        return val;
-    }
-    
-    public static <E, A> boolean tryNullDo(E obj1, A obj2, BiConsumer<? super E, ? super A> action) {
-        boolean val = false;
-        try { val = nullDo(obj1, obj2, action); }
-        catch (Throwable e) { e.printStackTrace(); }
-        return val;
-    }
-    
-    public static <E, R> R tryDoR(E obj, Consumer<? super E> action, R returnVal) {
-        tryDo(obj, action);
-        return returnVal;
-    }
-    
-    public static <E, R> R tryDoR(E obj, Consumer<? super E> action, R ifPass, R ifFail) {
-        boolean val = false;
-        try {
-            action.accept(obj);
-            val = true;
-        }
-        catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return (val) ? ifPass : ifFail;
-    }
-    
-    public static <E, A, R> R tryDoR(E obj1, A obj2, BiConsumer<? super E, ? super A> action, R returnVal) {
-        tryDo(obj1, obj2, action);
-        return returnVal;
-    }
-    
-    public static <E, A, R> R tryDoR(E obj1, A obj2, BiConsumer<? super E, ? super A> action, R ifPass, R ifFail) {
-        boolean val = false;
-        try {
-            action.accept(obj1, obj2);
-            val = true;
-        }
-        catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return (val) ? ifPass : ifFail;
-    }
-    
-    public static <E, R> R tryNullDoR(E obj, Consumer<? super E> action, R returnVal) { tryNullDo(obj, action); return returnVal; }
-    public static <E, R> R tryNullDoR(E obj, Consumer<? super E> action, R ifPass, R ifFail) { return (tryDoR(obj, action, true, false)) ? ifPass : ifFail; }
-    public static <E, A, R> R tryNullDoR(E obj1, A obj2, BiConsumer<? super E, ? super A> action, R returnVal) { tryNullDo(obj1, obj2, action); return returnVal; }
-    public static <E, A, R> R tryNullDoR(E obj1, A obj2, BiConsumer<? super E, ? super A> action, R ifPass, R ifFail) { return (tryDoR(obj1, obj2, action, true, false)) ? ifPass : ifFail; }
-    
-    public static <E> Stream<E> tryFilterA(Predicate<? super E> filter, E... vals) {
-        Stream<E> stream = null;
-        try { stream = filterA(filter, vals); }
-        catch (Throwable e) { e.printStackTrace(); }
-        return stream;
-    }
     
     public static <E> E tryGet(Optional<E> optional) {
         try { return optional.get(); }

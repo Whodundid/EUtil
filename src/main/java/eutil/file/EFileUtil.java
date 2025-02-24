@@ -11,12 +11,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.UUID;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 import eutil.EUtil;
 import eutil.datatypes.util.EList;
-import eutil.debug.PoorlyDocumented;
 import eutil.random.ERandomUtil;
 
 /**
@@ -29,15 +27,16 @@ import eutil.random.ERandomUtil;
  */
 public class EFileUtil {
     
-    //------------------
-    // Hide Constructor
-    //------------------
+    //==============
+    // Constructors
+    //==============
     
+    /** Hide Constructor. */
     private EFileUtil() {}
     
-    //-------------
+    //=============
     // File Checks
-    //-------------
+    //=============
     
     /**
      * Returns true if the given file is not null and actually exists on the system.
@@ -47,10 +46,31 @@ public class EFileUtil {
     }
     
     /**
-     * Returns true if the given file is not null and actually exists on the system.
+     * Returns true if the given path is not null and actually exists on the system.
+     * 
      * @since 2.5.0
      */
-    public static boolean fileExists(Path f) {
+    public static boolean pathExists(Path f) {
+        return PATH_EXISTS.test(f);
+    }
+    
+    /**
+     * Returns true if the given file is either null or does not actually exists
+     * on the system.
+     * 
+     * @since 3.0.0
+     */
+    public static boolean fileNotExists(File f) {
+        return FILE_NOT_EXISTS.test(f);
+    }
+    
+    /**
+     * Returns true if the given path is either null or does not actually exists
+     * on the system.
+     * 
+     * @since 3.0.0
+     */
+    public static boolean pathNotExists(Path f) {
         return PATH_EXISTS.test(f);
     }
     
@@ -78,7 +98,7 @@ public class EFileUtil {
      * @since 2.5.0
      */
     public static boolean isDirectoryEmpty(Path f) {
-        if (f == null || !fileExists(f)) return false;
+        if (f == null || !pathExists(f)) return false;
         return f.toFile().length() == 0;
     }
     
@@ -121,6 +141,21 @@ public class EFileUtil {
     }
     
     /**
+     * Returns true if each of the given files are either null or do not
+     * actually exist on the file system.
+     * 
+     * @param files The files to check
+     * @return True if all files are either null or do not exist
+     * @since 3.0.0
+     */
+    public static boolean allFilesNotExist(File... files) {
+        if (files.length == 0) return false;
+        for (File f : files)
+            if (!fileNotExists(f)) return false;
+        return true;
+    }
+    
+    /**
      * Returns true if each of the given files are not null and actually exist
      * on the file system.
      * 
@@ -136,17 +171,47 @@ public class EFileUtil {
     }
     
     /**
-     * Returns true if each of the given files are not null and actually exist
+     * Returns true if each of the given files are either null or do not
+     * actually exist on the file system.
+     * 
+     * @param files The files to check
+     * @return True if all files are either null or do not exist
+     * @since 3.0.0
+     */
+    public static boolean allFilesNotExist(Collection<File> files) {
+        if (files == null || files.isEmpty()) return false;
+        for (File f : files)
+            if (!fileNotExists(f)) return false;
+        return true;
+    }
+    
+    /**
+     * Returns true if each of the given paths are not null and actually exist
      * on the file system.
      * 
-     * @param paths The files to check
+     * @param paths The paths to check
      * @return True if all files are not null and exist
      * @since 2.5.0
      */
     public static boolean allPathsExist(Path... paths) {
         if (paths.length == 0) return false;
         for (Path p : paths)
-            if (!fileExists(p)) return false;
+            if (!pathExists(p)) return false;
+        return true;
+    }
+    
+    /**
+     * Returns true if each of the given paths are either null or do not
+     * actually exist on the file system.
+     * 
+     * @param paths The paths to check
+     * @return True if all paths are either null or do not exist
+     * @since 3.0.0
+     */
+    public static boolean allPathsNotExist(Path... paths) {
+        if (paths.length == 0) return false;
+        for (Path f : paths)
+            if (!pathNotExists(f)) return false;
         return true;
     }
     
@@ -155,22 +220,233 @@ public class EFileUtil {
      * on the file system.
      * 
      * @param paths The files to check
-     * @return True if all files are not null and exist
+     * @return True if all paths are not null and exist
      * @since 2.5.2
      */
     public static boolean allPathsExist(Collection<Path> paths) {
         if (paths == null || paths.isEmpty()) return false;
         for (Path p : paths)
-            if (!fileExists(p)) return false;
+            if (!pathExists(p)) return false;
         return true;
     }
     
-    //--------------
-    // File Helpers
-    //--------------
+    /**
+     * Returns true if each of the given paths are either null or do not
+     * actually exist on the file system.
+     * 
+     * @param paths The paths to check
+     * @return True if all paths are either null or do not exist
+     * @since 3.0.0
+     */
+    public static boolean allPathsNotExist(Collection<Path> paths) {
+        if (paths == null || paths.isEmpty()) return false;
+        for (Path p : paths)
+            if (!pathExists(p)) return false;
+        return true;
+    }
+    
+    //===========
+    // File Size
+    //===========
+    
+    /**
+     * Calculates the exact number of bytes that the given file takes up on the
+     * host file system.
+     * 
+     * @param file The file to determine the size for
+     * @return The exact file size in bytes
+     * @since 3.0.0
+     */
+    public static long getFileSizeInBytes(File file) {
+        return getFileSizeInBytes(file.toPath());
+    }
+    
+    /**
+     * Calculates the exact number of bytes that the given path takes up on the
+     * host file system.
+     * 
+     * @param path The path to determine the size for
+     * @return The exact file size in bytes
+     * @since 3.0.0
+     */
+    public static long getFileSizeInBytes(Path path) {
+        try {
+            return Files.size(path);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    /**
+     * Calculates the approximate number of kilobytes (KB) that the given file
+     * takes up on the host file system.
+     * 
+     * @param file The file to determine the size for
+     * @return The approximate size of this file in kilobytes
+     * @since 3.0.0
+     */
+    public static long getFileSizeInKiloBytes(File file) {
+        return getFileSizeInBytes(file) / 1024L;
+    }
+    
+    /**
+     * Calculates the approximate number of kilobytes (KB) that the given path
+     * takes up on the host file system.
+     * 
+     * @param path The path to determine the size for
+     * @return The approximate size of this file in kilobytes
+     * @since 3.0.0
+     */
+    public static long getFileSizeInKiloBytes(Path path) {
+        return getFileSizeInBytes(path) / 1024L;
+    }
+    
+    /**
+     * Calculates the approximate number of megabytes (MB) that the given file
+     * takes up on the host file system.
+     * 
+     * @param file The file to determine the size for
+     * @return The approximate size of this file in megabytes
+     * @since 3.0.0
+     */
+    public static long getFileSizeInMegaBytes(File file) {
+        return getFileSizeInBytes(file) / 1024L / 1024L;
+    }
+    
+    /**
+     * Calculates the approximate number of megabytes (MB) that the given path
+     * takes up on the host file system.
+     * 
+     * @param path The file to determine the size for
+     * @return The approximate size of this file in megabytes
+     * @since 3.0.0
+     */
+    public static long getFileSizeInMegaBytes(Path path) {
+        return getFileSizeInBytes(path) / 1024L / 1024L;
+    }
+    
+    /**
+     * Calculates the approximate number of gigabytes (GB) that the given file
+     * takes up on the host file system.
+     * 
+     * @param file The file to determine the size for
+     * @return The approximate size of this file in gigabytes
+     * @since 3.0.0
+     */
+    public static long getFileSizeInGigaBytes(File file) {
+        return getFileSizeInBytes(file) / 1024L / 1024L / 1024L;
+    }
+    
+    /**
+     * Calculates the approximate number of gigabytes (GB) that the given path
+     * takes up on the host file system.
+     * 
+     * @param path The file to determine the size for
+     * @return The approximate size of this file in gigabytes
+     * @since 3.0.0
+     */
+    public static long getFileSizeInGigaBytes(Path path) {
+        return getFileSizeInBytes(path) / 1024L / 1024L / 1024L;
+    }
+    
+    /**
+     * Calculates the exact number of kilobytes (KB) that the given file
+     * takes up on the host file system.
+     * 
+     * @param file The file to determine the size for
+     * @return The exact size of this file in kilobytes
+     * @since 3.0.0
+     */
+    public static double getExactFileSizeInKiloBytes(File file) {
+        return getFileSizeInBytes(file) / 1024.0;
+    }
+    
+    /**
+     * Calculates the exact number of kilobytes (KB) that the given path
+     * takes up on the host file system.
+     * 
+     * @param path The file to determine the size for
+     * @return The exact size of this file in kilobytes
+     * @since 3.0.0
+     */
+    public static double getExactFileSizeInKiloBytes(Path path) {
+        return getFileSizeInBytes(path) / 1024.0;
+    }
+    
+    /**
+     * Calculates the exact number of megabytes (MB) that the given file
+     * takes up on the host file system.
+     * 
+     * @param file The file to determine the size for
+     * @return The exact size of this file in megabytes
+     * @since 3.0.0
+     */
+    public static double getExactFileSizeInMegaBytes(File file) {
+        return getFileSizeInBytes(file) / 1024.0 / 1024.0;
+    }
+    
+    /**
+     * Calculates the exact number of megabytes (MB) that the given path
+     * takes up on the host file system.
+     * 
+     * @param path The file to determine the size for
+     * @return The exact size of this file in megabytes
+     * @since 3.0.0
+     */
+    public static double getExactFileSizeInMegaBytes(Path path) {
+        return getFileSizeInBytes(path) / 1024.0 / 1024.0;
+    }
+    
+    /**
+     * Calculates the exact number of gigabytes (GB) that the given file
+     * takes up on the host file system.
+     * 
+     * @param file The file to determine the size for
+     * @return The exact size of this file in gigabytes
+     * @since 3.0.0
+     */
+    public static double getExactFileSizeInGigaBytes(File file) {
+        return getFileSizeInBytes(file) / 1024.0 / 1024.0 / 1024.0;
+    }
+    
+    /**
+     * Calculates the exact number of gigabytes (GB) that the given path
+     * takes up on the host file system.
+     * 
+     * @param path The file to determine the size for
+     * @return The exact size of this file in gigabytes
+     * @since 3.0.0
+     */
+    public static double getExactFileSizeInGigaBytes(Path path) {
+        return getFileSizeInBytes(path) / 1024.0 / 1024.0 / 1024.0;
+    }
+    
+    //=================
+    // File Extensions
+    //=================
+    
+    /**
+     * Returns the extension String of the given file path.
+     * <p>
+     * If the file path does not contain an extension, then
+     * null is returned instead.
+     * 
+     * @param filePathIn The string path of a file to parse
+     * @return The file's extension string
+     * @since 3.0.0
+     */
+    public static String getFileExtension(String filePathIn) {
+        if (filePathIn == null) return null;
+        final int index = filePathIn.lastIndexOf('.');
+        return (index > 0) ? filePathIn.substring(index) : null;
+    }
     
     /**
      * Returns the extension String of the given file.
+     * <p>
+     * If the file path does not contain an extension, then
+     * null is returned instead.
      * 
      * @param fileIn The file to parse
      * @return The file's extension string
@@ -180,11 +456,14 @@ public class EFileUtil {
         if (fileIn == null) return null;
         final String fname = fileIn.getName();
         final int index = fname.lastIndexOf('.');
-        return (index > 0) ? fname.substring(index) : "";
+        return (index > 0) ? fname.substring(index) : null;
     }
     
     /**
      * Returns the extension String of the given path.
+     * <p>
+     * If the file path does not contain an extension, then
+     * null is returned instead.
      * 
      * @param fileIn The file to parse
      * @return The file's extension string
@@ -194,7 +473,7 @@ public class EFileUtil {
         if (pathIn == null) return null;
         final String fname = pathIn.toString();
         final int index = fname.lastIndexOf('.');
-        return (index > 0) ? fname.substring(index) : "";
+        return (index > 0) ? fname.substring(index) : null;
     }
     
     /**
@@ -230,6 +509,10 @@ public class EFileUtil {
         if (pathIn == null) return false;
         return EUtil.anyMatch(getFileExtension(pathIn), extensions);
     }
+    
+    //==============
+    // File Helpers
+    //==============
     
     /**
      * Returns the JVM working directory File.
@@ -269,6 +552,91 @@ public class EFileUtil {
     public static File createRandomTempFile() {
         return createTempFile(UUID.randomUUID().toString());
     }
+    
+    /**
+     * Returns the total number of lines in the given file.
+     * Returns -1 if there was an issue with reading the file.
+     * 
+     * @param f The file to parse through
+     * @return The number of lines
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public static long countLines(File f) throws FileNotFoundException, IOException {
+        if (!fileExists(f)) return -1;
+        
+        return Files.lines(f.toPath()).count();
+    }
+    
+    /**
+     * Returns the total number of characters in the given file.
+     * Returns -1 if there was an issue with reading the file.
+     * 
+     * @param f The file to parse through
+     * @return The number of characters
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public static long countChars(File f) throws FileNotFoundException, IOException {
+        if (!fileExists(f)) return -1;
+        
+        int chars = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
+            while (reader.read() != -1) chars++;
+        }
+        catch (Throwable t) {
+            return -1;
+        }
+        
+        return chars;
+    }
+    
+    /**
+     * Returns a random line from the given file.
+     * <p>
+     * If the file doesn't exist or an issue occurred while reading it, null
+     * will be returned instead.
+     * 
+     * @param fileIn The file to parse through
+     * 
+     * @return A random line from the given file
+     * 
+     * @since 2.1.0
+     */
+    public static String randomLine(File fileIn) {
+        return randomLine(fileIn, null);
+    }
+    
+    /**
+     * Returns a random line from the given file.
+     * <p>
+     * If the file doesn't exist or an issue occurred while reading it, the
+     * given 'defaultVal' will be returned instead.
+     * 
+     * @param fileIn The file to parse through
+     * 
+     * @return A random line from the given file
+     * 
+     * @since 2.1.0
+     */
+    public static String randomLine(File fileIn, String defaultVal) {
+        if (!fileExists(fileIn)) return defaultVal;
+        
+        try {
+            var p = fileIn.toPath();
+            var count = Files.lines(p).count();
+            var randIndex = ERandomUtil.getRoll(0L, count - 1);
+            var randLine = Files.lines(p).skip(randIndex).findFirst().orElse(null);
+            return randLine;
+        }
+        catch (IOException e) {
+            return defaultVal;
+        }
+    }
+    
+    //===================
+    // Directory Helpers
+    //===================
     
     /**
      * Attempts to create the given directory or clear it if it already exists.
@@ -594,7 +962,7 @@ public class EFileUtil {
      * @since 2.5.0
      */
     public static boolean clearDirectory(Path dir) {
-        if (!fileExists(dir)) return false;
+        if (!pathExists(dir)) return false;
         if (!dir.toFile().isDirectory()) return false;
         return clearDir_i(dir.toFile());
     }
@@ -607,112 +975,6 @@ public class EFileUtil {
         }
         
         return true;
-    }
-    
-    /**
-     * Returns the total number of lines in the given file.
-     * Returns -1 if there was an issue with reading the file.
-     * 
-     * @param f The file to parse through
-     * @return The number of lines
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
-    public static long countLines(File f) throws FileNotFoundException, IOException {
-        if (!fileExists(f)) return -1;
-        
-        return Files.lines(f.toPath()).count();
-    }
-    
-    /**
-     * Returns the total number of characters in the given file.
-     * Returns -1 if there was an issue with reading the file.
-     * 
-     * @param f The file to parse through
-     * @return The number of characters
-     * @throws FileNotFoundException
-     * @throws IOException
-     */
-    public static long countChars(File f) throws FileNotFoundException, IOException {
-        if (!fileExists(f)) return -1;
-        
-        int chars = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(f))) {
-            while (reader.read() != -1) chars++;
-        }
-        catch (Throwable t) {
-            return -1;
-        }
-        
-        return chars;
-    }
-    
-    /**
-     * Returns a random line from the given file.
-     * <p>
-     * If the file doesn't exist or an issue occurred while reading it, null
-     * will be returned instead.
-     * 
-     * @param fileIn The file to parse through
-     * 
-     * @return A random line from the given file
-     * 
-     * @since 2.1.0
-     */
-    public static String randomLine(File fileIn) {
-        return randomLine(fileIn, null);
-    }
-    
-    /**
-     * Returns a random line from the given file.
-     * <p>
-     * If the file doesn't exist or an issue occurred while reading it, the
-     * given 'defaultVal' will be returned instead.
-     * 
-     * @param fileIn The file to parse through
-     * 
-     * @return A random line from the given file
-     * 
-     * @since 2.1.0
-     */
-    public static String randomLine(File fileIn, String defaultVal) {
-        if (!fileExists(fileIn)) return defaultVal;
-        
-        try {
-            var p = fileIn.toPath();
-            var count = Files.lines(p).count();
-            var randIndex = ERandomUtil.getRoll(0L, count - 1);
-            var randLine = Files.lines(p).skip(randIndex).findFirst().orElse(null);
-            return randLine;
-        }
-        catch (IOException e) {
-            return defaultVal;
-        }
-    }
-    
-    //------------------
-    // File Try-Helpers
-    //------------------
-    
-    @PoorlyDocumented
-    public static boolean tryFileCode(File fileIn, Runnable func) {
-        return (fileExists(fileIn)) ? EUtil.tryCode(func) : false;
-    }
-    
-    @PoorlyDocumented
-    public static <R> R tryFileCodeR(File fileIn, Runnable func, R returnVal) {
-        tryFileCode(fileIn, func);
-        return returnVal;
-    }
-    
-    @PoorlyDocumented
-    public static <R> R tryFileCodeR(File fileIn, Runnable func, R ifPass, R ifFail) {
-        return (tryFileCode(fileIn, func)) ? ifPass : ifFail;
-    }
-    
-    @PoorlyDocumented
-    public static <R> boolean tryFileCodeR(File fileIn, Function<Object, Boolean> func) {
-        return (fileExists(fileIn)) ? func.apply(null) : false;
     }
     
 }

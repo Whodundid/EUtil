@@ -28,7 +28,7 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     // Fields
     //========
     
-    private final EList<Box2<A, B>> createdList = EList.newList();
+    private final EList<Box2<A, B>> internalList = EList.newList();
     public boolean allowDuplicates = false;    
     //==============
     // Constructors
@@ -63,23 +63,133 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     
     @Override
     public Iterator<Box2<A, B>> iterator() {
-        return createdList.iterator();
+        return internalList.iterator();
     }
     
     @Override
     public String toString() {
         var r = new StringBuilder("[");
-        for (int i = 0; i < createdList.size(); i++) {
-            r.append("(" + getA(i) + ", " + getB(i) + (i == createdList.size() - 1 ? ")" : "), "));
+        for (int i = 0; i < internalList.size(); i++) {
+            r.append("(" + getA(i) + ", " + getB(i) + (i == internalList.size() - 1 ? ")" : "), "));
         }
         r.append("]");
         return r.toString();
     }    
+    @Override
+    public BoxList<A, B> copy() {
+        BoxList<A, B> copy = new BoxList<>();
+        copy.allowDuplicates = allowDuplicates;
+        
+        // create box contents into the copy
+        for (var b : internalList) {
+            copy.add(b.getA(), b.getB());
+        }
+        
+        return copy;
+    }
+    
+    @Override
+    public boolean contains(Object o) {
+        return internalList.contains(o);
+    }
+
+    @Override
+    public Object[] toArray() {
+        Object[] arr = new Object[internalList.size()];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = internalList.get(i);
+        }
+        return arr;
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return null;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        if (o instanceof Box2<?, ?> box) {
+            return internalList.remove(box);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return internalList.containsAll(c);
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends Box2<A, B>> c) {
+        return internalList.addAll(c);
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends Box2<A, B>> c) {
+        return internalList.addAll(index, c);
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return internalList.removeAll(c);
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return internalList.retainAll(c);
+    }
+
+    @Override
+    public Box2<A, B> set(int index, Box2<A, B> element) {
+        return internalList.set(index, element);
+    }
+
+    @Override
+    public void add(int index, Box2<A, B> element) {
+        internalList.add(index, element);
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        return internalList.indexOf(o);
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        return internalList.lastIndexOf(o);
+    }
+
+    @Override
+    public ListIterator<Box2<A, B>> listIterator() {
+        return internalList.listIterator();
+    }
+
+    @Override
+    public ListIterator<Box2<A, B>> listIterator(int index) {
+        return internalList.listIterator(index);
+    }
+
+    @Override
+    public List<Box2<A, B>> subList(int fromIndex, int toIndex) {
+        return internalList.subList(fromIndex, toIndex);
+    }
+
+    @Override
+    public void ensureCapacity(int size) {
+        internalList.ensureCapacity(size);
+    }
+    
+    @Override
+    public EList<Box2<A, B>> reversed() {
+        return internalList.reversed();
+    }
+    
     //=========
     // Methods
     //=========
     
-    public Stream<Box2<A, B>> stream() { return createdList.stream(); }
+    public Stream<Box2<A, B>> stream() { return internalList.stream(); }
     
     public BoxList<A, B> sort() { return stream().sorted().collect(toBoxHolder()); }
     
@@ -88,15 +198,15 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     }
     
     /** Returns the total number of boxes in this holder. */
-    public int size() { return createdList.size(); }
+    public int size() { return internalList.size(); }
     /** Same as size() but just adds a call to unify language across Strings, Arrays, and now lists. */
-    public int length() { return createdList.size(); }
+    public int length() { return internalList.size(); }
     /** Returns true if this holder does not contain any boxes. */
-    public boolean isEmpty() { return createdList.isEmpty(); }
+    public boolean isEmpty() { return internalList.isEmpty(); }
     /** Returns true if this holder does contain boxes. */
-    public boolean isNotEmpty() { return !createdList.isEmpty(); }
+    public boolean isNotEmpty() { return !internalList.isEmpty(); }
     /** Removes every box from this holder. */
-    public void clear() { createdList.clear(); }
+    public void clear() { internalList.clear(); }
     
     /** Sets this box to not have duplicates and proceeds to purge any and all duplicates from this holder. */
     public BoxList<A, B> noDuplicates() {
@@ -114,7 +224,7 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     
     /** Returns true if this holder has any box with the specified A value. */
     public boolean containsA(A a) {
-        for (Box2<A, B> getBox : createdList) {
+        for (Box2<A, B> getBox : internalList) {
             if (getBox.containsA(a)) return true;
         }
         return false;
@@ -122,14 +232,14 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     
     /** Returns true if this holder has any box with the specified B value. */
     public boolean containsB(B b) {
-        for (Box2<A, B> getBox : createdList) {
+        for (Box2<A, B> getBox : internalList) {
             if (getBox.containsB(b)) return true;
         }
         return false;
     }
     
     public boolean contains(Box2<A, B> boxIn) {
-        for (Box2<A, B> b : createdList) {
+        for (Box2<A, B> b : internalList) {
             if (b.compare(boxIn)) return true;
         }
         return false;
@@ -137,15 +247,26 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     
     /** Returns true if this holder has any box with both the specified A and B pair. */
     public boolean containsBoth(A a, B b) {
-        for (Box2<A, B> getBox : createdList) {
+        for (Box2<A, B> getBox : internalList) {
             if (getBox.compare(a, b)) return true;
         }
         return false;
     }
     
-    //------------------
+    /**
+     * Pushes a new box with the given A and B values onto this BoxList.
+     * 
+     * @param a The A Value
+     * @param b The B Value
+     * @since 3.0.0
+     */
+    public void push(A a, B b) {
+        push(new Box2<>(a, b));
+    }
+    
+    //==================
     // Methods : Adders
-    //------------------
+    //==================
     
     /**
      * Adds a box with null values to this box list.
@@ -160,38 +281,38 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     
     /** Creates a new StorageBox with the given A and B values and then adds it to the end of this holder. */
     public boolean add(A a, B b) {
-        return (allowDuplicates || !contains(a)) ? createdList.add(new Box2<A, B>(a, b)) : false;
+        return (allowDuplicates || !contains(a)) ? internalList.add(new Box2<A, B>(a, b)) : false;
     }
     
     /** Creates a new StorageBox with the given A and B values and then adds it to the specified position of this holder. */
     public void add(int pos, A a, B b) {
-        if (allowDuplicates || !contains(a)) createdList.add(pos, new Box2<A, B>(a, b));
+        if (allowDuplicates || !contains(a)) internalList.add(pos, new Box2<A, B>(a, b));
     }
 
     /** Adds the specified box if it is not null to this BoxList. */
     public boolean add(Box2<A, B> boxIn) {
-        return (boxIn != null && (allowDuplicates || !contains(boxIn))) ? createdList.add(boxIn) : false;
+        return (boxIn != null && (allowDuplicates || !contains(boxIn))) ? internalList.add(boxIn) : false;
     }
     
     /** Creates a new StorageBox with the given A and B values and then adds it to the end of this holder. */
     public <R> R addR(A a, B b, R returnVal) {
-        if (allowDuplicates || !contains(a)) createdList.add(new Box2<A, B>(a, b));
+        if (allowDuplicates || !contains(a)) internalList.add(new Box2<A, B>(a, b));
         return returnVal;
     }
     /** Adds the specified box if it is not null to this BoxList. */
     public <R> R addR(Box2<A, B> boxIn, R returnVal) {
-        if (boxIn != null && (allowDuplicates || !contains(boxIn))) createdList.add(boxIn);
+        if (boxIn != null && (allowDuplicates || !contains(boxIn))) internalList.add(boxIn);
         return returnVal;
     }
     
     /** Creates a new StorageBox with the given A and B values and then adds it to the end of this holder. */
     public BoxList<A, B> addRT(A a, B b) {
-        if (allowDuplicates || !contains(a)) createdList.add(new Box2<A, B>(a, b));
+        if (allowDuplicates || !contains(a)) internalList.add(new Box2<A, B>(a, b));
         return this;
     }
     /** Adds the specified box if it is not null to this BoxList. */
     public BoxList<A, B> addRT(Box2<A, B> boxIn) {
-        if (boxIn != null && (allowDuplicates || !contains(boxIn))) createdList.add(boxIn);
+        if (boxIn != null && (allowDuplicates || !contains(boxIn))) internalList.add(boxIn);
         return this;
     }
     
@@ -226,17 +347,19 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
         else add(a, b);
     }
     
-    //--------------------
+    //====================
     // Methods : Removers
-    //--------------------
+    //====================
     
     /** Removes the box at the specified point number. */
-    public Box2<A, B> remove(int index) { return createdList.remove(index); }
+    public Box2<A, B> remove(int index) {
+        return internalList.remove(index);
+    }
     
     /** Removes every box that contains the given A value. */
     public EList<Box2<A, B>> removeBoxesContainingA(A a) {
         EList<Box2<A, B>> returnList = EList.newList();
-        Iterator<Box2<A, B>> it = createdList.iterator();
+        Iterator<Box2<A, B>> it = internalList.iterator();
         while (it.hasNext()) {
             Box2<A, B> getBox = it.next();
             if (getBox.containsA(a)) {
@@ -250,7 +373,7 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     /** Removes every box that contains the given B value. */
     public EList<Box2<A, B>> removeBoxesContainingB(B b) {
         EList<Box2<A, B>> returnList = EList.newList();
-        Iterator<Box2<A, B>> it = createdList.iterator();
+        Iterator<Box2<A, B>> it = internalList.iterator();
         while (it.hasNext()) {
             Box2<A, B> getBox = it.next();
             if (getBox.containsB(b)) {
@@ -264,7 +387,7 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     /** Removes every box that has the exact A and B values. */
     public EList<Box2<A, B>> removeBoxesWithSaidValues(A a, B b) {
         EList<Box2<A, B>> returnList = EList.newList();
-        Iterator<Box2<A, B>> it = createdList.iterator();
+        Iterator<Box2<A, B>> it = internalList.iterator();
         while (it.hasNext()) {
             Box2<A, B> getBox = it.next();
             if (getBox.compare(a, b)) {
@@ -279,11 +402,11 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     //=========
     
     /** Returns the box at the specified point number. */
-    public Box2<A, B> get(int pointNumber) { return createdList.get(pointNumber); }
+    public Box2<A, B> get(int pointNumber) { return internalList.get(pointNumber); }
     /** Returns the object from the box at the specified point number. */
-    public A getA(int pointNumber) { return createdList.get(pointNumber).getA(); }
+    public A getA(int pointNumber) { return internalList.get(pointNumber).getA(); }
     /** Returns the value from the box at the specified point number. */
-    public B getB(int pointNumber) { return createdList.get(pointNumber).getB(); }
+    public B getB(int pointNumber) { return internalList.get(pointNumber).getB(); }
     
     /** Returns the 'B' value in a box with a given 'A' value. */
     public B get(A key) {
@@ -301,7 +424,7 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     
     /** Retrieves the first box that contains the specified A value. */
     public Box2<A, B> getBoxWithA(A objIn) {
-        for (Box2<A, B> getBox : createdList) {
+        for (Box2<A, B> getBox : internalList) {
             if (getBox.containsA(objIn)) return getBox;
         }
         return null;
@@ -314,21 +437,21 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     }
     
     /** Retrieves all boxes that contain the specified A value. */
-    public EList<Box2<A, B>> getAllBoxesWithA(A obj) { return createdList.filter(b -> b.getA().equals(obj)); }
+    public EList<Box2<A, B>> getAllBoxesWithA(A obj) { return internalList.filter(b -> b.getA().equals(obj)); }
     
     /** Returns a list of every A value in each box. */
-    public EList<A> getAVals() { return createdList.map(Box2::getA); }
+    public EList<A> getAVals() { return internalList.map(Box2::getA); }
     /** Returns a list of every B value in each box. */
-    public EList<B> getBVals() { return createdList.map(Box2::getB); }
+    public EList<B> getBVals() { return internalList.map(Box2::getB); }
     
     /** Returns a list containing every box in this holder. */
-    public EList<Box2<A, B>> getBoxes() { return EList.newList(createdList); }
+    public EList<Box2<A, B>> getBoxes() { return EList.newList(internalList); }
     
     /** Returns the boxes of this holder within an array of StorageBox objects with the corresponding parameters. */
     public Box2<A, B>[] getBoxesAsArray() {
-        Box2<?, ?>[] arr = new Box2<?, ?>[createdList.size()];
+        Box2<?, ?>[] arr = new Box2<?, ?>[internalList.size()];
         int i = 0;
-        for (Box2<A, B> b : createdList) {
+        for (Box2<A, B> b : internalList) {
             arr[i++] = b;
         }
         return (Box2<A, B>[]) arr;
@@ -336,7 +459,7 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     
     /** Returns a StorageBox in this holder that contains both A and B values. */
     public Box2<A, B> getBoxWithBoth(A a, B b) {
-        for (Box2<A, B> box : createdList) {
+        for (Box2<A, B> box : internalList) {
             if (box.compare(a, b)) return box;
         }
         return null;
@@ -345,8 +468,8 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
     // Setters
     //=========
     
-    public Box2<A, B> setA(int index, A obj) { return createdList.get(index).setA(obj); }
-    public Box2<A, B> setB(int index, B obj) { return createdList.get(index).setB(obj); }
+    public Box2<A, B> setA(int index, A obj) { return internalList.get(index).setA(obj); }
+    public Box2<A, B> setB(int index, B obj) { return internalList.get(index).setB(obj); }
     
     /** Replaces an in a box with the given A value with the specified new A value.
      *  If the box does not exist, nothing is added and nothing is modified. */
@@ -427,106 +550,8 @@ public class BoxList<A, B> implements EList<Box2<A, B>> {
         holderIn.addAll(noDups);
     }
     
-    @Override
-    public boolean contains(Object o) {
-        return createdList.contains(o);
-    }
-
-    @Override
-    public Object[] toArray() {
-        Object[] arr = new Object[createdList.size()];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = createdList.get(i);
-        }
-        return arr;
-    }
-
-    @Override
-    public <T> T[] toArray(T[] a) {
-        return null;
-    }
-
-    @Override
-    public boolean remove(Object o) {
-        if (o instanceof Box2<?, ?> box) {
-            return createdList.remove(box);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean containsAll(Collection<?> c) {
-        return createdList.containsAll(c);
-    }
-
-    @Override
-    public boolean addAll(Collection<? extends Box2<A, B>> c) {
-        return createdList.addAll(c);
-    }
-
-    @Override
-    public boolean addAll(int index, Collection<? extends Box2<A, B>> c) {
-        return createdList.addAll(index, c);
-    }
-
-    @Override
-    public boolean removeAll(Collection<?> c) {
-        return createdList.removeAll(c);
-    }
-
-    @Override
-    public boolean retainAll(Collection<?> c) {
-        return createdList.retainAll(c);
-    }
-
-    @Override
-    public Box2<A, B> set(int index, Box2<A, B> element) {
-        return createdList.set(index, element);
-    }
-
-    @Override
-    public void add(int index, Box2<A, B> element) {
-        createdList.add(index, element);
-    }
-
-    @Override
-    public int indexOf(Object o) {
-        return createdList.indexOf(o);
-    }
-
-    @Override
-    public int lastIndexOf(Object o) {
-        return createdList.lastIndexOf(o);
-    }
-
-    @Override
-    public ListIterator<Box2<A, B>> listIterator() {
-        return createdList.listIterator();
-    }
-
-    @Override
-    public ListIterator<Box2<A, B>> listIterator(int index) {
-        return createdList.listIterator(index);
-    }
-
-    @Override
-    public List<Box2<A, B>> subList(int fromIndex, int toIndex) {
-        return createdList.subList(fromIndex, toIndex);
-    }
-
-    @Override
-    public void ensureCapacity(int size) {
-        createdList.ensureCapacity(size);
-    }
-    
-    @Override
-    public EList<Box2<A, B>> reversed() {
-        return createdList.reversed();
-    }
-
     public static <A, B> BoxList<A, B> newList() { return new BoxList<>(); }
     public static <A, B> BoxList<A, B> newList(A a, B b) { return new BoxList<>(a, b); }
     public static <A, B> BoxList<A, B> newList(BoxList<A, B> existingBoxList) { return new BoxList<>(existingBoxList); }
-    
     
 }

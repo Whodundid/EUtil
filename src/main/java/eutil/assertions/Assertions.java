@@ -28,6 +28,34 @@ public final class Assertions {
     
     //----------------------
     
+    public static void assertNull(Object... o) {
+        if (o == null) return;
+        
+        final int len = o.length;
+        for (int i = 0; i < len; i++) {
+            assertNull(o[i]);
+        }
+    }
+    
+    public static void assertNotNull(Object... o) {
+        assertNotNull((Object) o);
+        
+        final int len = o.length;
+        for (int i = 0; i < len; i++) {
+            assertNotNull(o[i]);
+        }
+    }
+    
+    public static void assertTrue(Boolean b) {
+        assertNotNull(b);
+        assertTrue(b.booleanValue());
+    }
+    
+    public static void assertFalse(Boolean b) {
+        assertNotNull(b);
+        assertFalse(b.booleanValue());
+    }
+    
     public static void assertNull(Object o) { if (o != null) throw new AssertionException("'" + o + "' is not null!"); }
     public static void assertNotNull(Object o) { if (o == null) throw new AssertionException("'" + o + "' is null!"); }
     public static void assertTrue(boolean result) { if (!result) throw new TrueAssertionException(); }

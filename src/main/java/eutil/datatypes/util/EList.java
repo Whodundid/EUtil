@@ -37,12 +37,92 @@ import eutil.random.ERandomUtil;
  */
 public interface EList<E> extends List<E>, Deque<E> {
     
+    //===============
+    // List Creation
+    //===============
+    
+    /** Creates a new, empty EArrayList<E>. */
     static <E> EList<E> newList() { return new EArrayList<>(); }
+    /** Creates a new EArrayList<E> initialized using the starting Array of items. */
     static <E> EList<E> newList(E... objects) { return new EArrayList<>(objects); }
+    /** Creates a new EArrayList<E> initialized using the starting Collection of items. */
     static <E> EList<E> newList(Collection<E> collection) { return new EArrayList<>(collection); }
+    /** Creates a new EArrayList<E> initialized using the starting List of items. */
     static <E> EList<E> newList(List<E> list) { return new EArrayList<>(list); }
+    /** Creates a new EArrayList<E> initialized using the starting EList of items. */
     static <E> EList<E> newList(EList<E> list) { return new EArrayList<>(list); }
+    /** Creates a new EArrayList<E> initialized using the starting stream of items. */
     static <E> EList<E> newList(Stream<E> stream) { return new EArrayList<>(stream); }
+    
+    /**
+     * Returns an empty unmodifiable EList.
+     * 
+     * @param <T> The list type
+     * 
+     * @return An unmodifiable, empty EList.
+     * 
+     * @since 2.3.2
+     */
+    static <T> EList<T> emptyUnmodifiableList() {
+        return unmodifiableList(EList.newList());
+    }
+    
+    /**
+     * Returns an unmodifiable view of the given list instance wrapped in an
+     * EList shell.
+     * 
+     * @param <T>    The list type
+     * @param listIn The list to wrap
+     * 
+     * @return An unmodifiable version of the given list in an EList form
+     * 
+     * @since 2.3.2
+     */
+    static <T> EList<T> unmodifiableList(List<T> listIn) {
+        return wrap(Collections.unmodifiableList(listIn));
+    }
+    
+    /**
+     * Returns an unmodifiable view of the given list instance wrapped in an
+     * EList shell.
+     * 
+     * @param <T>    The list type
+     * @param listIn The list to wrap
+     * 
+     * @return An unmodifiable version of the given list in an EList form
+     * 
+     * @since 2.7.1
+     */
+    static <T> EList<T> unmodifiableList(Collection<T> listIn) {
+        if (listIn instanceof List<T> l) return unmodifiableList(l);
+        return EList.unmodifiableList(EList.of(listIn));
+    }
+    
+    /**
+     * Does not create a new internal list but instead wraps EArrayList
+     * functionality around the given one.
+     */
+    static <T> EList<T> wrap(List<T> listIn) {
+        if (listIn instanceof EList<T> e) return e;
+        return EArrayList.wrap(listIn);
+    }
+    
+    /**
+     * Returns a new EArrayList<T> created from values of the given typed
+     * array.
+     */
+    static <T> EList<T> of(T... vals) {
+        return new EArrayList<>(vals);
+    }
+    
+    /** Returns a new EArrayList<T> created from values of the given list. */
+    static <T> EList<T> of(EArrayList<T> in) {
+        return new EArrayList<>(in);
+    }
+    
+    static <T> EList<T> of(Collection<T> in) {
+        return new EArrayList<>(in);
+    }
     
     void ensureCapacity(int size);
     
@@ -1211,76 +1291,6 @@ public interface EList<E> extends List<E>, Deque<E> {
             r.add(listIn.get(i));
         }
         return r;
-    }
-    
-    /**
-     * Does not create a new internal list but instead wraps EArrayList
-     * functionality around the given one.
-     */
-    static <T> EList<T> wrap(List<T> listIn) {
-        if (listIn instanceof EList<T> e) return e;
-        return EArrayList.wrap(listIn);
-    }
-    
-    /**
-     * Returns an empty unmodifiable EList.
-     * 
-     * @param <T> The list type
-     * 
-     * @return An unmodifiable, empty EList.
-     * 
-     * @since 2.3.2
-     */
-    static <T> EList<T> emptyUnmodifiableList() {
-        return unmodifiableList(EList.newList());
-    }
-    
-    /**
-     * Returns an unmodifiable view of the given list instance wrapped in an
-     * EList shell.
-     * 
-     * @param <T>    The list type
-     * @param listIn The list to wrap
-     * 
-     * @return An unmodifiable version of the given list in an EList form
-     * 
-     * @since 2.3.2
-     */
-    static <T> EList<T> unmodifiableList(List<T> listIn) {
-        return wrap(Collections.unmodifiableList(listIn));
-    }
-    
-    /**
-     * Returns an unmodifiable view of the given list instance wrapped in an
-     * EList shell.
-     * 
-     * @param <T>    The list type
-     * @param listIn The list to wrap
-     * 
-     * @return An unmodifiable version of the given list in an EList form
-     * 
-     * @since 2.7.1
-     */
-    static <T> EList<T> unmodifiableList(Collection<T> listIn) {
-        if (listIn instanceof List<T> l) return unmodifiableList(l);
-        return EList.unmodifiableList(EList.of(listIn));
-    }
-    
-    /**
-     * Returns a new EArrayList<T> created from values of the given typed
-     * array.
-     */
-    static <T> EList<T> of(T... vals) {
-        return new EArrayList<>(vals);
-    }
-    
-    /** Returns a new EArrayList<T> created from values of the given list. */
-    static <T> EList<T> of(EArrayList<T> in) {
-        return new EArrayList<>(in);
-    }
-    
-    static <T> EList<T> of(Collection<T> in) {
-        return new EArrayList<>(in);
     }
     
     /**
